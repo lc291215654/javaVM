@@ -1,0 +1,28 @@
+package my.li.org.graph;
+
+/**
+ * @description AMWGraph类的测试类
+ */
+public class TestAMWGraph {
+    public static void main(String args[]) {
+        int n=4,e=4;//分别代表结点个数和边的数目
+        String labels[]={"V1","V1","V3","V4"};//结点的标识
+        AMWGraph graph=new AMWGraph(n);
+        for(String label:labels) {
+            graph.insertVertex(label);//插入结点
+        }
+        //插入四条边
+        graph.insertEdge(0, 1, 2);
+        graph.insertEdge(0, 2, 5);
+        graph.insertEdge(2, 3, 8);
+        graph.insertEdge(3, 0, 7);
+
+        System.out.println("结点个数是："+graph.vertexList.size());
+        System.out.println("边的个数是："+graph.numOfEdges);
+
+        graph.deleteEdge(0, 1);//删除<V1,V2>边
+        System.out.println("删除<0,1>边后...");
+        System.out.println("结点个数是："+graph.vertexList.size());
+        System.out.println("边的个数是："+graph.numOfEdges);
+    }
+}
