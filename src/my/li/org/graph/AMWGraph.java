@@ -2,6 +2,7 @@ package my.li.org.graph;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  * 邻接矩阵模型类
@@ -64,7 +65,7 @@ public class AMWGraph {
         return -1;
     }
 
-    //私有函数，深度优先遍历
+    //私有函数，递归深度优先遍历
     private void depthFirstSearch(boolean[] isVisited,int  i) {
         //首先访问该结点，在控制台打印出来
         System.out.print(getValueByIndex(i)+"  ");
@@ -79,7 +80,31 @@ public class AMWGraph {
             w=getNextNeighbor(i, w);
         }
     }
-    //对外公开函数，深度优先遍历，与其同名私有函数属于方法重载
+
+    //私有函数，递归深度优先遍历
+    private void dfs(boolean[] isVisited,int  i) {
+        //首先访问该结点，在控制台打印出来
+        System.out.print(getValueByIndex(i)+"  ");
+        //置该结点为已访问
+        isVisited[i]=true;
+
+        Stack<Object> stack = new Stack<Object>();
+        stack.push(getValueByIndex(i));
+
+        while (!stack.empty()){
+//            int cur = getNextNeighbor();
+        }
+
+        int w=getFirstNeighbor(i);//
+        while (w!=-1) {
+            if (!isVisited[w]) {
+                depthFirstSearch(isVisited,w);
+            }
+            w=getNextNeighbor(i, w);
+        }
+    }
+
+    //对外公开函数，深度优先遍历
     public void depthFirstSearch() {
         for(int i=0;i<vertexList.size();i++) {
             //因为对于非连通图来说，并不是通过一个结点就一定可以遍历所有结点的。
