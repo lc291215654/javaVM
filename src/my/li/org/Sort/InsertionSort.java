@@ -19,9 +19,21 @@ public class InsertionSort {
         }
     }
 
+    public static void insertionSort2(int[] a) {
+        for (int i = 1; i < a.length; i ++ ) {
+            int temp = a[i];
+            int j = i - 1;
+            while (j >= 0 && temp < a[j]) {
+                a[j + 1] = a[j];
+                j -= 1;
+            }
+            a[j + 1] = temp;
+        }
+    }
+
     public static void main(String[] args) {
         int[] a = { 1, 2, 3, 4, 5, 6, 7, 8 };
-        insertionSort(a);
+        insertionSort2(a);
         for (int i : a)
             System.out.print(i + " ");
     }

@@ -1,15 +1,11 @@
-package my.li.org;
-
-import my.li.org.binary.ListNode;
-import my.li.org.binary.TreeNode;
+package my.li.org.binary;
 
 import java.util.Stack;
 
-public class Solution {
-    public static void main(String args[]) {
-
-
-    }
+/**
+ * Created by licheng on 12/6/17.
+ */
+public class MiddleAccess {
     public TreeNode Convert(TreeNode pRootOfTree) {
 
         if(pRootOfTree==null)
@@ -41,26 +37,4 @@ public class Solution {
 
     }
 
-
-    public static ListNode deleteDuplication(ListNode pHead) {
-
-        ListNode pre = new ListNode(-1);
-        ListNode p = pHead;
-        pre.next = p;
-        pHead = pre;
-
-        while (p != null && p.next != null) {
-            if (p.val == p.next.val) {
-                int val = p.val;
-                while (p!= null && p.val == val){
-                    p = p.next;
-                }
-                pre.next = p;
-            } else {
-                pre = p;
-                p = p.next;
-            }
-        }
-        return pHead.next;
-    }
 }

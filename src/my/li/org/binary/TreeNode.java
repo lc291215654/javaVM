@@ -4,9 +4,9 @@ package my.li.org.binary;
  * Created by licheng on 11/30/17.
  */
 public class TreeNode {
-    int data;
-    TreeNode left;
-    TreeNode right;
+    public int data;
+    public TreeNode left;
+    public TreeNode right;
 
     public TreeNode() {
         super();
