@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="hbase-client-1.2.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/hbase-client-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/hbase-common-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/hbase-procedure-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/hbase-protocol-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/hbase-server-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/junit.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

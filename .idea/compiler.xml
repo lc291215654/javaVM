@@ -7,12 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="protocol_test" />
+        <module name="RabbitMQtest" />
         <module name="Yarn-client" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="protocol_test" target="1.5" />
-      <module name="Yarn-client" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="protocol_test" target="1.7" />
+      <module name="RabbitMQtest" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/RabbitMQtest/RabbitMQtest.iml" filepath="$PROJECT_DIR$/RabbitMQtest/RabbitMQtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/Yarnclient/Yarn-client.iml" filepath="$PROJECT_DIR$/Yarnclient/Yarn-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/javaVM.iml" filepath="$PROJECT_DIR$/javaVM.iml" />
       <module fileurl="file://$PROJECT_DIR$/protocol_test/protocol_test.iml" filepath="$PROJECT_DIR$/protocol_test/protocol_test.iml" />

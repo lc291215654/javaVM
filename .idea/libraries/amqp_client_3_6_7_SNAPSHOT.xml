@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="amqp-client-3.6.7-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/amqp-client-3.6.7-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/commons-cli-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/commons-codec-1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/commons-io-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/guava-12.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/hadoop-common-2.6.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/hbase-client-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/hbase-common-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/hbase-procedure-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/hbase-protocol-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/hbase-server-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/junit.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQ-test/lib/protobuf-java-2.5.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/hbase-common-1.2.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

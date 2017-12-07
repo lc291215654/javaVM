@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="amqp-client-3.6.7-SNAPSHOT (2)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/amqp-client-3.6.7-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/commons-cli-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/commons-codec-1.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/commons-io-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/guava-12.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/hadoop-common-2.6.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
