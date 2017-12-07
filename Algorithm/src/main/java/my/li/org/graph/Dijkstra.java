@@ -12,12 +12,7 @@ public class Dijkstra {
         while (in.hasNext()) {
             int m = in.nextInt();
             int n = in.nextInt();
-            // 最短路径
-            int dist[] = new int[n + 1];
-            // 前一个顶点号
-            int path[] = new int[n + 1];
-            // 顶点是否被确定了
-            boolean S[] = new boolean[n + 1];
+
             // 初始化邻接矩阵
             int[][] Edge = new int[n + 1][n + 1];
             for (int i = 0; i < n + 1; i++) {
@@ -29,12 +24,18 @@ public class Dijkstra {
             for (int i = 0; i < m; i++) {
                 Edge[in.nextInt()][in.nextInt()] = in.nextInt();
             }
-            Dijkstr(Edge, dist, path, S, m, n);
+            Dijkstr(Edge, n);
         }
     }
 
-    private static void Dijkstr(int[][] edge, int[] dist,
-                                int[] path, boolean[] s, int m, int n) {
+    private static void Dijkstr(int[][] edge,int n) {
+        // 最短路径长度
+        int dist[] = new int[n + 1];
+        // 前一个顶点号
+        int path[] = new int[n + 1];
+        // 顶点是否被确定了
+        boolean isDetermined[] = new boolean[n + 1];
+
         for (int i = 0; i < n + 1; i++) {
             dist[i] = edge[0][i];
             if (i != 0 && dist[i] < Integer.MAX_VALUE)
@@ -43,7 +44,7 @@ public class Dijkstra {
                 path[i] = -1;
         }
         // 开始对对一个站进行操作
-        s[0] = true;
+        isDetermined[0] = true;
         dist[0] = 0;
         // 从顶点v确定n条路径
         for (int i = 0; i < n; i++) {
@@ -51,15 +52,15 @@ public class Dijkstra {
             int u = 0;
             // 选择当前不在S中具有最短路径的顶点u
             for (int j = 0; j < n + 1; j++) {
-                if (!s[j] && dist[j] < min) {
+                if (!isDetermined[j] && dist[j] < min) {
                     u = j;
                     min = dist[j];
                 }
             }
             // 表示u已经在最短路径上
-            s[u] = true;
+            isDetermined[u] = true;
             for (int k = 0; k < n + 1; k++) {
-                if (!s[k] && edge[u][k] < Integer.MAX_VALUE
+                if (!isDetermined[k] && edge[u][k] < Integer.MAX_VALUE
                         && dist[u] + edge[u][k] < dist[k]) {
                     dist[k] = dist[u] + edge[u][k];
                     path[k] = u;
