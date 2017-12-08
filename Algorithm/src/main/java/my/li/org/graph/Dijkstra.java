@@ -29,9 +29,9 @@ public class Dijkstra {
     }
 
     private static void Dijkstr(int[][] edge,int n) {
-        // 最短路径长度
+        // 到每个节点的最短路径长度
         int dist[] = new int[n + 1];
-        // 前一个顶点号
+        // 最短路径中的前一个顶点号
         int path[] = new int[n + 1];
         // 顶点是否被确定了
         boolean isDetermined[] = new boolean[n + 1];
@@ -50,7 +50,7 @@ public class Dijkstra {
         for (int i = 0; i < n; i++) {
             int min = Integer.MAX_VALUE;
             int u = 0;
-            // 选择当前不在S中具有最短路径的顶点u
+            // 选择当前不在S中且到i距离最短的顶点u
             for (int j = 0; j < n + 1; j++) {
                 if (!isDetermined[j] && dist[j] < min) {
                     u = j;
@@ -60,7 +60,8 @@ public class Dijkstra {
             // 表示u已经在最短路径上
             isDetermined[u] = true;
             for (int k = 0; k < n + 1; k++) {
-                if (!isDetermined[k] && edge[u][k] < Integer.MAX_VALUE
+                if (!isDetermined[k]
+                        && edge[u][k] < Integer.MAX_VALUE
                         && dist[u] + edge[u][k] < dist[k]) {
                     dist[k] = dist[u] + edge[u][k];
                     path[k] = u;

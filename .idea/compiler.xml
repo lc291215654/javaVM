@@ -6,14 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="project" />
         <module name="protocol_test" />
         <module name="RabbitMQtest" />
         <module name="Yarn-client" />
+        <module name="Yarnclient" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
-      <module name="protocol_test" target="1.7" />
+      <module name="project" target="1.5" />
+      <module name="protocol_test" target="1.5" />
       <module name="RabbitMQtest" target="1.7" />
+      <module name="Yarnclient" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
