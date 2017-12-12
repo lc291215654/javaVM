@@ -7,6 +7,8 @@
         <option value="$PROJECT_DIR$/Yarnclient/pom.xml" />
         <option value="$PROJECT_DIR$/src/pom.xml" />
         <option value="$PROJECT_DIR$/project/pom.xml" />
+        <option value="$PROJECT_DIR$/RedisTest/pom.xml" />
+        <option value="$PROJECT_DIR$/MongoDBTest/pom.xml" />
       </list>
     </option>
   </component>

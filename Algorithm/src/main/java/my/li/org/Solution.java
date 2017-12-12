@@ -4,91 +4,95 @@ import my.li.org.binary.ListNode;
 import my.li.org.binary.TreeNode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
 
 public class Solution {
     public static void main(String args[]) {
-        int [] a = new int[]{1,3,5,2,4,6};
-        reOrderArray(a);
-        for (int i = 0; i < a.length; i++) {
-            System.out.println(a[i]);
-        }
 
+        int[] sequence = {5, 7, 6, 9, 12, 11, 8};
+//        boolean b = VerifySquenceOfBST(sequence);
+//        System.out.println(b);
 
 
     }
-    public static void reOrderArray(int [] array) {
-        int i=0;
-//        int j=1;
-//        int m=array.length-2;
-        int k=array.length-1;
-        while (i != k && i!=k-1){
-            if(isone(array[i]) && istwo(array[i+1])){
-                int temp = array[i];
-                array[i] =array[i+1];
-                array[i+1] = temp;
-            }
-            i++;
-            if(isone(array[k]) && istwo(array[k-1])){
-                int temp = array[k];
-                array[k] =array[k-1];
-                array[k-1] = temp;
-            }
-            k--;
+
+    public boolean HasSubtree(TreeNode root1, TreeNode root2) {
+        if (root1 == null || root2 == null) {
+            return false;
         }
+        return isSubtree(root1, root2)
+                || HasSubtree(root1.left, root2)
+                || HasSubtree(root1.right, root2);
     }
 
-
-    static boolean  istwo(int n){
-        if((n & 1) ==1){
+    public static boolean isSubtree(TreeNode root1, TreeNode root2) {
+        if (root2 == null) {
             return true;
         }
-        return false;
+        if (root1 == null) {
+            return false;
+        }
+        if (root1.data == root2.data) {
+            return isSubtree(root1.left, root2.left)
+                    && isSubtree(root1.right, root2.right);
+        } else {
+            return false;
+        }
     }
 
+    private ArrayList<ArrayList<Integer>> listAll = new ArrayList<ArrayList<Integer>>();
+    private ArrayList<Integer> list = new ArrayList<Integer>();
 
-    static boolean isone(int n){
-        if((n & 1) ==0){
-            return true;
+    public ArrayList<ArrayList<Integer>> FindPath(TreeNode root, int target) {
+        if (root == null) return listAll;
+        list.add(root.data);
+        target -= root.data;
+        if (target == 0 && root.left == null && root.right == null)
+            listAll.add(new ArrayList<Integer>(list));
+        FindPath(root.left, target);
+        FindPath(root.right, target);
+        list.remove(list.size() - 1);
+        return listAll;
+    }
+
+    public int MoreThanHalfNum_Solution(int[] array) {
+        if (array.length == 0) {
+            return 0;
         }
-        return false;
+        int result = array[0];
+        int times = 1; // 次数
+        for (int i = 1; i < array.length; ++i) {
+            if (times == 0) {
+                result = array[i];
+                times = 1;
+            } else if (array[i] == result) {
+                ++times; // 相同则加1
+            } else {
+                --times; // 不同则减1
+            }
+        }
+        times = 0;
+        for (int i = 0; i < array.length; ++i) {
+            if (array[i] == result) ++times;
+        }
+        return (times > array.length / 2) ? result : 0;
     }
 
 
 
     public int JumpFloor(int target) {
-        int[] arr = new int[target>3?target+1:3];
+        int[] arr = new int[target > 3 ? target + 1 : 3];
         arr[0] = 0;
-        arr[1] =1;
-        arr[2] =2;
+        arr[1] = 1;
+        arr[2] = 2;
         if (target < 3) {
             return arr[target];
         }
-        for(int i=3 ;i<=target;i++){
-            arr[i] = 2*arr[i-1];
+        for (int i = 3; i <= target; i++) {
+            arr[i] = 2 * arr[i - 1];
         }
         return arr[target];
-
-
     }
-
-    public int Fibonacci(int n) {
-        if (n == 1 || n==0) {
-            return 1;
-        }
-        if (n == 2) {
-            return 2;
-        }
-        int[] arr = new int[n+1];
-        arr[1] =  1;
-        arr[2] = 2;
-        for(int i=3 ;i<=n;i++){
-            arr[n] = arr[n-1]+arr[n-2];
-        }
-        return arr[n];
-    }
-
 
     public TreeNode reConstructBinaryTree(int[] pre, int[] in) {
         TreeNode root = reConstructBinaryTree(pre, 0, pre.length - 1, in, 0, in.length - 1);
@@ -106,7 +110,6 @@ public class Solution {
                 root.left = reConstructBinaryTree(pre, startPre + 1, startPre + i - startIn, in, startIn, i - 1);
                 root.right = reConstructBinaryTree(pre, i - startIn + startPre + 1, endPre, in, i + 1, endIn);
             }
-
         return root;
     }
 
@@ -181,8 +184,6 @@ public class Solution {
             p = p.right;
         }
         return pRootOfTree;
-
-
     }
 
 
