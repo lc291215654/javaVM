@@ -45,12 +45,12 @@ public class Dijkstra {
         }
         // 开始对对一个站进行操作
         isDetermined[0] = true;
-        dist[0] = 0;
+       // dist[0] = 0;
         // 从顶点v确定n条路径
         for (int i = 0; i < n; i++) {
             int min = Integer.MAX_VALUE;
             int u = 0;
-            // 选择当前不在S中且到i距离最短的顶点u
+            // 选择当前不在S中且到起始点距离最短的顶点u
             for (int j = 0; j < n + 1; j++) {
                 if (!isDetermined[j] && dist[j] < min) {
                     u = j;
@@ -68,6 +68,6 @@ public class Dijkstra {
                 }
             }
         }
-        System.out.println(dist[n] + "");
+        System.out.println(dist[n-1] + "");
     }
 }
