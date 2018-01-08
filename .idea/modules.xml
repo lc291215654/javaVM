@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MongoDBTest/MongoDBTest.iml" filepath="$PROJECT_DIR$/MongoDBTest/MongoDBTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NewCoder/NewCoder.iml" filepath="$PROJECT_DIR$/NewCoder/NewCoder.iml" />
       <module fileurl="file://$PROJECT_DIR$/RabbitMQtest/RabbitMQtest.iml" filepath="$PROJECT_DIR$/RabbitMQtest/RabbitMQtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/RedisTest/RedisTest.iml" filepath="$PROJECT_DIR$/RedisTest/RedisTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/Yarnclient/Yarn-client.iml" filepath="$PROJECT_DIR$/Yarnclient/Yarn-client.iml" />
