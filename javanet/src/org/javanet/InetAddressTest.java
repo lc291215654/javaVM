@@ -1,8 +1,6 @@
+package org.javanet;
+
 import java.io.IOException;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by licheng on 1/4/18.

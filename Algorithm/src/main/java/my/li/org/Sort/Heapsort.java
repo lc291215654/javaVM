@@ -79,6 +79,4 @@ public class Heapsort {
         System.out.println("Output: " + Arrays.toString(A));
 
     }
-
-
 }

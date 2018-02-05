@@ -32,7 +32,7 @@ public class Code_00_BubbleSort {
 
 	// for test
 	public static void main(String[] args) {
-		int testTime = 500000;
+		int testTime = 500;
 		int maxSize = 100;
 		int maxValue = 100;
 		boolean succeed = true;
