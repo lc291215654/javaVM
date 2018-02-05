@@ -1,5 +1,8 @@
 package basic_class_01;
 
+import MyCode.Code_HeapSort;
+import MyCode.Code_QuickSort;
+
 import java.util.Arrays;
 
 public class Code_04_QuickSort {
@@ -107,7 +110,7 @@ public class Code_04_QuickSort {
 		for (int i = 0; i < testTime; i++) {
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArray(arr1);
-			quickSort(arr1);
+			Code_QuickSort.quickSort(arr1);
 			comparator(arr2);
 			if (!isEqual(arr1, arr2)) {
 				succeed = false;
