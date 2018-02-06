@@ -34,28 +34,32 @@ public class Code_MergeSort {
         if (left >= right) {
             return;
         }
-        int mid = partition(arr, left, right);
-        mergeSort(arr,left,mid-1);
-        mergeSort(arr,mid+1,right);
-
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
     }
 
-    public static int partition(int[] arr, int left, int right) {
-        int k = arr[left];
-        while (left < right) {
-            while (arr[right] >= k && right > left) {
-                right--;
-            }
-            swap(arr, right, left);
-            while (arr[left] <= k && right > left) {
-                left++;
-            }
-            swap(arr, right, left);
+    public static void merge(int[] arr, int left, int mid, int right) {
+        int[] mergearr = new int[(right - left)+1];
+
+        int i = left;
+        int j = mid+1;
+        int index = 0;
+        while (i <=mid && j <= right){
+                mergearr[index++] = arr[i] > arr[j] ? arr[j++]:arr[i++];
+        }
+        while (i<=mid){
+            mergearr[index++] = arr[i++];
         }
 
-        return left;
+        while (j<=right){
+            mergearr[index++] = arr[j++];
+        }
 
-
+        for(int k=0;k<mergearr.length;k++){
+            arr[left++] = mergearr[k];
+        }
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 public class Code_05_HashMap {
 
 	public static void main(String[] args) {
-		HashMap<String, String> map = new HashMap<>();
+		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("zuo", "31");
 
 		System.out.println(map.containsKey("zuo"));

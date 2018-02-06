@@ -28,7 +28,6 @@ public class TestSet {
 
         int size = apples.size();
 
-        Arrays.sort();
 
 
         for(Integer i:apples){

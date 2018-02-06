@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 public class Code_02_Less_Money {
 
 	public static int lessMoney(int[] arr) {
-		PriorityQueue<Integer> pQ = new PriorityQueue<>();
+		PriorityQueue<Integer> pQ = new PriorityQueue<Integer>();
 		for (int i = 0; i < arr.length; i++) {
 			pQ.add(arr[i]);
 		}
@@ -46,7 +46,7 @@ public class Code_02_Less_Money {
 		int[] arrForHeap = { 3, 5, 2, 7, 0, 1, 6, 4 };
 
 		// min heap
-		PriorityQueue<Integer> minQ1 = new PriorityQueue<>();
+		PriorityQueue<Integer> minQ1 = new PriorityQueue<Integer>();
 		for (int i = 0; i < arrForHeap.length; i++) {
 			minQ1.add(arrForHeap[i]);
 		}
@@ -56,7 +56,7 @@ public class Code_02_Less_Money {
 		System.out.println();
 
 		// min heap use Comparator
-		PriorityQueue<Integer> minQ2 = new PriorityQueue<>(new MinheapComparator());
+		PriorityQueue<Integer> minQ2 = new PriorityQueue<Integer>(new MinheapComparator());
 		for (int i = 0; i < arrForHeap.length; i++) {
 			minQ2.add(arrForHeap[i]);
 		}
@@ -66,7 +66,7 @@ public class Code_02_Less_Money {
 		System.out.println();
 
 		// max heap use Comparator
-		PriorityQueue<Integer> maxQ = new PriorityQueue<>(new MaxheapComparator());
+		PriorityQueue<Integer> maxQ = new PriorityQueue<Integer>(new MaxheapComparator());
 		for (int i = 0; i < arrForHeap.length; i++) {
 			maxQ.add(arrForHeap[i]);
 		}

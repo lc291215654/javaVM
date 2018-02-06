@@ -13,16 +13,7 @@ public class Main {
             int m = sc.nextInt();
             int n = sc.nextInt();
 
-            int re = cal(m,n);
-            System.out.println(re);
-
-
-        }
-
     }
-
-    private static int cal(int m, int n) {
-
 
     }
 }
