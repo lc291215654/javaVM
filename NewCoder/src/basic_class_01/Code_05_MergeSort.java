@@ -1,7 +1,5 @@
 package basic_class_01;
 
-import MyCode.Code_MergeSort;
-
 import java.util.Arrays;
 
 public class Code_05_MergeSort {

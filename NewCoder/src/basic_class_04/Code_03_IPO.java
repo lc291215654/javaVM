@@ -3,7 +3,23 @@ package basic_class_04;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+/**
+ * 获得的最大的收益
+ */
 public class Code_03_IPO {
+
+    public static void main(String args[]){
+
+        int profit = findMaximizedCapital(2,25,new int[]{3,4,5,7},new int[]{10,20,13,17});
+        System.out.println(profit);
+
+
+
+
+    }
+
+
+
 	public static class Node {
 		public int p;
 		public int c;

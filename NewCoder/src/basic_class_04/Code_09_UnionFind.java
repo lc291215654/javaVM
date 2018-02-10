@@ -3,6 +3,9 @@ package basic_class_04;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * 并查集
+ */
 public class Code_09_UnionFind {
 
 	public static class Node {

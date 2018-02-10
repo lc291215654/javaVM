@@ -1,5 +1,10 @@
 package basic_class_04;
 
+/**
+ * 下一个后继节点
+ *
+ */
+
 public class Code_07_DescendantNode {
 
 	public static class Node {

@@ -1,7 +1,6 @@
 package basic_class_01;
 
-import MyCode.Code_HeapSort;
-import MyCode.Code_QuickSort;
+import MyCode01.Code_QuickSort;
 
 import java.util.Arrays;
 

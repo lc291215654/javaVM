@@ -1,5 +1,10 @@
 package basic_class_03;
 
+/**
+ * 重要
+ * 将单向链表按某值划分成左边小，中间相等，右边大的形式
+ */
+
 public class Code_12_SmallerEqualBigger {
 
 	public static class Node {
@@ -57,6 +62,13 @@ public class Code_12_SmallerEqualBigger {
 		nodeArr[b] = tmp;
 	}
 
+
+	/**
+	 * need O(1) extra space
+	 * @param head
+	 * @param pivot
+	 * @return
+	 */
 	public static Node listPartition2(Node head, int pivot) {
 		Node sH = null; // small head
 		Node sT = null; // small tail

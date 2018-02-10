@@ -29,6 +29,7 @@ public class Code_06_RandomPool {
                 K lastKey = this.indexKeyMap.get(lastIndex);
                 this.keyIndexMap.put(lastKey, deleteIndex);
                 this.indexKeyMap.put(deleteIndex, lastKey);
+
                 this.keyIndexMap.remove(key);
                 this.indexKeyMap.remove(lastIndex);
             }

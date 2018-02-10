@@ -16,7 +16,6 @@
       <module name="RabbitMQtest" target="1.7" />
       <module name="RedisTest" target="1.5" />
       <module name="Yarn-client" target="1.5" />
-      <module name="Yarnclient" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

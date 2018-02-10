@@ -1,5 +1,10 @@
 package basic_class_03;
 
+/**
+ * 重要的题
+ * 判度链表是否是回文结构
+ */
+
 import java.util.Stack;
 
 public class Code_11_IsPalindromeList {
@@ -15,6 +20,9 @@ public class Code_11_IsPalindromeList {
 
 	// need n extra space
 	public static boolean isPalindrome1(Node head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
 		Stack<Node> stack = new Stack<Node>();
 		Node cur = head;
 		while (cur != null) {

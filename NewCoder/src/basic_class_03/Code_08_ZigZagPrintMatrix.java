@@ -24,11 +24,11 @@ public class Code_08_ZigZagPrintMatrix {
 	public static void printLevel(int[][] m, int tR, int tC, int dR, int dC,
 			boolean f) {
 		if (f) {
-			while (tR != dR + 1) {
+			while (tR < dR + 1) {
 				System.out.print(m[tR++][tC--] + " ");
 			}
 		} else {
-			while (dR != tR - 1) {
+			while (dR > tR - 1) {
 				System.out.print(m[dR--][dC++] + " ");
 			}
 		}
