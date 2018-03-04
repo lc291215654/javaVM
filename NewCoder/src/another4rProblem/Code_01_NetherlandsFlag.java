@@ -1,4 +1,4 @@
-package tmp;
+package another4rProblem;
 
 public class Code_01_NetherlandsFlag {
 

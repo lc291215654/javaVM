@@ -1,5 +1,8 @@
 package basic_class_08;
 
+/**
+ * 判断str2是不是由str1循环右移得到
+ */
 public class Code_05_RotateString {
 
 	public static void rotateWord(char[] chas) {

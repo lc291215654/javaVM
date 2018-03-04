@@ -3,6 +3,9 @@ package basic_class_05;
 import java.util.HashSet;
 import java.util.Stack;
 
+/**
+ * 深度优先遍历
+ */
 public class Code_03_DFS {
 
 	public static void dfs(Node node) {

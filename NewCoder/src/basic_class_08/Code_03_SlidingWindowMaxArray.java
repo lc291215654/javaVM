@@ -2,6 +2,9 @@ package basic_class_08;
 
 import java.util.LinkedList;
 
+/**
+ * 窗口内最大最小值更新结构
+ */
 public class Code_03_SlidingWindowMaxArray {
 
 	public static int[] getMaxWindow(int[] arr, int w) {

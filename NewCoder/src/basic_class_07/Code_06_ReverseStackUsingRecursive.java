@@ -17,6 +17,11 @@ public class Code_06_ReverseStackUsingRecursive {
 		stack.push(i);
 	}
 
+	/**
+	 * 得到并移除栈中最底下的元素
+	 * @param stack
+	 * @return
+	 */
 	public static int getAndRemoveLastElement(Stack<Integer> stack) {
 		int result = stack.pop();
 		if (stack.isEmpty()) {

@@ -6,6 +6,10 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 // undirected graph only
+
+/**
+ * Prim算法，最小生成树算法，通过点来考察
+ */
 public class Code_06_Prim {
 
 	public static class EdgeComparator implements Comparator<Edge> {

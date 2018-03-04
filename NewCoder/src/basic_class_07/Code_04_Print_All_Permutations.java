@@ -2,6 +2,10 @@ package basic_class_07;
 
 import java.util.HashSet;
 
+/**
+ * 打印一个字符串的全排列
+ */
+
 public class Code_04_Print_All_Permutations {
 
 	public static void printAllPermutations1(String str) {
@@ -16,10 +20,15 @@ public class Code_04_Print_All_Permutations {
 		for (int j = i; j < chs.length; j++) {
 			swap(chs, i, j);
 			process1(chs, i + 1);
-			swap(chs, i, j);
+//			swap(chs, i, j);
 		}
 	}
 
+
+	/**
+	 * 打印一个字符串的全部排列，要求不要出现重复的排列
+	 * @param str
+	 */
 	public static void printAllPermutations2(String str) {
 		char[] chs = str.toCharArray();
 		process2(chs, 0);

@@ -1,11 +1,46 @@
 package basic_class_07;
 
+
+import java.util.HashMap;
+
+/**
+ * 最小路径和
+ */
 public class Code_07_MinPath {
 
 	public static int minPath1(int[][] matrix) {
 		return process1(matrix, matrix.length - 1, matrix[0].length - 1);
 	}
 
+	static public HashMap<String,Integer> cache = new HashMap<String,Integer>();
+
+	public static  int process(int[][] matrix,int i,int j){
+		int result = 0;
+		if (cache.containsKey(""+i+j)){
+			result = cache.get(""+i+j);
+		}else {
+			if (i == matrix.length - 1 && j == matrix[0].length - 1) {
+				result = matrix[i][j];
+			}else if (i == matrix.length - 1) {
+				result = matrix[i][j] + process(matrix, i, j + 1);
+			}else if (j == matrix[0].length - 1) {
+				result = matrix[i][j] + process(matrix, i + 1, j);
+			}else {
+				result = matrix[i][j] + Math.min(process(matrix,i,j+1),process(matrix,i+1,j));
+			}
+			cache.put(""+i+j,result);
+		}
+		return result;
+	}
+
+
+	/**
+	 * 递归写法
+	 * @param matrix
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	public static int process1(int[][] matrix, int i, int j) {
 		int res = matrix[i][j];
 		if (i == 0 && j == 0) {
@@ -58,11 +93,16 @@ public class Code_07_MinPath {
 
 	public static void main(String[] args) {
 		int[][] m = { { 1, 3, 5, 9 }, { 8, 1, 3, 4 }, { 5, 0, 6, 1 }, { 8, 8, 4, 0 } };
-		System.out.println(minPath1(m));
-		System.out.println(minPath2(m));
+//		System.out.println(minPath1(m));
+//		System.out.println(minPath2(m));
+//
+//		m = generateRandomMatrix(6, 7);
+//		System.out.println(minPath2(m));
+//		System.out.println(minPath1(m));
 
-		m = generateRandomMatrix(6, 7);
-		System.out.println(minPath1(m));
-		System.out.println(minPath2(m));
+		int[][] hh = { { 5, 4, 3, 6 }, { 7, 2, 5, 7 }, { 3, 8, 1, 9 }, { 4, 5, 4, 3 } };
+		System.out.println(process(hh,0,0));
+
+
 	}
 }

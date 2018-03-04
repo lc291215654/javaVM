@@ -10,6 +10,7 @@ public class Code_09_UnionFind {
 
 	public static class Node {
 		// whatever you like
+		public int data ;
 	}
 
 	public static class DisjointSets {
@@ -32,6 +33,7 @@ public class Code_09_UnionFind {
 
 		public Node findFather(Node n) {
 			Node father = fatherMap.get(n);
+			//递归寻找代表节点
 			if (father != n) {
 				father = findFather(father);
 			}

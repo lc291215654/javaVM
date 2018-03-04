@@ -6,6 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * 拓扑排序
+ *
+ */
+
 public class Code_04_TopologySort {
 
 	// directed graph and no loop

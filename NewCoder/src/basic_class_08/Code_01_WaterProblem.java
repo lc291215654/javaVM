@@ -24,6 +24,13 @@ public class Code_01_WaterProblem {
 		return value;
 	}
 
+	/**
+	 * 把遍历行为存储下来
+	 * 预处理数组技巧
+	 * 时间复杂度O(N)
+	 */
+
+
 	public static int getWater2(int[] arr) {
 		if (arr == null || arr.length < 3) {
 			return 0;

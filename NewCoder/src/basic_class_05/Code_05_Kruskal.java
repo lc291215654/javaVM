@@ -8,6 +8,11 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 //undirected graph only
+
+/**
+ * Kruskal算法，最小生成树算法，考察边的值
+ */
+
 public class Code_05_Kruskal {
 
 	// Union-Find Set

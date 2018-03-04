@@ -30,8 +30,8 @@ public class Code_09_Knapsack {
 	}
 
 	public static void main(String[] args) {
-		int[] c = { 3, 2, 4, 7 };
-		int[] p = { 5, 6, 3, 19 };
+		int[] c = { 3, 2, 4, 7 }; //重量
+		int[] p = { 5, 6, 3, 19 }; //价值
 		int bag = 11;
 		System.out.println(maxValue1(c, p, bag));
 		System.out.println(maxValue2(c, p, bag));
