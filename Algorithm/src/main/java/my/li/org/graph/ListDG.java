@@ -190,9 +190,6 @@ public class ListDG {
         int[] queue = new int[mVexs.length];            // 辅组队列
         boolean[] visited = new boolean[mVexs.length];  // 顶点访问标记
 
-        for (int i = 0; i < mVexs.length; i++)
-            visited[i] = false;
-
         System.out.printf("BFS: ");
         for (int i = 0; i < mVexs.length; i++) {
             if (!visited[i]) {
