@@ -12,7 +12,7 @@ public class Node {
     public ArrayList<Node> nexts;
     public ArrayList<Edge> edges;
 
-    public Node(){
+    public Node(int value){
         this.value = value;
         in = 0;
         out = 0;

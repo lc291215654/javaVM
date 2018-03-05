@@ -148,8 +148,8 @@ public class DictionarySort {
 //        long n = in.nextLong();
 //        long m = in.nextLong();
 
-            System.out.println(solve(223, 148));
-//            System.out.println(getCntOfPre(1, 11));
+            System.out.println(solve(356, 245));
+            System.out.println(getCntOfPre(30, 356));
 
         }
 
