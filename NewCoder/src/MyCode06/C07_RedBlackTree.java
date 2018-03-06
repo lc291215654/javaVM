@@ -1,4 +1,4 @@
-package basic_class_06;
+package MyCode06;
 
 /**
  * Not implemented by zuochengyun
@@ -10,10 +10,13 @@ package basic_class_06;
  * 
  */
 
+import basic_class_06.AbstractBinarySearchTree;
+import basic_class_06.AbstractSelfBalancingBinarySearchTree;
+
 /**
  * 红黑树，重要
  */
-public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
+public class C07_RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
 
     protected enum ColorEnum {
         RED,
@@ -34,10 +37,10 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
         insertRBFixup((RedBlackNode) newNode);
         return newNode;
     }
-    
+
     /**
      * Slightly modified delete routine for red-black tree.
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
@@ -46,7 +49,7 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
         if (deleteNode != null && deleteNode != nilNode) {
             Node removedOrMovedNode = deleteNode; // same as deleteNode if it has only one child, and otherwise it replaces deleteNode
             ColorEnum removedOrMovedNodeColor = ((RedBlackNode)removedOrMovedNode).color;
-        
+
             if (deleteNode.left == nilNode) {
                 replaceNode = deleteNode.right;
                 rbTreeTransplant(deleteNode, deleteNode.right);
@@ -75,12 +78,12 @@ public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
                 deleteRBFixup((RedBlackNode)replaceNode);
             }
         }
-        
+
         return replaceNode;
     }
-    
+
     /**
-     * @see AbstractBinarySearchTree#createNode(int, AbstractBinarySearchTree.Node, AbstractBinarySearchTree.Node, AbstractBinarySearchTree.Node)
+     * @see AbstractBinarySearchTree#createNode(int, Node, Node, Node)
      */
     @Override
     protected Node createNode(int value, Node parent, Node left, Node right) {

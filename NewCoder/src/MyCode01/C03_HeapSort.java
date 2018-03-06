@@ -9,9 +9,40 @@ public class C03_HeapSort {
 
     public static void main(String args[]) {
         int[] arr = new int[]{3, 5, 2, 8, 4, 7, 9, 3, 8, 5};
-//        heapSort(arr);
+        heapSort(arr);
         RandomArray.printArray(arr);
     }
+
+    private static void heapSort(int[] arr) {
+        if(arr == null || arr.length < 2){
+            return ;
+        }
+        for(int i=0;i<arr.length;i++){
+            heapInsert(arr,i);
+        }
+        int size = arr.length;
+        swap(arr,0,--size);
+        while(size>0){
+            heapify(arr,0,size);
+            swap(arr,0,--size);
+        }
+    }
+
+    private static void heapify(int[] arr,int index,int size) {
+
+
+    }
+    private static void heapInsert(int[] arr,int index){
+
+    }
+
+
+
+
+
+
+
+
 
     public static void swap(int[] arr, int l, int r) {
         int temp = arr[l];

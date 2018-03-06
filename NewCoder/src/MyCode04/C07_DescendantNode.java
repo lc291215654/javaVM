@@ -1,10 +1,10 @@
-package basic_class_04;
+package MyCode04;
 
 /**
  * 下一个后继节点
  */
 
-public class Code_07_DescendantNode {
+public class C07_DescendantNode {
 
     public static class Node {
         public int value;
