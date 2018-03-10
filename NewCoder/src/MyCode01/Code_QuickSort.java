@@ -47,12 +47,14 @@ public class Code_QuickSort {
                 right--;
             }
             swap(arr, right, left);
+            System.out.println("left:" + left + "---"+ "right:" + right);
             while (arr[left] <= k && right > left) {
                 left++;
             }
             swap(arr, right, left);
+            System.out.println("left:" + left + "---"+ "right:" + right);
         }
-
+        System.out.println("partition + ");
         return left;
 
 

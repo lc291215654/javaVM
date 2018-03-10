@@ -5,6 +5,12 @@ package utils;
  */
 public class RandomArray {
 
+    public static void swap(int[] arr,int l, int r){
+        int temp = arr[l];
+        arr[l] = arr[r];
+        arr[r] = temp;
+    }
+
     /**
      * Array utils
      * @param maxSize 随机数组中的最大值，最小值默认为0

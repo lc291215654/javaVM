@@ -14,34 +14,38 @@ public class C03_HeapSort {
     }
 
     private static void heapSort(int[] arr) {
-        if(arr == null || arr.length < 2){
-            return ;
+        if (arr == null || arr.length < 2) {
+            return;
         }
-        for(int i=0;i<arr.length;i++){
-            heapInsert(arr,i);
+        for (int i = 0; i < arr.length; i++) {
+            heapInsert(arr, i);
         }
         int size = arr.length;
-        swap(arr,0,--size);
-        while(size>0){
-            heapify(arr,0,size);
-            swap(arr,0,--size);
+        swap(arr, 0, --size);
+        while (size > 0) {
+            heapify(arr, 0, size);
+            swap(arr, 0, --size);
         }
     }
 
-    private static void heapify(int[] arr,int index,int size) {
-
-
+    private static void heapify(int[] arr, int index, int size) {
+        index = (index * 2) + 1;
+        while (index < size) {
+            index = index + 1 < size && arr[index] < arr[index + 1] ? index + 1 : index;
+            if (arr[index] < arr[(index - 1) / 2]) {
+                break;
+            }
+            swap(arr, index, (index - 1) / 2);
+            index = (index * 2) + 1;
+        }
     }
-    private static void heapInsert(int[] arr,int index){
 
+    private static void heapInsert(int[] arr, int index) {
+        while (arr[index] > arr[(index - 1) / 2]) {
+            swap(arr, index, (index - 1) / 2);
+            index = (index - 1) / 2;
+        }
     }
-
-
-
-
-
-
-
 
 
     public static void swap(int[] arr, int l, int r) {
@@ -50,23 +54,6 @@ public class C03_HeapSort {
         arr[r] = temp;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //

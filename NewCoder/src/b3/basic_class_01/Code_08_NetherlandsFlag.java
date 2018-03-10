@@ -7,9 +7,12 @@ public class Code_08_NetherlandsFlag {
 		int more = r + 1;
 		while (l < more) {
 			if (arr[l] < p) {
-				swap(arr, ++less, l++);
+				swap(arr, less+1, l);
+				less++;
+				l++;
 			} else if (arr[l] > p) {
-				swap(arr, --more, l);
+				swap(arr, more-1, l);
+				more--;
 			} else {
 				l++;
 			}
