@@ -1,6 +1,4 @@
-package MyCode06;
-
-import b3.basic_class_06.AbstractBinarySearchTree;
+package b3.basic_class_06;
 
 /**
  * Not implemented by zuochengyun
@@ -12,7 +10,7 @@ import b3.basic_class_06.AbstractBinarySearchTree;
  * @created Jul 24, 2011
  * 
  */
-public abstract class C04_AbstractSelfBalancingBinarySearchTree extends AbstractBinarySearchTree {
+public abstract class AbstractSelfBalancingBinarySearchTree extends AbstractBinarySearchTree {
 
     /**
      * Rotate to the left.

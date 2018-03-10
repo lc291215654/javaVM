@@ -1,4 +1,4 @@
-package MyCode06;
+package c4.advanced_class_03;
 
 /**
  * Not implemented by zuochengyun
@@ -9,14 +9,7 @@ package MyCode06;
  * @created May 6, 2011
  * 
  */
-
-import b3.basic_class_06.AbstractBinarySearchTree;
-import b3.basic_class_06.AbstractSelfBalancingBinarySearchTree;
-
-/**
- * 红黑树，重要
- */
-public class C07_RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
+public class RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
 
     protected enum ColorEnum {
         RED,
@@ -26,7 +19,7 @@ public class C07_RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
     protected static final RedBlackNode nilNode = new RedBlackNode(null, null, null, null, ColorEnum.BLACK);
 
     /**
-     * @see AbstractBinarySearchTree#insert(int)
+     * @see trees.AbstractBinarySearchTree#insert(int)
      */
     @Override
     public Node insert(int element) {
@@ -37,10 +30,10 @@ public class C07_RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
         insertRBFixup((RedBlackNode) newNode);
         return newNode;
     }
-
+    
     /**
      * Slightly modified delete routine for red-black tree.
-     *
+     * 
      * {@inheritDoc}
      */
     @Override
@@ -49,7 +42,7 @@ public class C07_RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
         if (deleteNode != null && deleteNode != nilNode) {
             Node removedOrMovedNode = deleteNode; // same as deleteNode if it has only one child, and otherwise it replaces deleteNode
             ColorEnum removedOrMovedNodeColor = ((RedBlackNode)removedOrMovedNode).color;
-
+        
             if (deleteNode.left == nilNode) {
                 replaceNode = deleteNode.right;
                 rbTreeTransplant(deleteNode, deleteNode.right);
@@ -72,18 +65,18 @@ public class C07_RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
                 removedOrMovedNode.left.parent = removedOrMovedNode;
                 ((RedBlackNode)removedOrMovedNode).color = ((RedBlackNode)deleteNode).color;
             }
-
+            
             size--;
             if (removedOrMovedNodeColor == ColorEnum.BLACK) {
                 deleteRBFixup((RedBlackNode)replaceNode);
             }
         }
-
+        
         return replaceNode;
     }
-
+    
     /**
-     * @see AbstractBinarySearchTree#createNode(int, Node, Node, Node)
+     * @see trees.AbstractBinarySearchTree#createNode(int, trees.AbstractBinarySearchTree.Node, trees.AbstractBinarySearchTree.Node, trees.AbstractBinarySearchTree.Node)
      */
     @Override
     protected Node createNode(int value, Node parent, Node left, Node right) {
@@ -138,7 +131,7 @@ public class C07_RedBlackTree extends AbstractSelfBalancingBinarySearchTree {
         } else {
             root = temp;
         }
-
+        
         return temp;
     }
 

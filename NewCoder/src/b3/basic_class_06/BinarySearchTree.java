@@ -1,6 +1,4 @@
-package MyCode06;
-
-import b3.basic_class_06.AbstractBinarySearchTree;
+package b3.basic_class_06;
 
 /**
  * Not implemented by zuochengyun
@@ -19,7 +17,7 @@ import b3.basic_class_06.AbstractBinarySearchTree;
  * @created May 6, 2011
  * 
  */
-public class C06_BinarySearchTree extends AbstractBinarySearchTree {
+public class BinarySearchTree extends AbstractBinarySearchTree {
 
     @Override
     protected Node createNode(int value, Node parent, Node left, Node right) {

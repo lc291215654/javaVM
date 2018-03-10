@@ -1,10 +1,8 @@
-package MyCode06;
-
-import b3.basic_class_06.AbstractBinarySearchTree;
+package c4.advanced_class_03;
 
 /**
  * Not implemented by zuochengyun
- *  
+ * 
  * Abstract class for self balancing binary search trees. Contains some methods
  * that is used for self balancing trees.
  * 
@@ -12,7 +10,7 @@ import b3.basic_class_06.AbstractBinarySearchTree;
  * @created Jul 24, 2011
  * 
  */
-public abstract class C04_AbstractSelfBalancingBinarySearchTree extends AbstractBinarySearchTree {
+public abstract class AbstractSelfBalancingBinarySearchTree extends AbstractBinarySearchTree {
 
     /**
      * Rotate to the left.

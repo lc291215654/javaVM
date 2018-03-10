@@ -1,7 +1,4 @@
-package MyCode06;
-
-import b3.basic_class_06.AbstractBinarySearchTree;
-import b3.basic_class_06.AbstractSelfBalancingBinarySearchTree;
+package b3.basic_class_06;
 
 /**
  * Not implemented by zuochengyun
@@ -20,11 +17,11 @@ import b3.basic_class_06.AbstractSelfBalancingBinarySearchTree;
  * @created Jun 28, 2011
  * 
  */
-public class C05_AVLTree extends AbstractSelfBalancingBinarySearchTree {
+public class AVLTree extends AbstractSelfBalancingBinarySearchTree {
 
     /**
      * @see AbstractBinarySearchTree#insert(int)
-     *
+     * 
      *      AVL tree insert method also balances tree if needed. Additional
      *      height parameter on node is used to track if one subtree is higher
      *      than other by more than one, if so AVL tree rotations is performed
@@ -58,9 +55,9 @@ public class C05_AVLTree extends AbstractSelfBalancingBinarySearchTree {
         }
         return null;
     }
-
+    
     /**
-     * @see AbstractBinarySearchTree#createNode(int, Node, Node, Node)
+     * @see AbstractBinarySearchTree#createNode(int, AbstractBinarySearchTree.Node, AbstractBinarySearchTree.Node, AbstractBinarySearchTree.Node)
      */
     @Override
     protected Node createNode(int value, Node parent, Node left, Node right) {
