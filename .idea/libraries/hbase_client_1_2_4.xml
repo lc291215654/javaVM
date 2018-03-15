@@ -9,6 +9,8 @@
       <root url="jar://$PROJECT_DIR$/RabbitMQtest/lib/junit.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/hbase-server-1.2.4-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
