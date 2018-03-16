@@ -5,6 +5,7 @@ import java.util.*;
  */
 
 class Snow {
+    Powder powder = new Powder();
 }
 
 class Powder extends Snow {
