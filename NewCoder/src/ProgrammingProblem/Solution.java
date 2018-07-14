@@ -20,24 +20,137 @@ import java.util.*;
 public class Solution {
     public static void main(String args[]) {
         Solution solution = new Solution();
-        solution.Insert(3);
-        solution.Insert(9);
-        solution.Insert(4);
-        solution.Insert(5);
-        System.out.println(solution.GetMedian());
+        System.out.println(solution.isContinuous(new int[]{1,1,0,0,0}));
 
 
+    }
+
+    public int LastRemaining_Solution(int n, int m) {
+        return 0;
+
+    }
+
+    public boolean isContinuous(int [] numbers) {
+        if(numbers.length != 5) return false;
+        int min = 14;
+        int max = -1;
+        int flag = 0;
+        for(int i = 0; i < numbers.length; i++) {
+            int number = numbers[i];
+            if(number < 0 || number > 13) return false;
+            if(number == 0) continue;
+            if(((flag >> number) & 1) == 1)
+                return false;
+            flag |= (1 << number);
+            if(number > max) max = number;
+            if(number < min) min = number;
+            if(max - min >= 5) return false;
+        }
+        return true;
+    }
+
+    public void FindNumsAppearOnce(int [] array,int num1[] , int num2[]) {
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        for(int i:array){
+            if(list.contains(i)){
+                list.remove(new Integer(i));
+            }else {
+                list.add(i);
+            }
+        }
+        if(list.size() == 2){
+            num1[0] = list.get(0);
+            num2[0] = list.get(1);
+        }
+    }
+
+    public static  void Combination( ) {
+        /*基本思路：求全组合，则假设原有元素n个，则最终组合结果是2^n个。原因是：
+         * 用位操作方法：假设元素原本有：a,b,c三个，则1表示取该元素，0表示不取。故去a则是001，取ab则是011.
+         * 所以一共三位，每个位上有两个选择0,1.所以是2^n个结果。
+         * 这些结果的位图值都是0,1,2....2^n。所以可以类似全真表一样，从值0到值2^n依次输出结果：即：
+         * 000,001,010,011,100,101,110,111 。对应输出组合结果为：
+        空,a, b ,ab,c,ac,bc,abc.
+        这个输出顺序刚好跟数字0~2^n结果递增顺序一样
+        取法的二进制数其实就是从0到2^n-1的十进制数
+         * ******************************************************************
+         * *
+         * */
+        String[] str = {"a" , "b" ,"c"};
+        int n = str.length;                                  //元素个数。
+        //求出位图全组合的结果个数：2^n
+        int nbit = 1<<n;                                     // “<<” 表示 左移:各二进位全部左移若干位，高位丢弃，低位补0。:即求出2^n=2Bit。
+        System.out.println("全组合结果个数为："+nbit);
+
+        for(int i=0 ;i<nbit ; i++) {                        //结果有nbit个。输出结果从数字小到大输出：即输出0,1,2,3,....2^n。
+            System.out.print("组合数值  "+i + " 对应编码为： ");
+            for(int j=0; j<n ; j++) {                        //每个数二进制最多可以左移n次，即遍历完所有可能的变化新二进制数值了
+                int tmp = 1<<j ;
+                if((tmp & i)!=0) {                            //& 表示与。两个位都为1时，结果才为1
+                    System.out.print(str[j]);
+                }
+            }
+            System.out.println();
+        }
+    }
 
 
+    public ArrayList<String> Permutation(String str) {
+        ArrayList<String> res = new ArrayList<>();
+        if (str != null && str.length() > 0) {
+            PermutationHelper(str.toCharArray(), 0, res);
+            Collections.sort(res);
+        }
+        return res;
+    }
 
-        System.out.println();
+    public void PermutationHelper(char[] cs, int i, List<String> list){
+        if (i == cs.length - 1) {
+            String val = String.valueOf(cs);
+            if (!list.contains(val))
+                list.add(val);
+        } else {
+            for (int j = i; j < cs.length; j++) {
+                swap(cs, i, j);
+                PermutationHelper(cs, i+1, list);
+                swap(cs, i, j);
+            }
+        }
+    }
 
+    public void swap(char[] cs, int i, int j) {
+        char temp = cs[i];
+        cs[i] = cs[j];
+        cs[j] = temp;
+    }
+
+
+    public String ReverseSentence(String str) {
+        if(str == null || str.trim().equals("")){
+            return str;
+        }
+        String[] arr = str.split(" ");
+        List<String> list = Arrays.asList(arr);
+        Collections.reverse(list);
+        Iterator<String> it = list.iterator();
+        StringBuilder result = new StringBuilder();
+        if(!it.hasNext()){
+            return " ";
+        }
+        for(;;){
+            result.append(it.next());
+            if(!it.hasNext()){
+                break;
+            }
+            result.append(" ");
+        }
+        return result.toString();
     }
 
     LinkedList<Integer> list = new LinkedList<Integer>();
 
     public void Insert(Integer num) {
-        if (list.size()==0||num < list.getFirst()) {
+        if (list.size() == 0 || num < list.getFirst()) {
             list.addFirst(num);
         } else {
             boolean insertFlag = false;
@@ -72,41 +185,35 @@ public class Solution {
 
     }
 
-
-    public int GetNumberOfK(int [] array , int k) {
-
-    }
-
-
     public ArrayList<Integer> printMatrix(int[][] matrix) {
         ArrayList<Integer> list = new ArrayList<Integer>();
         int i = 0;
         int j = 0;
-        int zi = matrix.length-1;
-        int zj = matrix[0].length-1;
+        int zi = matrix.length - 1;
+        int zj = matrix[0].length - 1;
         for (; i <= zi && j <= zj; i++, j++, zi--, zj--) {
-            if(i==zi){
-                for(int k = j;k<=zj;k++){
+            if (i == zi) {
+                for (int k = j; k <= zj; k++) {
                     list.add(matrix[i][k]);
                 }
                 break;
             }
-            if(j==zj){
-                for(int k = i;k<=zi;k++){
+            if (j == zj) {
+                for (int k = i; k <= zi; k++) {
                     list.add(matrix[k][j]);
                 }
                 break;
             }
-            for(int k = j;k<=zj;k++){
+            for (int k = j; k <= zj; k++) {
                 list.add(matrix[i][k]);
             }
-            for(int k = i+1;k<=zi;k++){
+            for (int k = i + 1; k <= zi; k++) {
                 list.add(matrix[k][zj]);
             }
-            for(int k = zj-1;k>=j;k--){
+            for (int k = zj - 1; k >= j; k--) {
                 list.add(matrix[zi][k]);
             }
-            for(int k = zi-1;k>i;k--){
+            for (int k = zi - 1; k > i; k--) {
                 list.add(matrix[k][j]);
             }
         }
