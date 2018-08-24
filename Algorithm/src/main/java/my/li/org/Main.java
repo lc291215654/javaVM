@@ -30,7 +30,7 @@ class Main {
             Grid current = queue.poll();
             for (int i = 0; i < 4; i++) {
                 Grid next = new Grid(current.x + direction[i][0], current.y + direction[i][1]);
-                if (move(i) && !visited.containsKey(next) {
+                if (/**move(i) && **/!visited.containsKey(next)) {
                     size++;
                     queue.add(next);
                     visited.put(next, true);
