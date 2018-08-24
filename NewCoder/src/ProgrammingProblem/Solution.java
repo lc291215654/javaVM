@@ -1,5 +1,7 @@
 package ProgrammingProblem;
 
+import my.li.org.binary.TreeNode;
+
 import java.util.*;
 
 /**
@@ -25,30 +27,202 @@ class ListNode {
     }
 }
 
+class TreeLinkNode {
+    int val;
+    TreeLinkNode left = null;
+    TreeLinkNode right = null;
+    TreeLinkNode next = null;
+
+    TreeLinkNode(int val) {
+        this.val = val;
+    }
+}
+
 public class Solution {
     LinkedList<Integer> list = new LinkedList<Integer>();
 
     public static void main(String args[]) {
+        TreeNode node1 = new TreeNode(1);
+        TreeNode node2 = new TreeNode(2);
+        TreeNode node3 = new TreeNode(8);
+//        TreeNode node4 = new TreeNode(3);
+//        TreeNode node5 = new TreeNode(4);
+//        TreeNode node6 = new TreeNode(4);
+//        TreeNode node7 = new TreeNode(3);
+        node1.right = node2;
+        node2.left = node3;
+//        node2.left = node4;
+//        node2.right = node5;
+//        node3.left = node6;
+//        node3.right = node7;
+
         Solution solution = new Solution();
-        ListNode head1 = new ListNode(2);
-        ListNode node11 = new ListNode(2);
-        ListNode node12 = new ListNode(2);
-        head1.next = node11;
-        node11.next = node12;
-
-        ListNode head2 = new ListNode(3);
-        ListNode node21 = new ListNode(4);
-        ListNode node22 = new ListNode(5);
-        head2.next = node21;
-        node21.next = node22;
-
-        ListNode head3 = solution.addTwoNumbers(head1,head2);
-
-        System.out.println(head3.val);
-        System.out.println(head3.next.val);
-        System.out.println(head3.next.next.val);
+        solution.postorderTraversal(node1);
+    }
 
 
+    public void postorderTraversal(TreeNode root) {
+        if(root == null){
+            return ;
+        }
+        TreeNode p = root;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.push(p);
+        while (!stack.isEmpty()){
+            while(p.left != null){
+                stack.push(p.left);
+                p = p.left;
+            }
+            TreeNode q = null;
+            while(!stack.isEmpty()){
+                p = stack.pop();
+                if(p.right == q ){
+                    System.out.println(p.data);
+                    q = p;
+                }else{
+                    stack.push(p);
+                    stack.push(p.right);
+                    p = p.right;
+                    break;
+                }
+            }
+        }
+    }
+
+    public void postorderTraversal2(TreeNode root) {
+
+    }
+
+    boolean isSymmetrical(TreeNode pRoot) {
+        if(pRoot == null){
+            return true;
+        }
+        return comChildren(pRoot.left,pRoot.right);
+    }
+
+    boolean comChildren(TreeNode leftChildren,TreeNode rightChildren){
+        if(leftChildren == null && rightChildren == null){
+            return true;
+        }else if(leftChildren == null || rightChildren == null){
+            return false;
+        }
+        return (leftChildren.data == rightChildren.data)
+                && comChildren(leftChildren.left,rightChildren.right)
+                && comChildren(leftChildren.right,rightChildren.left);
+    }
+
+    public TreeLinkNode GetNext(TreeLinkNode pNode) {
+        if (pNode == null) {
+            return null;
+        }
+        if (pNode.right != null) {
+            TreeLinkNode p = pNode.right;
+            while (p.left != null) {
+                p = p.left;
+            }
+            return p;
+        }
+        while (pNode.next != null) {
+            TreeLinkNode p = pNode.next;
+            if (p.left == pNode) {
+                return p;
+            } else {
+                pNode = pNode.next;
+            }
+        }
+        return null;
+    }
+
+
+    public ArrayList<Integer> FindNumbersWithSum(int[] array, int sum) {
+        int first = 0;
+        int last = array.length - 1;
+        ArrayList<Integer> result = new ArrayList<>();
+        while (first < last) {
+            if (array[first] + array[last] == sum) {
+                result.clear();
+                result.add(array[first]);
+                result.add(array[last]);
+                first++;
+                last--;
+            } else if (array[first] + array[last] < sum) {
+                first++;
+            } else {
+                last--;
+            }
+        }
+        return result;
+    }
+
+
+    public boolean IsBalanced_Solution(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        boolean children = IsBalanced_Solution(root.left) || IsBalanced_Solution(root.right);
+        boolean height = Math.abs(treeheight(root.left) - treeheight(root.right)) < 2;
+        return children && height;
+    }
+
+    private static int treeheight(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = treeheight(root.left);
+        int right = treeheight(root.right);
+        return left > right ? left + 1 : right + 1;
+    }
+
+    public boolean isNumeric(char[] str) {
+        return false;
+
+    }
+
+    private HashSet<Character> charset = new HashSet<>();
+    private LinkedList<Character> charlist = new LinkedList<Character>();
+
+    public int GetUglyNumber_Solution(int index) {
+
+        if (index < 7) return index;
+        ArrayList<Integer> res = new ArrayList<>(index);
+        res.add(0, 1);
+        int t2 = 0, t3 = 0, t5 = 0, i;
+        for (i = 1; i < index; ++i) {
+            res.add(i, Math.min(res.get(t2) * 2, Math.min(res.get(t3) * 3, res.get(t5) * 5)));
+            if (res.get(i) == res.get(t2) * 2)
+                t2++;
+            if (res.get(i) == res.get(t3) * 3)
+                t3++;
+            if (res.get(i) == res.get(t5) * 5)
+                t5++;
+        }
+        return res.get(index - 1);
+    }
+
+    //Insert one char from stringstream
+    public void Insert(char ch) {
+        if (charset.contains(ch)) {
+            return;
+        }
+        if (charlist.contains(ch)) {
+            charlist.remove((Character) ch);
+            charset.add(ch);
+        } else {
+            charlist.add(ch);
+        }
+    }
+
+    //return the first appearence once char in current stringstream
+    public char FirstAppearingOnce() {
+        if (charlist.size() >= 1) {
+            return charlist.peek();
+        }
+        return '#';
+    }
+
+    public boolean duplicate(int numbers[], int length, int[] duplication) {
+
+        return false;
     }
 
     public static void Combination() {
@@ -83,7 +257,7 @@ public class Solution {
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
-        if (l1 == null || l2 == null){
+        if (l1 == null || l2 == null) {
             return null;
         }
 
@@ -91,13 +265,13 @@ public class Solution {
         long g1 = 1;
         long ll2 = 0;
         long g2 = 1;
-        while (l1!= null){
+        while (l1 != null) {
             ll1 = ll1 + l1.val * g1;
             g1 *= 10;
             l1 = l1.next;
         }
 
-        while (l2!= null){
+        while (l2 != null) {
             ll2 = ll2 + l2.val * g2;
             g2 *= 10;
             l2 = l2.next;
@@ -105,23 +279,32 @@ public class Solution {
 
         long res = ll1 + ll2;
         ListNode head = new ListNode(0);
-        if(res == 0){
+        if (res == 0) {
             return head;
         }
         ListNode p = head;
-        while(res != 0){
-            int k = (int)res % 10;
+        while (res != 0) {
+            int k = (int) res % 10;
             ListNode node = new ListNode(k);
             p.next = node;
             p = node;
-            res = res/10;
+            res = res / 10;
         }
         return head.next;
     }
 
     public int LastRemaining_Solution(int n, int m) {
-        return 0;
-
+        Queue<Integer> queue = new LinkedList<Integer>();
+        for (int i = 0; i < n; i++) {
+            queue.add(i);
+        }
+        while (queue.size() != 1) {
+            for (int i = 0; i < m - 1; i++) {
+                queue.add(queue.remove());
+            }
+            queue.remove();
+        }
+        return queue.peek();
     }
 
     public boolean isContinuous(int[] numbers) {
@@ -185,6 +368,10 @@ public class Solution {
         char temp = cs[i];
         cs[i] = cs[j];
         cs[j] = temp;
+    }
+
+    public String LeftRotateString(String str, int n) {
+        return "";
     }
 
     public String ReverseSentence(String str) {
