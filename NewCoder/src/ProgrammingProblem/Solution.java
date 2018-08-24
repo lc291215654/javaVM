@@ -16,64 +16,122 @@ import java.util.*;
 //  dict =["leet", "code"].
 //
 //  Return true because"leetcode"can be segmented as"leet code".
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+        val = x;
+    }
+}
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int x) {
+        val = x;
+    }
+}
 
 public class Solution {
     public static void main(String args[]) {
         Solution solution = new Solution();
-        solution.Insert(3);
-        solution.Insert(9);
-        solution.Insert(4);
-        solution.Insert(5);
-        System.out.println(solution.GetMedian());
+        ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(4);
+        ListNode node3 = new ListNode(2);
+        ListNode node4 = new ListNode(7);
+        ListNode node5 = new ListNode(3);
 
+        node1.next = node2;
+        node2.next = node3;
+        node3.next = node4;
+        node4.next = node5;
 
+        System.out.println(solution.sortList(node1));
 
-
-
-        System.out.println();
-
-    }
-
-    LinkedList<Integer> list = new LinkedList<Integer>();
-
-    public void Insert(Integer num) {
-        if (list.size()==0||num < list.getFirst()) {
-            list.addFirst(num);
-        } else {
-            boolean insertFlag = false;
-            for (Integer e : list) {
-                if (num < e) {
-                    int index = list.indexOf(e);
-                    list.add(index, num);
-                    insertFlag = true;
-                    break;
-                }
-            }
-            if (!insertFlag) {
-                list.addLast(num);
-            }
+        while(node1!= null){
+            System.out.println(node1.val);
+            node1 = node1.next;
         }
 
     }
 
-    public Double GetMedian() {
-        if (list.size() == 0) {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
             return null;
         }
-
-        if (list.size() % 2 == 0) {
-            int i = list.size() / 2;
-            Double a = Double.valueOf(list.get(i - 1) + list.get(i));
-            return a / 2;
+        ListNode p = head.next;
+        ListNode pstart = new ListNode(0);
+        ListNode pend = head;
+        pstart.next = head;
+        while (p != null){
+            ListNode tmp = pstart.next;
+            ListNode pre = pstart;
+            while (tmp != p && p.val >= tmp.val){
+                tmp = tmp.next;
+                pre = pre.next;
+            }
+            if(tmp == p){
+                pend = p;
+            } else
+            {
+                pend.next = p.next;
+                p.next = tmp;
+                pre.next = p;
+            }
+            p = pend.next;
         }
-        list.get(0);
-        Double b = Double.valueOf(list.get((list.size() + 1) / 2 - 1));
-        return Double.valueOf(list.get((list.size() + 1) / 2 - 1));
+        head = pstart.next;
+        return head;
+    }
+
+    public TreeNode reConstructBinaryTree(int[] pre, int[] in) {
+        return null;
+
+    }
+
+    public TreeNode reConstructBinaryTree(int[] pre, int prel, int prer, int[] in, int inl, int inr) {
+        return null;
 
     }
 
 
-    public int GetNumberOfK(int [] array , int k) {
+    public int GetNumberOfK(int[] array, int k) {
+        int left = GetNumberLeft(array, k, 0, array.length - 1);
+        int right = GetNumberRight(array, k, 0, array.length - 1);
+        if (right != -1 && right != -1) {
+            return (right - left) + 1;
+        }
+        return 0;
+    }
+
+    public int GetNumberLeft(int[] array, int k, int left, int right) {
+        if (left > right) {
+            return -1;
+        }
+        int mid = (right - left) / 2 + left;
+        if (array[mid] == k && (mid == 0 || array[mid - 1] < k)) {
+            return mid;
+        } else if (array[mid] >= k) {
+            return GetNumberLeft(array, k, left, mid - 1);
+        } else {
+            return GetNumberLeft(array, k, mid + 1, right);
+        }
+    }
+
+    public int GetNumberRight(int[] array, int k, int left, int right) {
+        if (left > right) {
+            return left;
+        }
+        int mid = (right - left) / 2 + left;
+        if (array[mid] == k && (mid == array.length - 1 || array[mid + 1] > k)) {
+            return mid;
+        } else if (array[mid] <= k) {
+            return GetNumberRight(array, k, mid + 1, right);
+        } else {
+            return GetNumberRight(array, k, left, mid - 1);
+        }
 
     }
 
@@ -82,31 +140,31 @@ public class Solution {
         ArrayList<Integer> list = new ArrayList<Integer>();
         int i = 0;
         int j = 0;
-        int zi = matrix.length-1;
-        int zj = matrix[0].length-1;
+        int zi = matrix.length - 1;
+        int zj = matrix[0].length - 1;
         for (; i <= zi && j <= zj; i++, j++, zi--, zj--) {
-            if(i==zi){
-                for(int k = j;k<=zj;k++){
+            if (i == zi) {
+                for (int k = j; k <= zj; k++) {
                     list.add(matrix[i][k]);
                 }
                 break;
             }
-            if(j==zj){
-                for(int k = i;k<=zi;k++){
+            if (j == zj) {
+                for (int k = i; k <= zi; k++) {
                     list.add(matrix[k][j]);
                 }
                 break;
             }
-            for(int k = j;k<=zj;k++){
+            for (int k = j; k <= zj; k++) {
                 list.add(matrix[i][k]);
             }
-            for(int k = i+1;k<=zi;k++){
+            for (int k = i + 1; k <= zi; k++) {
                 list.add(matrix[k][zj]);
             }
-            for(int k = zj-1;k>=j;k--){
+            for (int k = zj - 1; k >= j; k--) {
                 list.add(matrix[zi][k]);
             }
-            for(int k = zi-1;k>i;k--){
+            for (int k = zi - 1; k > i; k--) {
                 list.add(matrix[k][j]);
             }
         }
@@ -127,6 +185,64 @@ public class Solution {
             }
         }
         return dp[len];
+    }
+
+    public int StrToInt(String str) {
+        int size = str.length();
+        if (size == 0) {
+            return 0;
+        }
+        int s = 1;
+        char[] chars = str.toCharArray();
+        int res = 0;
+        if (chars[0] == '-') {
+            s = -1;
+        }
+        int i = (chars[0] == '-' || chars[0] == '+') ? 1 : 0;
+        for (; i < size; i++) {
+            if (!(chars[i] < '9' && chars[i] > '0')) {
+                return 0;
+            }
+            res = res * 10 + (chars[i] & 0xf);
+        }
+        return res * s;
+    }
+
+    public String PrintMinNumber(int [] numbers) {
+        String str[] = new String[numbers.length];
+
+        Arrays.sort(str, (s1, s2) -> {
+            String c1 = s1 + s2;
+            String c2 = s2 + s1;
+            return 0;
+        });
+        return "";
+
+    }
+
+    public boolean duplicate(int numbers[],int length,int [] duplication) {
+
+
+        return false;
+    }
+
+    public int NumberOf1Between1AndN_Solution(int n) {
+        int count = 0;
+        int i = 1;
+        for (i = 1; i <= n; i *= 10) {
+            //i表示当前分析的是哪一个数位
+            int a = n / i;
+            int b = n % i;
+//            count = count + (a + 8) / 10 * i + ((a % 10 == 1) ? 1 : 0) * (b + 1);
+            if (a % 10 == 0) {
+                count = count + a / 10 * i;
+            } else if (a % 10 == 1) {
+                count = count + (a / 10 * i) + (b + 1);
+            }else {
+                count = count + (a/10 +1)*i;
+            }
+        }
+        return count;
     }
 
 
