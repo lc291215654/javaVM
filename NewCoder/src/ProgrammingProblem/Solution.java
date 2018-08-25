@@ -1,5 +1,8 @@
 package ProgrammingProblem;
 
+
+import my.li.org.binary.TreeNode;
+
 import java.util.*;
 
 /**
@@ -16,15 +19,6 @@ import java.util.*;
 //  dict =["leet", "code"].
 //
 //  Return true because"leetcode"can be segmented as"leet code".
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-
-    TreeNode(int x) {
-        val = x;
-    }
-}
 
 class ListNode {
     int val;
@@ -110,25 +104,76 @@ public class Solution {
     }
 
 
-    public void postorderTraversal(TreeNode root) {
-        if(root == null){
-            return ;
+
+    public ArrayList<ArrayList<Integer>> FindContinuousSequence(int sum) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        for (int i = 1; i <= sum / 2; i++) {
+            ArrayList<Integer> cur = new ArrayList<Integer>();
+            int total = 0;
+            for (int j = i; total < sum; j++) {
+                total += j;
+                cur.add(j);
+                if(total == sum){
+                    result.add(cur);
+                    break;
+                }
+            }
         }
+        return result;
+    }
+
+    public ArrayList<String> Permutation(String str) {
+        List<String> res = new ArrayList<>();
+        if (str != null && str.length() > 0) {
+            PermutationHelper(str.toCharArray(), 0, res);
+            Collections.sort(res);
+        }
+        return (ArrayList) res;
+    }
+
+    public void PermutationHelper(char[] cs, int i, List<String> list) {
+        if (i == cs.length - 1) {
+            String val = String.valueOf(cs);
+            if (!list.contains(val)) {
+                list.add(val);
+                System.out.println(val);
+            }
+        } else {
+            for (int j = i; j < cs.length; j++) {
+                swap(cs, i, j);
+                PermutationHelper(cs, i + 1, list);
+                swap(cs, i, j);
+            }
+        }
+    }
+
+    public void swap(char[] cs, int i, int j) {
+        char temp = cs[i];
+        cs[i] = cs[j];
+        cs[j] = temp;
+    }
+
+
+    public List<Integer> postorderTraversal(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<Integer>();
+        }
+        ArrayList<Integer> result = new ArrayList<Integer>();
         TreeNode p = root;
         Stack<TreeNode> stack = new Stack<TreeNode>();
         stack.push(p);
-        while (!stack.isEmpty()){
-            while(p.left != null){
+        TreeNode q = null;
+        while (!stack.isEmpty()) {
+            while (p.left != null) {
                 stack.push(p.left);
                 p = p.left;
             }
-            TreeNode q = null;
-            while(!stack.isEmpty()){
+            while (!stack.isEmpty()) {
                 p = stack.pop();
-                if(p.right == q ){
-                    System.out.println(p.val);
+                if (p.right == q || p.right == null) {
+                    result.add(p.data);
                     q = p;
-                }else{
+                } else {
                     stack.push(p);
                     stack.push(p.right);
                     p = p.right;
@@ -136,28 +181,50 @@ public class Solution {
                 }
             }
         }
+        return  result;
     }
 
     public void postorderTraversal2(TreeNode root) {
-
+        if(root == null) {
+            return ;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        stack.push(root);
+        TreeNode p;
+        while (!stack.isEmpty()){
+            p = stack.pop();
+            if(!stack.isEmpty() && stack.peek() == p){
+                if(p.right != null){
+                    stack.push(p.right);
+                    stack.push(p.right);
+                }
+                if(p.left != null){
+                    stack.push(p.left);
+                    stack.push(p.left);
+                }
+            }else {
+                System.out.println(p.data);
+            }
+        }
     }
 
     boolean isSymmetrical(TreeNode pRoot) {
-        if(pRoot == null){
+        if (pRoot == null) {
             return true;
         }
-        return comChildren(pRoot.left,pRoot.right);
+        return comChildren(pRoot.left, pRoot.right);
     }
 
-    boolean comChildren(TreeNode leftChildren,TreeNode rightChildren){
-        if(leftChildren == null && rightChildren == null){
+    boolean comChildren(TreeNode leftChildren, TreeNode rightChildren) {
+        if (leftChildren == null && rightChildren == null) {
             return true;
-        }else if(leftChildren == null || rightChildren == null){
+        } else if (leftChildren == null || rightChildren == null) {
             return false;
         }
-        return (leftChildren.val == rightChildren.val)
-                && comChildren(leftChildren.left,rightChildren.right)
-                && comChildren(leftChildren.right,rightChildren.left);
+        return (leftChildren.data == rightChildren.data)
+                && comChildren(leftChildren.left, rightChildren.right)
+                && comChildren(leftChildren.right, rightChildren.left);
     }
 
     public TreeLinkNode GetNext(TreeLinkNode pNode) {
@@ -393,35 +460,6 @@ public class Solution {
         }
     }
 
-    public ArrayList<String> Permutation(String str) {
-        ArrayList<String> res = new ArrayList<>();
-        if (str != null && str.length() > 0) {
-            PermutationHelper(str.toCharArray(), 0, res);
-            Collections.sort(res);
-        }
-        return res;
-    }
-
-    public void PermutationHelper(char[] cs, int i, List<String> list) {
-        if (i == cs.length - 1) {
-            String val = String.valueOf(cs);
-            if (!list.contains(val))
-                list.add(val);
-        } else {
-            for (int j = i; j < cs.length; j++) {
-                swap(cs, i, j);
-                PermutationHelper(cs, i + 1, list);
-                swap(cs, i, j);
-            }
-        }
-    }
-
-    public void swap(char[] cs, int i, int j) {
-        char temp = cs[i];
-        cs[i] = cs[j];
-        cs[j] = temp;
-    }
-
     public String LeftRotateString(String str, int n) {
         return "";
     }
@@ -581,11 +619,6 @@ public class Solution {
 
     }
 
-    public boolean duplicate(int numbers[],int length,int [] duplication) {
-
-
-        return false;
-    }
 
     public int NumberOf1Between1AndN_Solution(int n) {
         int count = 0;

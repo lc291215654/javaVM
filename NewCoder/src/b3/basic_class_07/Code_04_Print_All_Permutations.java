@@ -20,10 +20,9 @@ public class Code_04_Print_All_Permutations {
 		for (int j = i; j < chs.length; j++) {
 			swap(chs, i, j);
 			process1(chs, i + 1);
-//			swap(chs, i, j);
+			swap(chs, i, j);
 		}
 	}
-
 
 	/**
 	 * 打印一个字符串的全部排列，要求不要出现重复的排列
@@ -57,16 +56,16 @@ public class Code_04_Print_All_Permutations {
 
 	public static void main(String[] args) {
 		String test1 = "abc";
-		printAllPermutations1(test1);
-		System.out.println("======");
+//		printAllPermutations1(test1);
+//		System.out.println("======");
 		printAllPermutations2(test1);
 		System.out.println("======");
-
+//
 		String test2 = "acc";
-		printAllPermutations1(test2);
-		System.out.println("======");
+//		printAllPermutations1(test2);
+//		System.out.println("======");
 		printAllPermutations2(test2);
-		System.out.println("======");
+//		System.out.println("======");
 	}
 
 }
