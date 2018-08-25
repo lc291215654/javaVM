@@ -1,5 +1,6 @@
 package ProgrammingProblem;
 
+
 import my.li.org.binary.TreeNode;
 
 import java.util.*;
@@ -42,44 +43,96 @@ public class Solution {
     LinkedList<Integer> list = new LinkedList<Integer>();
 
     public static void main(String args[]) {
-        TreeNode node1 = new TreeNode(1);
-        TreeNode node2 = new TreeNode(2);
-        TreeNode node3 = new TreeNode(8);
-//        TreeNode node4 = new TreeNode(3);
-//        TreeNode node5 = new TreeNode(4);
-//        TreeNode node6 = new TreeNode(4);
-//        TreeNode node7 = new TreeNode(3);
-        node1.right = node2;
-        node2.left = node3;
-//        node2.left = node4;
-//        node2.right = node5;
-//        node3.left = node6;
-//        node3.right = node7;
 
         Solution solution = new Solution();
-        solution.postorderTraversal(node1);
+        solution.FindContinuousSequence(100);
+
+        TreeNode node1 = new TreeNode(1);
+        TreeNode node2 = new TreeNode(2);
+        TreeNode node3 = new TreeNode(3);
+        TreeNode node4 = new TreeNode(4);
+        TreeNode node5 = new TreeNode(5);
+        TreeNode node6 = new TreeNode(6);
+        node1.left = node2;
+        node1.right = node3;
+        node2.left = node4;
+        node2.right = node5;
+        node3.left = node6;
+        solution.postorderTraversal2(node1);
+
     }
 
 
-    public void postorderTraversal(TreeNode root) {
-        if(root == null){
-            return ;
+
+    public ArrayList<ArrayList<Integer>> FindContinuousSequence(int sum) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        for (int i = 1; i <= sum / 2; i++) {
+            ArrayList<Integer> cur = new ArrayList<Integer>();
+            int total = 0;
+            for (int j = i; total < sum; j++) {
+                total += j;
+                cur.add(j);
+                if(total == sum){
+                    result.add(cur);
+                    break;
+                }
+            }
         }
+        return result;
+    }
+
+    public ArrayList<String> Permutation(String str) {
+        List<String> res = new ArrayList<>();
+        if (str != null && str.length() > 0) {
+            PermutationHelper(str.toCharArray(), 0, res);
+            Collections.sort(res);
+        }
+        return (ArrayList) res;
+    }
+
+    public void PermutationHelper(char[] cs, int i, List<String> list) {
+        if (i == cs.length - 1) {
+            String val = String.valueOf(cs);
+            if (!list.contains(val)) {
+                list.add(val);
+                System.out.println(val);
+            }
+        } else {
+            for (int j = i; j < cs.length; j++) {
+                swap(cs, i, j);
+                PermutationHelper(cs, i + 1, list);
+                swap(cs, i, j);
+            }
+        }
+    }
+
+    public void swap(char[] cs, int i, int j) {
+        char temp = cs[i];
+        cs[i] = cs[j];
+        cs[j] = temp;
+    }
+
+
+    public List<Integer> postorderTraversal(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<Integer>();
+        }
+        ArrayList<Integer> result = new ArrayList<Integer>();
         TreeNode p = root;
         Stack<TreeNode> stack = new Stack<TreeNode>();
         stack.push(p);
-        while (!stack.isEmpty()){
-            while(p.left != null){
+        TreeNode q = null;
+        while (!stack.isEmpty()) {
+            while (p.left != null) {
                 stack.push(p.left);
                 p = p.left;
             }
-            TreeNode q = null;
-            while(!stack.isEmpty()){
+            while (!stack.isEmpty()) {
                 p = stack.pop();
-                if(p.right == q ){
-                    System.out.println(p.data);
+                if (p.right == q || p.right == null) {
+                    result.add(p.data);
                     q = p;
-                }else{
+                } else {
                     stack.push(p);
                     stack.push(p.right);
                     p = p.right;
@@ -87,28 +140,50 @@ public class Solution {
                 }
             }
         }
+        return  result;
     }
 
     public void postorderTraversal2(TreeNode root) {
-
+        if(root == null) {
+            return ;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        stack.push(root);
+        TreeNode p;
+        while (!stack.isEmpty()){
+            p = stack.pop();
+            if(!stack.isEmpty() && stack.peek() == p){
+                if(p.right != null){
+                    stack.push(p.right);
+                    stack.push(p.right);
+                }
+                if(p.left != null){
+                    stack.push(p.left);
+                    stack.push(p.left);
+                }
+            }else {
+                System.out.println(p.data);
+            }
+        }
     }
 
     boolean isSymmetrical(TreeNode pRoot) {
-        if(pRoot == null){
+        if (pRoot == null) {
             return true;
         }
-        return comChildren(pRoot.left,pRoot.right);
+        return comChildren(pRoot.left, pRoot.right);
     }
 
-    boolean comChildren(TreeNode leftChildren,TreeNode rightChildren){
-        if(leftChildren == null && rightChildren == null){
+    boolean comChildren(TreeNode leftChildren, TreeNode rightChildren) {
+        if (leftChildren == null && rightChildren == null) {
             return true;
-        }else if(leftChildren == null || rightChildren == null){
+        } else if (leftChildren == null || rightChildren == null) {
             return false;
         }
         return (leftChildren.data == rightChildren.data)
-                && comChildren(leftChildren.left,rightChildren.right)
-                && comChildren(leftChildren.right,rightChildren.left);
+                && comChildren(leftChildren.left, rightChildren.right)
+                && comChildren(leftChildren.right, rightChildren.left);
     }
 
     public TreeLinkNode GetNext(TreeLinkNode pNode) {
@@ -339,35 +414,6 @@ public class Solution {
             num1[0] = list.get(0);
             num2[0] = list.get(1);
         }
-    }
-
-    public ArrayList<String> Permutation(String str) {
-        ArrayList<String> res = new ArrayList<>();
-        if (str != null && str.length() > 0) {
-            PermutationHelper(str.toCharArray(), 0, res);
-            Collections.sort(res);
-        }
-        return res;
-    }
-
-    public void PermutationHelper(char[] cs, int i, List<String> list) {
-        if (i == cs.length - 1) {
-            String val = String.valueOf(cs);
-            if (!list.contains(val))
-                list.add(val);
-        } else {
-            for (int j = i; j < cs.length; j++) {
-                swap(cs, i, j);
-                PermutationHelper(cs, i + 1, list);
-                swap(cs, i, j);
-            }
-        }
-    }
-
-    public void swap(char[] cs, int i, int j) {
-        char temp = cs[i];
-        cs[i] = cs[j];
-        cs[j] = temp;
     }
 
     public String LeftRotateString(String str, int n) {
