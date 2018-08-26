@@ -10,16 +10,7 @@ public class Solution {
     public static void main(String args[]) {
 
         int[] sequence = {5, 7, 6, 9, 12, 11, 8};
-//        boolean b = VerifySquenceOfBST(sequence);
-//        System.out.println(b);
-
-
     }
-
-
-
-
-
 
     public int movingCount(int threshold, int rows, int cols) {
         int flag[][] = new int[rows][cols]; //记录是否已经走过
@@ -27,7 +18,7 @@ public class Solution {
     }
 
     private int helper(int i, int j, int rows, int cols, int[][] flag, int threshold) {
-        if (i < 0 || i >= rows || j < 0 || j >= cols || numSum(i) + numSum(j) >threshold || flag[i][j] == 1){
+        if (i < 0 || i >= rows || j < 0 || j >= cols || numSum(i) + numSum(j) > threshold || flag[i][j] == 1) {
             return 0;
         }
         flag[i][j] = 1;
@@ -222,7 +213,6 @@ public class Solution {
         ListNode p = pHead;
         pre.next = p;
         pHead = pre;
-
         while (p != null && p.next != null) {
             if (p.val == p.next.val) {
                 int val = p.val;

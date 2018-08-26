@@ -19,6 +19,7 @@ import java.util.*;
 //  dict =["leet", "code"].
 //
 //  Return true because"leetcode"can be segmented as"leet code".
+
 class ListNode {
     int val;
     ListNode next;
@@ -43,22 +44,62 @@ public class Solution {
     LinkedList<Integer> list = new LinkedList<Integer>();
 
     public static void main(String args[]) {
-
-        Solution solution = new Solution();
-        solution.FindContinuousSequence(100);
-
         TreeNode node1 = new TreeNode(1);
         TreeNode node2 = new TreeNode(2);
-        TreeNode node3 = new TreeNode(3);
-        TreeNode node4 = new TreeNode(4);
-        TreeNode node5 = new TreeNode(5);
-        TreeNode node6 = new TreeNode(6);
-        node1.left = node2;
-        node1.right = node3;
-        node2.left = node4;
-        node2.right = node5;
-        node3.left = node6;
-        solution.postorderTraversal2(node1);
+        TreeNode node3 = new TreeNode(8);
+//        TreeNode node4 = new TreeNode(3);
+//        TreeNode node5 = new TreeNode(4);
+//        TreeNode node6 = new TreeNode(4);
+//        TreeNode node7 = new TreeNode(3);
+        node1.right = node2;
+        node2.left = node3;
+//        node2.left = node4;
+//        node2.right = node5;
+//        node3.left = node6;
+//        node3.right = node7;
+
+        Solution solution = new Solution();
+        System.out.println();
+        solution.postorderTraversal(node1);
+
+    }
+
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return null;
+        }
+        ListNode p = head.next;
+        ListNode pstart = new ListNode(0);
+        ListNode pend = head;
+        pstart.next = head;
+        while (p != null){
+            ListNode tmp = pstart.next;
+            ListNode pre = pstart;
+            while (tmp != p && p.val >= tmp.val){
+                tmp = tmp.next;
+                pre = pre.next;
+            }
+            if(tmp == p){
+                pend = p;
+            } else
+            {
+                pend.next = p.next;
+                p.next = tmp;
+                pre.next = p;
+            }
+            p = pend.next;
+        }
+        head = pstart.next;
+        return head;
+    }
+
+    public TreeNode reConstructBinaryTree(int[] pre, int[] in) {
+        return null;
+
+    }
+
+    public TreeNode reConstructBinaryTree(int[] pre, int prel, int prer, int[] in, int inl, int inr) {
+        return null;
 
     }
 
@@ -208,7 +249,6 @@ public class Solution {
         return null;
     }
 
-
     public ArrayList<Integer> FindNumbersWithSum(int[] array, int sum) {
         int first = 0;
         int last = array.length - 1;
@@ -229,6 +269,15 @@ public class Solution {
         return result;
     }
 
+
+    public int GetNumberOfK(int[] array, int k) {
+        int left = GetNumberLeft(array, k, 0, array.length - 1);
+        int right = GetNumberRight(array, k, 0, array.length - 1);
+        if (right != -1 && right != -1) {
+            return (right - left) + 1;
+        }
+        return 1;
+    }
 
     public boolean IsBalanced_Solution(TreeNode root) {
         if (root == null) {
@@ -293,11 +342,6 @@ public class Solution {
             return charlist.peek();
         }
         return '#';
-    }
-
-    public boolean duplicate(int numbers[], int length, int[] duplication) {
-
-        return false;
     }
 
     public static void Combination() {
@@ -459,24 +503,37 @@ public class Solution {
                 list.addLast(num);
             }
         }
+    }
+
+    public int GetNumberLeft(int[] array, int k, int left, int right) {
+        if (left > right) {
+            return -1;
+        }
+        int mid = (right - left) / 2 + left;
+        if (array[mid] == k && (mid == 0 || array[mid - 1] < k)) {
+            return mid;
+        } else if (array[mid] >= k) {
+            return GetNumberLeft(array, k, left, mid - 1);
+        } else {
+            return GetNumberLeft(array, k, mid + 1, right);
+        }
+    }
+
+    public int GetNumberRight(int[] array, int k, int left, int right) {
+        if (left > right) {
+            return left;
+        }
+        int mid = (right - left) / 2 + left;
+        if (array[mid] == k && (mid == array.length - 1 || array[mid + 1] > k)) {
+            return mid;
+        } else if (array[mid] <= k) {
+            return GetNumberRight(array, k, mid + 1, right);
+        } else {
+            return GetNumberRight(array, k, left, mid - 1);
+        }
 
     }
 
-    public Double GetMedian() {
-        if (list.size() == 0) {
-            return null;
-        }
-
-        if (list.size() % 2 == 0) {
-            int i = list.size() / 2;
-            Double a = Double.valueOf(list.get(i - 1) + list.get(i));
-            return a / 2;
-        }
-        list.get(0);
-        Double b = Double.valueOf(list.get((list.size() + 1) / 2 - 1));
-        return Double.valueOf(list.get((list.size() + 1) / 2 - 1));
-
-    }
 
     public ArrayList<Integer> printMatrix(int[][] matrix) {
         ArrayList<Integer> list = new ArrayList<Integer>();
@@ -527,6 +584,78 @@ public class Solution {
             }
         }
         return dp[len];
+    }
+
+    public int StrToInt(String str) {
+        int size = str.length();
+        if (size == 0) {
+            return 0;
+        }
+        int s = 1;
+        char[] chars = str.toCharArray();
+        int res = 0;
+        if (chars[0] == '-') {
+            s = -1;
+        }
+        int i = (chars[0] == '-' || chars[0] == '+') ? 1 : 0;
+        for (; i < size; i++) {
+            if (!(chars[i] < '9' && chars[i] > '0')) {
+                return 0;
+            }
+            res = res * 10 + (chars[i] & 0xf);
+        }
+        return res * s;
+    }
+
+    public String PrintMinNumber(int [] numbers) {
+        String str[] = new String[numbers.length];
+
+        Arrays.sort(str, (s1, s2) -> {
+            String c1 = s1 + s2;
+            String c2 = s2 + s1;
+            return 0;
+        });
+        return "";
+
+    }
+
+
+    public int NumberOf1Between1AndN_Solution(int n) {
+        int count = 0;
+        int i = 1;
+        for (i = 1; i <= n; i *= 10) {
+            //i表示当前分析的是哪一个数位
+            int a = n / i;
+            int b = n % i;
+//            count = count + (a + 8) / 10 * i + ((a % 10 == 1) ? 1 : 0) * (b + 1);
+            if (a % 10 == 0) {
+                count = count + a / 10 * i;
+            } else if (a % 10 == 1) {
+                count = count + (a / 10 * i) + (b + 1);
+            }else {
+                count = count + (a/10 +1)*i;
+            }
+        }
+        return count;
+    }
+
+
+    /**
+     * Definition for singly-linked list with a random pointer.
+     * class RandomListNode {
+     * int label;
+     * RandomListNode next, random;
+     * RandomListNode(int x) { this.label = x; }
+     * };
+     */
+
+    class RandomListNode {
+        int label;
+        RandomListNode next, random;
+
+        RandomListNode(int x) {
+            this.label = x;
+        }
     }
 
     public RandomListNode copyRandomList2(RandomListNode head) {
@@ -594,23 +723,5 @@ public class Solution {
             }
         }
         return flag;
-    }
-
-    /**
-     * Definition for singly-linked list with a random pointer.
-     * class RandomListNode {
-     * int label;
-     * RandomListNode next, random;
-     * RandomListNode(int x) { this.label = x; }
-     * };
-     */
-
-    class RandomListNode {
-        int label;
-        RandomListNode next, random;
-
-        RandomListNode(int x) {
-            this.label = x;
-        }
     }
 }
