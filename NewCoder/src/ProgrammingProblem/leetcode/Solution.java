@@ -10,8 +10,12 @@ public class Solution {
 
     public static void main(String args[]) {
 
+        Trie trie = new Trie();
+        trie.insert("trie");
+        System.out.println(trie.search("trie"));
+
     }
-    class TrieNode{
+    static class TrieNode{
         int path;
         int end;
         TrieNode[] map;
@@ -22,7 +26,7 @@ public class Solution {
         }
 
     }
-    class Trie {
+    static class Trie {
         /**
          * Initialize your data structure here.
          */
@@ -56,16 +60,34 @@ public class Solution {
          * Returns if the word is in the trie.
          */
         public boolean search(String word) {
-
-            return false;
-
+            char[] chs = word.toCharArray();
+            TrieNode p = root;
+            int index = 0;
+            for(int i=0;i<chs.length;i++){
+                index = chs[i] - 'a';
+                if(p.map[index] == null){
+                    return false;
+                }
+                p = p.map[index];
+            }
+            return p.end != 0;
         }
 
         /**
          * Returns if there is any word in the trie that starts with the given prefix.
          */
         public boolean startsWith(String prefix) {
-            return false;
+            char[] chs = prefix.toCharArray();
+            TrieNode p = root;
+            int index = 0;
+            for(int i=0;i<chs.length;i++){
+                index = chs[i] - 'a';
+                if(p.map[index] == null){
+                    return false;
+                }
+                p = p.map[index];
+            }
+            return p.path != 0;
         }
     }
 
