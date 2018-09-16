@@ -24,10 +24,12 @@ public class Code_02_SkipList {
 			this.current = list.getHead();
 		}
 
+		@Override
 		public boolean hasNext() {
 			return current.nextNodes.get(0) != null;
 		}
 
+		@Override
 		public Integer next() {
 			current = current.nextNodes.get(0);
 			return current.value;

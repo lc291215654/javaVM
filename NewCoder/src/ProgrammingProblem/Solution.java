@@ -9,17 +9,6 @@ import java.util.*;
  * Created by licheng on 7/4/18.
  */
 
-//  *word-break*
-//  Given a string s and a dictionary of words dict, determine
-// if s can be segmented into a space-separated sequence of
-// one or more dictionary words.
-//
-//  For example, given
-//  s ="leetcode",
-//  dict =["leet", "code"].
-//
-//  Return true because"leetcode"can be segmented as"leet code".
-
 class ListNode {
     int val;
     ListNode next;
@@ -44,23 +33,32 @@ public class Solution {
     LinkedList<Integer> list = new LinkedList<Integer>();
 
     public static void main(String args[]) {
-        TreeNode node1 = new TreeNode(1);
-        TreeNode node2 = new TreeNode(2);
-        TreeNode node3 = new TreeNode(8);
-//        TreeNode node4 = new TreeNode(3);
-//        TreeNode node5 = new TreeNode(4);
-//        TreeNode node6 = new TreeNode(4);
-//        TreeNode node7 = new TreeNode(3);
-        node1.right = node2;
-        node2.left = node3;
-//        node2.left = node4;
-//        node2.right = node5;
-//        node3.left = node6;
-//        node3.right = node7;
+        ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(9);
+        ListNode node3 = new ListNode(9);
+        ListNode node4 = new ListNode(9);
+        ListNode node5 = new ListNode(9);
+        ListNode node6 = new ListNode(9);
+        ListNode node7 = new ListNode(9);
+        ListNode node8 = new ListNode(9);
+        ListNode node9 = new ListNode(9);
+        ListNode node10 = new ListNode(9);
+        node1.next = node2;
+        node2.next = node3;
+        node3.next = node4;
+        node4.next = node5;
+        node5.next = node6;
+        node6.next = node7;
+        node7.next = node8;
+        node8.next = node9;
+        node9.next = node10;
+
+        ListNode node20 = new ListNode(9);
 
         Solution solution = new Solution();
-        System.out.println();
-        solution.postorderTraversal(node1);
+        System.out.println(Long.MAX_VALUE);
+        ListNode re = solution.addTwoNumbers(node1,node20);
+        System.out.println("dd");
 
     }
 
@@ -375,39 +373,39 @@ public class Solution {
     }
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-
-        if (l1 == null || l2 == null) {
+        if(l1 ==  null && l2 == null){
             return null;
         }
-
-        long ll1 = 0;
-        long g1 = 1;
-        long ll2 = 0;
-        long g2 = 1;
-        while (l1 != null) {
-            ll1 = ll1 + l1.val * g1;
-            g1 *= 10;
+        ListNode head = new ListNode(-1);
+        ListNode p = head;
+        int carry = 0;
+        while (l1 != null && l2 !=null){
+            int val = l1.val + l2.val + carry;
+            carry = val / 10;
+            val = val % 10 ;
+            p.next = new ListNode(val);
+            p = p.next;
             l1 = l1.next;
-        }
-
-        while (l2 != null) {
-            ll2 = ll2 + l2.val * g2;
-            g2 *= 10;
             l2 = l2.next;
         }
-
-        long res = ll1 + ll2;
-        ListNode head = new ListNode(0);
-        if (res == 0) {
-            return head;
+        while (l1 != null){
+            int val = l1.val + carry;
+            carry = val / 10;
+            val = val % 10 ;
+            p.next = new ListNode(val);
+            p = p.next;
+            l1 = l1.next;
         }
-        ListNode p = head;
-        while (res != 0) {
-            int k = (int) res % 10;
-            ListNode node = new ListNode(k);
-            p.next = node;
-            p = node;
-            res = res / 10;
+        while (l2 != null){
+            int val = l2.val + carry;
+            carry = val / 10;
+            val = val % 10 ;
+            p.next = new ListNode(val);
+            p = p.next;
+            l2 = l2.next;
+        }
+        if(carry > 0){
+            p.next = new ListNode(carry);
         }
         return head.next;
     }

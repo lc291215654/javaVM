@@ -1,9 +1,7 @@
 package ProgrammingProblem.leetcode;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.math.BigInteger;
+import java.util.*;
 
 /**
  * Created by licheng on 8/25/18.
@@ -11,14 +9,90 @@ import java.util.Set;
 public class Solution {
 
     public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int resutl = sumOfFac(n);
+        System.out.println(resutl);
+    }
 
-        char[][] board = new char[][]{{'o', 'a', 'a', 'n'},
-                {'e', 't', 'a', 'e'},
-                {'i', 'h', 'k', 'r'},
-                {'i', 'f', 'l', 'v'}};
-        Solution solution = new Solution();
-        System.out.println(solution.findWords(board,new String[]{"eathflv","tae","fdaf"}));
+    public static int sumOfFac(int n) {
+        if(n < 1){
+            return 0;
+        }
+        BigInteger s = new BigInteger("1");
+        int result = 0;
+        for(int i = 1 ;i<=n;i++){
+            s = s.multiply(new BigInteger(String.valueOf(i)));
+        }
+        while (!s.equals(new BigInteger("0"))){
+            result = result + s.mod(new BigInteger("10")).intValue();
+            s = s.divide(new BigInteger("10"));
+        }
+        return result;
+    }
 
+    public static int sumOfFac2(int n) {
+        if(n < 1){
+            return 0;
+        }
+        int[] a = new int[1024];
+        int result = 0;
+        for(int i = 1 ;i<=n;i++){
+
+        }
+        return result;
+    }
+
+
+    public double mincostToHireWorkers(int[] quality, int[] wage, int K) {
+        int N = quality.length;
+        double ans = 1e9;
+        for (int captain = 0; captain < N; ++captain) {
+            // Must pay at least wage[captain] / quality[captain] per qual
+            double factor = (double) wage[captain] / quality[captain];
+            double prices[] = new double[N];
+            int t = 0;
+            for (int worker = 0; worker < N; ++worker) {
+                double price = factor * quality[worker];
+                if (price < wage[worker]) continue;
+                prices[t++] = price;
+            }
+            if (t < K) continue;
+            Arrays.sort(prices, 0, t);
+            double cand = 0;
+            for (int i = 0; i < K; ++i)
+                cand += prices[i];
+            ans = Math.min(ans, cand);
+        }
+        return ans;
+    }
+
+    public int maxProfit(int prices[]) {
+        int minprice = Integer.MAX_VALUE;
+        int maxprofit = 0;
+        for (int i = 0; i < prices.length; i++) {
+            if (prices[i] < minprice)
+                minprice = prices[i];
+            else if (prices[i] - minprice > maxprofit)
+                maxprofit = prices[i] - minprice;
+        }
+        return maxprofit;
+    }
+
+    public boolean canJump(int[] nums) {
+        boolean[] canReach = new boolean[nums.length];
+        canReach[0] = true;
+        for (int i = 0; i < nums.length; i++) {
+            if (canReach[i] == false) {
+                return false;
+            }
+            for (int j = 1; j <= nums[i]; j++) {
+                if (i + j < nums.length) {
+                    canReach[i + j] = true;
+                }
+            }
+        }
+        return true;
     }
 
     class TrieNode {
@@ -84,8 +158,8 @@ public class Solution {
 
     public List<String> findWords(char[][] board, String[] words) {
         Set<String> result = new HashSet<>();
-        for(String word:words){
-            if(isExsts(board,word)){
+        for (String word : words) {
+            if (isExsts(board, word)) {
                 result.add(word);
             }
         }
@@ -111,7 +185,7 @@ public class Solution {
     List<String> result = new ArrayList<>();
 
     public boolean dfs(char[][] board, boolean[][] visit, int i, int j, String words, int k) {
-        System.out.println("i:" + i +" j:" + j + " K:" + k);
+        System.out.println("i:" + i + " j:" + j + " K:" + k);
         if (k == words.length()) {
             return true;
         }
@@ -125,10 +199,10 @@ public class Solution {
             return false;
         }
         visit[i][j] = true;
-        if (dfs(board, visit, i - 1, j, words, k+1) ||
-                dfs(board, visit, i + 1, j, words, k+1) ||
-                dfs(board, visit, i, j - 1, words, k+1) ||
-                dfs(board, visit, i, j + 1, words, k+1)) {
+        if (dfs(board, visit, i - 1, j, words, k + 1) ||
+                dfs(board, visit, i + 1, j, words, k + 1) ||
+                dfs(board, visit, i, j - 1, words, k + 1) ||
+                dfs(board, visit, i, j + 1, words, k + 1)) {
             return true;
         }
         visit[i][j] = false;
