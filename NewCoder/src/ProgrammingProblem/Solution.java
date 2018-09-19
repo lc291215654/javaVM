@@ -60,7 +60,105 @@ public class Solution {
 
         Solution solution = new Solution();
         System.out.println();
-        solution.postorderTraversal(node1);
+        TreeNode root = solution.levMidRestore(new int[]{3,5,4,2,6,7,1},new int[]{2,5,3,6,4,7,1});
+        solution.preOrderTraversal(root);
+        solution.postorderTraversal(root);
+
+    }
+
+    int find(int[] num,int k){
+        for(int i=0;i<num.length;i++){
+            if(num[i] == k){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    TreeNode levMidRestore(int[] lev, int[] mid) {
+        int size = lev.length;
+        TreeNode[] helper = new TreeNode[size];
+        boolean success = false;
+        TreeNode root = new TreeNode(lev[0]);
+        int mi = find(mid,lev[0]);
+        helper[mi] = root;
+        for(int i = 1; i < lev.length; i++) {
+            success = false;
+            mi = find(mid,lev[i]);
+            helper[mi] = new TreeNode(lev[i]);
+            for(int p = mi - 1; p >= 0; p--) {
+                if(helper[p] != null) {
+                    if(helper[p].right == null) {
+                        helper[p].right = helper[mi];
+                        success = true;
+                    }
+                    break;
+                }
+            }
+            if(success) {
+                continue;
+            }
+            for(int p = mi + 1; p < size; p++) {
+                if(helper[p] != null) {
+                    if(helper[p].left == null) {
+                        helper[p].left = helper[mi];
+                        success = true;
+                    }
+                    break;
+                }
+            }
+            if(!success) {
+                break;
+            }
+        }
+        return root;
+    }
+
+
+    public boolean match(char[] str, char[] pattern) {
+        if(str == null && pattern == null){
+            return true;
+        }
+        if(str != null && pattern == null){
+            return false;
+        }
+
+        return false;
+
+
+    }
+
+
+    String Serialize(TreeNode root) {
+        StringBuffer sb = new StringBuffer();
+        if (root == null) {
+            sb.append("#,");
+            return sb.toString();
+        }
+        sb.append(root.data + ",");
+        sb.append(Serialize(root.left));
+        sb.append(Serialize(root.right));
+        return sb.toString();
+
+    }
+
+    private int index = 0;
+
+    TreeNode Deserialize(String str) {
+        index++;
+        int len = str.length();
+        if (index >= len) {
+            return null;
+        }
+        String[] strr = str.split(",");
+        TreeNode node = null;
+        if (!strr[index].equals("#")) {
+            node = new TreeNode(Integer.valueOf(strr[index]));
+            node.left = Deserialize(str);
+            node.right = Deserialize(str);
+        }
+
+        return node;
 
     }
 
@@ -72,17 +170,16 @@ public class Solution {
         ListNode pstart = new ListNode(0);
         ListNode pend = head;
         pstart.next = head;
-        while (p != null){
+        while (p != null) {
             ListNode tmp = pstart.next;
             ListNode pre = pstart;
-            while (tmp != p && p.val >= tmp.val){
+            while (tmp != p && p.val >= tmp.val) {
                 tmp = tmp.next;
                 pre = pre.next;
             }
-            if(tmp == p){
+            if (tmp == p) {
                 pend = p;
-            } else
-            {
+            } else {
                 pend.next = p.next;
                 p.next = tmp;
                 pre.next = p;
@@ -607,7 +704,7 @@ public class Solution {
         return res * s;
     }
 
-    public String PrintMinNumber(int [] numbers) {
+    public String PrintMinNumber(int[] numbers) {
         String str[] = new String[numbers.length];
 
         Arrays.sort(str, (s1, s2) -> {
