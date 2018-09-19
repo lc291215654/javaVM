@@ -2,6 +2,11 @@ package c3.advanced_class_01;
 
 import java.util.LinkedList;
 
+
+/**
+ *
+ */
+
 public class Code_05_AllLessNumSubArray {
 
 	public static int getNum(int[] arr, int num) {
@@ -63,8 +68,8 @@ public class Code_05_AllLessNumSubArray {
 	}
 
 	public static void main(String[] args) {
-		int[] arr = getRandomArray(30);
-		int num = 5;
+		int[] arr = getRandomArray(1);
+		int num = 6;
 		printArray(arr);
 		System.out.println(getNum(arr, num));
 

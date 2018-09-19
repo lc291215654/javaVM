@@ -69,4 +69,10 @@ public class Code_07_Find_the_Closest_Palindrome {
 		return Long.valueOf(String.valueOf(res));
 	}
 
+	public static void main(String[] args){
+		System.out.println(nearestPalindromic("53645635"));
+
+
+	}
+
 }

@@ -1,130 +1,190 @@
 package MyCode.MyCode06;
 
-import b3.basic_class_06.AbstractBinarySearchTree;
-import b3.basic_class_06.AbstractSelfBalancingBinarySearchTree;
+public class C05_AVLTree {
 
-/**
- * Not implemented by zuochengyun
- * 
- * AVL tree implementation.
- * 
- * In computer science, an AVL tree is a self-balancing binary search tree, and
- * it was the first such data structure to be invented.[1] In an AVL tree, the
- * heights of the two child subtrees of any node differ by at most one. Lookup,
- * insertion, and deletion all take O(log n) time in both the average and worst
- * cases, where n is the number of nodes in the tree prior to the operation.
- * Insertions and deletions may require the tree to be rebalanced by one or more
- * tree rotations.
- * 
- * @author Ignas Lelys
- * @created Jun 28, 2011
- * 
- */
-public class C05_AVLTree extends AbstractSelfBalancingBinarySearchTree {
+    public AVLNode root;
 
-    /**
-     * @see AbstractBinarySearchTree#insert(int)
-     *
-     *      AVL tree insert method also balances tree if needed. Additional
-     *      height parameter on node is used to track if one subtree is higher
-     *      than other by more than one, if so AVL tree rotations is performed
-     *      to regain balance of the tree.
-     */
-    @Override
-    public Node insert(int element) {
-        Node newNode = super.insert(element);
-        rebalance((AVLNode)newNode);
+    protected int size;
+
+    public AVLNode search(int element) {
+        AVLNode node = root;
+        while (node != null && node.value != null && node.value != element) {
+            if (element < node.value) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        return node;
+    }
+
+    public AVLNode insert(int element) {
+        if (root == null) {
+            root = createAVLNode(element, null, null, null);
+            size++;
+            return root;
+        }
+        AVLNode ins = null;
+        AVLNode temp = root;
+        while (temp != null && temp.value != null) {
+            ins = temp;
+            if (element < temp.value) {
+                temp = temp.left;
+            } else {
+                temp = temp.right;
+            }
+        }
+
+        AVLNode newNode = createAVLNode(element, ins, null, null);
+        if (ins.value > newNode.value) {
+            ins.left = newNode;
+        } else {
+            ins.right = newNode;
+        }
+
+        size++;
         return newNode;
     }
 
     /**
-     * @see AbstractBinarySearchTree#delete(int)
+     * Put one node from tree (newNode) to the place of another (nodeToReplace).
+     *
+     * @param nodeToReplace Node which is replaced by newNode and removed from tree.
+     * @param newNode       New node.
+     * @return New replaced node.
      */
-    @Override
-    public Node delete(int element) {
-        Node deleteNode = super.search(element);
+    private AVLNode transplant(AVLNode nodeToReplace, AVLNode newNode) {
+        if (nodeToReplace.parent == null) {
+            this.root = newNode;
+        } else if (nodeToReplace == nodeToReplace.parent.left) {
+            nodeToReplace.parent.left = newNode;
+        } else {
+            nodeToReplace.parent.right = newNode;
+        }
+        if (newNode != null) {
+            newNode.parent = nodeToReplace.parent;
+        }
+        return newNode;
+    }
+
+    protected AVLNode getMinimum(AVLNode node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
+    protected AVLNode getMaximum(AVLNode node) {
+        while (node.right != null) {
+            node = node.right;
+        }
+        return node;
+    }
+
+    protected AVLNode delete(AVLNode deleteNode) {
         if (deleteNode != null) {
-            Node successorNode = super.delete(deleteNode);
-            if (successorNode != null) {
-                // if replaced from getMinimum(deleteNode.right) then come back there and update heights
-                AVLNode minimum = successorNode.right != null ? (AVLNode)getMinimum(successorNode.right) : (AVLNode)successorNode;
-                recomputeHeight(minimum);
-                rebalance((AVLNode)minimum);
-            } else {
-                recomputeHeight((AVLNode)deleteNode.parent);
-                rebalance((AVLNode)deleteNode.parent);
+            AVLNode nodeToReturn = null;
+            if (deleteNode != null) {
+                if (deleteNode.left == null) {
+                    nodeToReturn = transplant(deleteNode, deleteNode.right);
+                } else if (deleteNode.right == null) {
+                    nodeToReturn = transplant(deleteNode, deleteNode.left);
+                } else {
+                    AVLNode successorNode = getMinimum(deleteNode.right);
+                    if (successorNode.parent != deleteNode) {
+                        transplant(successorNode, successorNode.right);
+                        successorNode.right = deleteNode.right;
+                        successorNode.right.parent = successorNode;
+                    }
+                    transplant(deleteNode, successorNode);
+                    successorNode.left = deleteNode.left;
+                    successorNode.left.parent = successorNode;
+                    nodeToReturn = successorNode;
+                }
+                size--;
             }
-            return successorNode;
+
+            return nodeToReturn;
         }
         return null;
     }
 
-    /**
-     * @see AbstractBinarySearchTree#createNode(int, Node, Node, Node)
-     */
-    @Override
-    protected Node createNode(int value, Node parent, Node left, Node right) {
+
+    public AVLNode delete(int element) {
+        AVLNode deleteAVLNode = search(element);
+        if (deleteAVLNode != null) {
+            AVLNode successorAVLNode = delete(deleteAVLNode);
+            if (successorAVLNode != null) {
+                // if replaced from getMinimum(deleteAVLNode.right) then come back there and update heights
+                AVLNode minimum = successorAVLNode.right != null ? (AVLNode) getMinimum(successorAVLNode.right) : (AVLNode) successorAVLNode;
+                recomputeHeight(minimum);
+                rebalance((AVLNode) minimum);
+            } else {
+                recomputeHeight((AVLNode) deleteAVLNode.parent);
+                rebalance((AVLNode) deleteAVLNode.parent);
+            }
+            return successorAVLNode;
+        }
+        return null;
+    }
+
+    protected AVLNode createAVLNode(int value, AVLNode parent, AVLNode left, AVLNode right) {
         return new AVLNode(value, parent, left, right);
     }
 
     /**
      * Go up from inserted node, and update height and balance informations if needed.
      * If some node balance reaches 2 or -2 that means that subtree must be rebalanced.
-     * 
-     * @param node Inserted Node.
+     *
+     * @param node Inserted AVLNode.
      */
     private void rebalance(AVLNode node) {
         while (node != null) {
-            
-            Node parent = node.parent;
-            
-            int leftHeight = (node.left == null) ? -1 : ((AVLNode) node.left).height;
-            int rightHeight = (node.right == null) ? -1 : ((AVLNode) node.right).height;
+            AVLNode parent = node.parent;
+            int leftHeight = (node.left == null) ? -1 : node.left.height;
+            int rightHeight = (node.right == null) ? -1 : node.right.height;
             int nodeBalance = rightHeight - leftHeight;
             // rebalance (-2 means left subtree outgrow, 2 means right subtree)
             if (nodeBalance == 2) {
                 if (node.right.right != null) {
-                    node = (AVLNode)avlRotateLeft(node);
+                    node = avlRotateLeft(node);
                     break;
                 } else {
-                    node = (AVLNode)doubleRotateRightLeft(node);
+                    node = doubleRotateRightLeft(node);
                     break;
                 }
             } else if (nodeBalance == -2) {
                 if (node.left.left != null) {
-                    node = (AVLNode)avlRotateRight(node);
+                    node = avlRotateRight(node);
                     break;
                 } else {
-                    node = (AVLNode)doubleRotateLeftRight(node);
+                    node = doubleRotateLeftRight(node);
                     break;
                 }
             } else {
                 updateHeight(node);
             }
-            
-            node = (AVLNode)parent;
+            node = parent;
         }
     }
 
     /**
      * Rotates to left side.
      */
-    private Node avlRotateLeft(Node node) {
-        Node temp = super.rotateLeft(node);
-        
-        updateHeight((AVLNode)temp.left);
-        updateHeight((AVLNode)temp);
+    private AVLNode avlRotateLeft(AVLNode node) {
+        AVLNode temp = rotateLeft(node);
+        updateHeight(temp.left);
+        updateHeight(temp);
         return temp;
     }
 
     /**
      * Rotates to right side.
      */
-    private Node avlRotateRight(Node node) {
-        Node temp = super.rotateRight(node);
-
-        updateHeight((AVLNode)temp.right);
-        updateHeight((AVLNode)temp);
+    private AVLNode avlRotateRight(AVLNode node) {
+        AVLNode temp = rotateRight(node);
+        updateHeight(temp.right);
+        updateHeight(temp);
         return temp;
     }
 
@@ -132,7 +192,7 @@ public class C05_AVLTree extends AbstractSelfBalancingBinarySearchTree {
      * Take right child and rotate it to the right side first and then rotate
      * node to the left side.
      */
-    protected Node doubleRotateRightLeft(Node node) {
+    protected AVLNode doubleRotateRightLeft(AVLNode node) {
         node.right = avlRotateRight(node.right);
         return avlRotateLeft(node);
     }
@@ -141,23 +201,23 @@ public class C05_AVLTree extends AbstractSelfBalancingBinarySearchTree {
      * Take right child and rotate it to the right side first and then rotate
      * node to the left side.
      */
-    protected Node doubleRotateLeftRight(Node node) {
+    protected AVLNode doubleRotateLeftRight(AVLNode node) {
         node.left = avlRotateLeft(node.left);
         return avlRotateRight(node);
     }
-    
+
     /**
      * Recomputes height information from the node and up for all of parents. It needs to be done after delete.
      */
     private void recomputeHeight(AVLNode node) {
-       while (node != null) {
-          node.height = maxHeight((AVLNode)node.left, (AVLNode)node.right) + 1;
-          node = (AVLNode)node.parent;
-       }
+        while (node != null) {
+            node.height = maxHeight(node.left, node.right) + 1;
+            node = node.parent;
+        }
     }
-    
+
     /**
-     * Returns higher height of 2 nodes. 
+     * Returns higher height of 2 nodes.
      */
     private int maxHeight(AVLNode node1, AVLNode node2) {
         if (node1 != null && node2 != null) {
@@ -172,8 +232,8 @@ public class C05_AVLTree extends AbstractSelfBalancingBinarySearchTree {
 
     /**
      * Updates height and balance of the node.
-     * 
-     * @param node Node for which height and balance must be updated.
+     *
+     * @param node AVLNode for which height and balance must be updated.
      */
     private static final void updateHeight(AVLNode node) {
         int leftHeight = (node.left == null) ? -1 : ((AVLNode) node.left).height;
@@ -182,20 +242,111 @@ public class C05_AVLTree extends AbstractSelfBalancingBinarySearchTree {
     }
 
     /**
-     * Node of AVL tree has height and balance additional properties. If balance
-     * equals 2 (or -2) that node needs to be re balanced. (Height is height of
-     * the subtree starting with this node, and balance is difference between
-     * left and right nodes heights).
-     * 
-     * @author Ignas Lelys
-     * @created Jun 30, 2011
-     * 
+     * Rotate to the left.
+     *
+     * @param node AVLNode on which to rotate.
+     * @return AVLNode that is in place of provided node after rotation.
      */
-    protected static class AVLNode extends Node {
+    protected AVLNode rotateLeft(AVLNode node) {
+        AVLNode temp = node.right;
+        temp.parent = node.parent;
+
+        node.right = temp.left;
+        if (node.right != null) {
+            node.right.parent = node;
+        }
+
+        temp.left = node;
+        node.parent = temp;
+
+        // temp took over node's place so now its parent should point to temp
+        if (temp.parent != null) {
+            if (node == temp.parent.left) {
+                temp.parent.left = temp;
+            } else {
+                temp.parent.right = temp;
+            }
+        } else {
+            root = temp;
+        }
+
+        return temp;
+    }
+
+    /**
+     * Rotate to the right.
+     *
+     * @param node AVLNode on which to rotate.
+     * @return AVLNode that is in place of provided node after rotation.
+     */
+    protected AVLNode rotateRight(AVLNode node) {
+        AVLNode temp = node.left;
+        temp.parent = node.parent;
+
+        node.left = temp.right;
+        if (node.left != null) {
+            node.left.parent = node;
+        }
+
+        temp.right = node;
+        node.parent = temp;
+
+        // temp took over node's place so now its parent should point to temp
+        if (temp.parent != null) {
+            if (node == temp.parent.left) {
+                temp.parent.left = temp;
+            } else {
+                temp.parent.right = temp;
+            }
+        } else {
+            root = temp;
+        }
+
+        return temp;
+    }
+
+    class AVLNode {
         public int height;
 
-        public AVLNode(int value, Node parent, Node left, Node right) {
-            super(value, parent, left, right);
+        public AVLNode(Integer value, AVLNode parent, AVLNode left, AVLNode right) {
+            this.value = value;
+            this.parent = parent;
+            this.left = left;
+            this.right = right;
+        }
+
+        public Integer value;
+        public AVLNode parent;
+        public AVLNode left;
+        public AVLNode right;
+
+        public boolean isLeaf() {
+            return left == null && right == null;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((value == null) ? 0 : value.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            AVLNode other = (AVLNode) obj;
+            if (value == null) {
+                if (other.value != null)
+                    return false;
+            } else if (!value.equals(other.value))
+                return false;
+            return true;
         }
     }
 

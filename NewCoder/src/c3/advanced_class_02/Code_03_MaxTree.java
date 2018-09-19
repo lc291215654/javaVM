@@ -96,13 +96,13 @@ public class Code_03_MaxTree {
 		if (head == null) {
 			return;
 		}
-		printPreOrder(head.left);
+		printInOrder(head.left);
 		System.out.print(head.value + " ");
-		printPreOrder(head.right);
+		printInOrder(head.right);
 	}
 
 	public static void main(String[] args) {
-		int[] uniqueArr = { 3, 4, 5, 1, 2 };
+		int[] uniqueArr = { 3, 4, 5, 1, 2 ,7 ,8 ,9 };
 		Node head = getMaxTree(uniqueArr);
 		printPreOrder(head);
 		System.out.println();
