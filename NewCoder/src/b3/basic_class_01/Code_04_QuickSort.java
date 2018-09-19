@@ -1,7 +1,5 @@
 package b3.basic_class_01;
 
-import MyCode01.Code_QuickSort;
-
 import java.util.Arrays;
 
 public class Code_04_QuickSort {

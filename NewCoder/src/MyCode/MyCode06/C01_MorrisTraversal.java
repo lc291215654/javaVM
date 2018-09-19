@@ -1,6 +1,6 @@
-package b3.basic_class_06;
+package MyCode.MyCode06;
 
-public class Code_01_MorrisTraversal {
+public class C01_MorrisTraversal {
 
 	public static class Node {
 		public int value;
@@ -136,7 +136,7 @@ public class Code_01_MorrisTraversal {
 		printInOrder(head.left, height + 1, "^", len);
 	}
 
-	private static String getSpace(int num) {
+	public static String getSpace(int num) {
 		String space = " ";
 		StringBuffer buf = new StringBuffer("");
 		for (int i = 0; i < num; i++) {
@@ -153,9 +153,9 @@ public class Code_01_MorrisTraversal {
 		head.left.right = new Node(3);
 		head.right.left = new Node(5);
 		head.right.right = new Node(7);
-//		printTree(head);
-//		morrisIn(head);
-//		morrisPre(head);
+		printTree(head);
+		morrisIn(head);
+		morrisPre(head);
 		morrisPos(head);
 		printTree(head);
 

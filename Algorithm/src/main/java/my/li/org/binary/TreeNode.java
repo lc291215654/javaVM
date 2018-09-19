@@ -3,7 +3,8 @@ package my.li.org.binary;
 /**
  * Created by licheng on 11/30/17.
  */
-public class TreeNode {
+public class
+TreeNode {
     public int data;
     public TreeNode left;
     public TreeNode right;

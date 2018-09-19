@@ -1,5 +1,7 @@
 package another4rProblem;
 
+import java.util.StringTokenizer;
+
 public class Code_04_PaperFolding {
 
 	public static void printAllFolds(int N) {
@@ -16,7 +18,9 @@ public class Code_04_PaperFolding {
 	}
 
 	public static void main(String[] args) {
-		int N = 4;
-		printAllFolds(N);
+//		int N = 4;
+//		printAllFolds(N);
+		String[][] s = {{"helloword","hello world"},{"this a","a java program"}};
+		System.out.println(new StringTokenizer(s[1][1]).countTokens());
 	}
 }
