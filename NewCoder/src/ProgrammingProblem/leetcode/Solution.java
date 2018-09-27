@@ -182,7 +182,7 @@ public class Solution {
         return false;
     }
 
-    List<String> result = new ArrayList<>();
+//    List<String> result = new ArrayList<>();
 
     public boolean dfs(char[][] board, boolean[][] visit, int i, int j, String words, int k) {
         System.out.println("i:" + i + " j:" + j + " K:" + k);

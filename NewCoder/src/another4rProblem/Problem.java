@@ -22,13 +22,13 @@ public class Problem {
 
         Solution solution = new Solution();
 
-        int[] A = new int[]{1};
-        int[] B = new int[]{1};
+//        System.out.println(solution.reverseWords("the sky is blue"));
 
+//        System.out.println(solution.twoSum(new int[]{1, 2, 3, 4, 5, 6}, 6)[1]);
 
-//        System.out.println(solution.findMedianSortedArrays2(A, B));
-        boolean aa = solution.isMatch("aa","ab");
-        System.out.println(aa);
+        System.out.println(solution.isValid("{]}}"));
+
+//        System.out.println(Double.parseDouble("0.1"));
         System.out.println();
 
 
@@ -229,6 +229,205 @@ public class Problem {
             }
             return 0.0;
         }
+
+        public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+            int m = nums1.length;
+            int n = nums2.length;
+            if (m > n) {
+                int[] temp = nums1;
+                nums1 = nums2;
+                nums2 = temp;
+                int tmp = m;
+                m = n;
+                n = tmp;
+            }
+            int imin = 0, imax = m - 1;
+            int half = (m + n - 1) / 2;
+            while (imin <= imax) {
+                int mid = (imin + imax) / 2;
+                int left = half - mid;
+
+            }
+
+
+        }
+
+
+        /**
+         * 12. Integer to Roman
+         *
+         * @param num
+         * @return
+         */
+        public String intToRoman(int num) {
+            StringBuilder sb = new StringBuilder();
+            while (num > 0) {
+                if (num >= 1000) {
+                    num = num - 1000;
+                    sb.append('M');
+                } else if (num >= 900) {
+                    num = num - 900;
+                    sb.append("CM");
+                } else if (num >= 500) {
+                    num = num - 500;
+                    sb.append("D");
+                } else if (num >= 400) {
+                    num = num - 400;
+                    sb.append("CD");
+                } else if (num >= 100) {
+                    num = num - 100;
+                    sb.append("C");
+                } else if (num >= 90) {
+                    num = num - 90;
+                    sb.append("XC");
+                } else if (num >= 50) {
+                    num = num - 50;
+                    sb.append("L");
+                } else if (num >= 40) {
+                    num = num - 40;
+                    sb.append("XL");
+                } else if (num >= 10) {
+                    num = num - 10;
+                    sb.append("X");
+                } else if (num >= 9) {
+                    num = num - 9;
+                    sb.append("IX");
+                } else if (num >= 5) {
+                    num = num - 5;
+                    sb.append("V");
+                } else if (num >= 4) {
+                    num = num - 4;
+                    sb.append("IV");
+                } else {
+                    sb.append("I");
+                    num = num - 1;
+                }
+            }
+            return sb.toString();
+
+        }
+
+        /**
+         * 13. Roman to Integer
+         *
+         * @param s
+         * @return
+         */
+        public int romanToInt(String s) {
+            int result = 0;
+            char[] chs = s.toCharArray();
+            char pre = ' ';
+            for (int i = chs.length - 1; i >= 0; i--) {
+                switch (chs[i]) {
+                    case 'I':
+                        if (pre == 'V' || pre == 'X') {
+                            result = result - 1;
+                        } else {
+                            result = result + 1;
+                        }
+                        break;
+                    case 'V':
+                        result = result + 5;
+                        pre = 'V';
+                        break;
+                    case 'X':
+                        if (pre == 'L' || pre == 'C') {
+                            result = result - 10;
+                        } else {
+                            result = result + 10;
+                        }
+                        pre = 'V';
+                        break;
+                    case 'L':
+                        result = result + 50;
+                        pre = 'L';
+                        break;
+                    case 'C':
+                        if (pre == 'D' || pre == 'M') {
+                            result = result - 100;
+                        } else {
+                            result = result + 100;
+                        }
+                        pre = 'C';
+                        break;
+                    case 'D':
+                        result = result + 500;
+                        pre = 'D';
+                        break;
+                    case 'M':
+                        result = result + 1000;
+                        pre = 'M';
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            return result;
+        }
+
+        /**
+         * 6. ZigZag Conversion
+         *
+         * @param s
+         * @param numRows
+         * @return
+         */
+        public String convert(String s, int numRows) {
+            return "";
+
+        }
+
+        /**
+         * 4. Median of Two Sorted Arrays
+         *
+         * @param nums1
+         * @param nums2
+         * @return
+         */
+        public double findMedianSortedArrays2(int[] nums1, int[] nums2) {
+            if (nums1.length > nums2.length) {
+                int[] temp = nums1;
+                nums1 = nums2;
+                nums2 = temp;
+            }
+            int m = nums1.length;
+            int n = nums2.length;
+            int iMin = 0, iMax = m, halfLen = (m + n + 1) / 2;
+            while (iMin < iMax) {
+                int i = (iMin + iMax) / 2;
+                int j = halfLen - i;
+                if (i < iMax && nums2[j - 1] > nums1[i]) {
+                    iMin = i + 1; // i is too small
+                } else if (i > iMin && nums1[i - 1] > nums2[j]) {
+                    iMax = i - 1; // i is too big
+                } else { // i is perfect
+                    int maxLeft = 0;
+                    if (i == 0) {
+                        maxLeft = nums2[j - 1];
+                    } else if (j == 0) {
+                        maxLeft = nums1[i - 1];
+                    } else {
+                        maxLeft = Math.max(nums1[i - 1], nums2[j - 1]);
+                    }
+                    if ((m + n) % 2 == 1) {
+                        return maxLeft;
+                    }
+                    int minRight = 0;
+                    if (i == m) {
+                        minRight = nums2[j];
+                    } else if (j == n) {
+                        minRight = nums1[i];
+                    } else {
+                        minRight = Math.min(nums2[j], nums1[i]);
+                    }
+                    return (maxLeft + minRight) / 2.0;
+                }
+            }
+            return 0.0;
+
+        }
+
 
         /**
          * 20. Valid Parentheses

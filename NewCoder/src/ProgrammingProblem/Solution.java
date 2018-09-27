@@ -69,7 +69,7 @@ public class Solution {
         Solution solution = new Solution();
         System.out.println();
         TreeNode root = solution.levMidRestore(new int[]{3,5,4,2,6,7,1},new int[]{2,5,3,6,4,7,1});
-        solution.preOrderTraversal(root);
+//        solution.preOrderTraversal(root);
         solution.postorderTraversal(root);
 
     }
