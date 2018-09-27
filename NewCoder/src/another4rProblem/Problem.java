@@ -1,5 +1,8 @@
 package another4rProblem;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -19,13 +22,13 @@ public class Problem {
 
         Solution solution = new Solution();
 
-//        System.out.println(solution.reverseWords("the sky is blue"));
+        int[] A = new int[]{1};
+        int[] B = new int[]{1};
 
-//        System.out.println(solution.twoSum(new int[]{1, 2, 3, 4, 5, 6}, 6)[1]);
 
-        System.out.println(solution.isValid("{]}}"));
-
-//        System.out.println(Double.parseDouble("0.1"));
+//        System.out.println(solution.findMedianSortedArrays2(A, B));
+        boolean aa = solution.isMatch("aa","ab");
+        System.out.println(aa);
         System.out.println();
 
 
@@ -35,25 +38,219 @@ public class Problem {
     static class Solution {
 
         /**
+         * 10. Regular Expression Matching
+         * @param s
+         * @param p
+         * @return
+         */
+        public boolean isMatch(String s, String p) {
+            if(p.isEmpty()){
+                return s.isEmpty();
+            }
+
+            boolean first_match = (!s.isEmpty() && (p.charAt(0) == s.charAt(0) || p.charAt(0) == '.'));
+            if(p.length() >=2 && p.charAt(1) == '*'){
+                return (isMatch(s, p.substring(2)) ||
+                        (first_match && isMatch(s.substring(1), p)));
+            }else {
+                return first_match && isMatch(s.substring(1), p.substring(1));
+            }
+        }
+
+        /**
+         * 38. Count and Say
+         *
+         * @param n
+         * @return
+         */
+        public String countAndSay(int n) {
+            if (n <= 0) return "";
+            StringBuilder sb = new StringBuilder();
+            String s = "1";
+
+            while (n > 1) {
+                int count = 1;
+                char lastChar = s.charAt(0);
+                for (int i = 1; i < s.length(); i++) {
+                    if (s.charAt(i) == lastChar) count++;
+                    else {
+                        sb.append(count).append(lastChar);
+                        count = 1;
+                        lastChar = s.charAt(i);
+                    }
+                }
+                sb.append(count).append(lastChar);
+                s = sb.toString();
+                sb.setLength(0);
+                n--;
+            }
+            return s;
+        }
+
+        /**
+         * 22. Generate Parentheses
+         *
+         * @param n
+         * @return
+         */
+        public List<String> generateParenthesis(int n) {
+            List<String> list = new ArrayList<>();
+            genHelper(list, "(", 1, 0, n);
+            return list;
+        }
+
+        public void genHelper(List<String> list, String str, int left, int right, int n) {
+            if (right > left || left > n) {
+                return;
+            }
+            if (right == n) {
+                list.add(str);
+            }
+            genHelper(list, str + "(", left + 1, right, n);
+            genHelper(list, str + ")", left, right + 1, n);
+        }
+
+        /**
+         * 26. Remove Duplicates from Sorted Array
+         *
+         * @param nums
+         * @return
+         */
+        public int removeDuplicates(int[] nums) {
+            if (nums.length == 0) {
+                return 0;
+            }
+            int len = 0;
+            for (int i = 1; i < nums.length; i++) {
+                if (nums[i] == nums[len]) {
+                    continue;
+                }
+                len++;
+                nums[len] = nums[i];
+            }
+            return len + 1;
+        }
+
+        /**
+         * 15. 3Sum
+         *
+         * @param nums
+         * @return
+         */
+        public List<List<Integer>> threeSum(int[] nums) {
+            List<List<Integer>> res = new ArrayList<>();
+            if (nums == null || nums.length < 3) {
+                return res;
+            }
+            Arrays.sort(nums);
+            for (int i = 0; i < nums.length - 2; i++) {
+                if (nums[i] > 0) {
+                    break;
+                }
+                if (i > 0 && nums[i] == nums[i - 1]) {
+                    continue;
+                }
+                int sum = -nums[i];
+                int left = i + 1, right = nums.length - 1;
+                while (left < right) {
+                    if (nums[left] + nums[right] == sum) {
+                        ArrayList<Integer> triplet = new ArrayList<>();
+                        triplet.add(nums[i]);
+                        triplet.add(nums[left]);
+                        triplet.add(nums[right]);
+                        res.add(triplet);
+                        while (left < right && nums[left++] == nums[left]) {
+                        }
+                        while (left < right && nums[right--] == nums[right]) {
+                        }
+                    } else if (nums[left] + nums[right] < sum) {
+                        while (left < right && nums[left++] == nums[left]) {
+                        }
+                    } else {
+                        while (left < right && nums[right--] == nums[right]) {
+                        }
+                    }
+                }
+            }
+            return res;
+
+        }
+
+        /**
+         * 4. Median of Two Sorted Arrays
+         *
+         * @param A
+         * @param B
+         * @return
+         */
+        public double findMedianSortedArrays2(int[] A, int[] B) {
+            int m = A.length;
+            int n = B.length;
+            if (m > n) {
+                int[] temp = A;
+                A = B;
+                B = temp;
+                int tmp = m;
+                m = n;
+                n = tmp;
+            }
+            if (m == 0) {
+                return n % 2 == 0 ? (double) ((B[n / 2] + B[n / 2 - 1])) / 2 : B[n / 2];
+            }
+            int imin = 0, imax = m, half = (n + m - 1) / 2;
+            while (imin <= imax) {
+                int i = (imin + imax) / 2; //
+                int t = half - i;
+                if (i > imin && A[i - 1] > B[t]) {
+                    imax = i - 1;
+                } else if (t > 0 && A[i] < B[t - 1]) {
+                    imin = i + 1;
+                } else {
+                    if (i == 0) {
+                        if ((m + n) % 2 == 0) {
+                            return (double) (B[half] + B[half + 1]) / 2;
+                        } else {
+                            return B[half];
+                        }
+                    }
+                    if (i == m) {
+                        if ((m + n) % 2 == 0) {
+                            return (double) (B[half - imin] + B[half - imin + 1]) / 2;
+                        } else {
+                            return B[half - imin];
+                        }
+                    }
+                    if ((m + n) % 2 == 0) {
+                        return (double) (A[i] + B[half - i]) / 2;
+                    } else {
+                        return Math.min(A[i], B[half - i]);
+                    }
+                }
+            }
+            return 0.0;
+        }
+
+        /**
          * 20. Valid Parentheses
+         *
          * @param s
          * @return
          */
         public boolean isValid(String s) {
             char[] chars = s.toCharArray();
             Stack<Character> stack = new Stack<>();
-            for(int i= 0;i<chars.length;i++){
-                if(chars[i] == '(' || chars[i] == '{' || chars[i] == '['){
+            for (int i = 0; i < chars.length; i++) {
+                if (chars[i] == '(' || chars[i] == '{' || chars[i] == '[') {
                     stack.push(chars[i]);
-                }else if(stack.isEmpty()){
+                } else if (stack.isEmpty()) {
                     return false;
-                }else {
+                } else {
                     char c = stack.pop();
-                    if(c == '(' && chars[i] != ')'){
+                    if (c == '(' && chars[i] != ')') {
                         return false;
-                    }else if(c == '[' && chars[i] != ']'){
+                    } else if (c == '[' && chars[i] != ']') {
                         return false;
-                    }else if(c == '{' && chars[i] != '}'){
+                    } else if (c == '{' && chars[i] != '}') {
                         return false;
                     }
                 }
@@ -72,7 +269,7 @@ public class Problem {
             if (needle.equals("")) {
                 return 0;
             }
-            if(haystack.equals("")){
+            if (haystack.equals("")) {
                 return -1;
             }
             char[] source = haystack.toCharArray();
@@ -224,7 +421,7 @@ public class Problem {
                 m = n;
                 n = tmp;
             }
-            int iMin = 0, iMax = m, halfLen = (m + n + 1) / 2;
+            int iMin = 0, iMax = m, halfLen = (m + n - 1) / 2;
             while (iMin <= iMax) {
                 int i = (iMin + iMax) / 2;
                 int j = halfLen - i;
