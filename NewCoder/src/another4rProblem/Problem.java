@@ -22,13 +22,31 @@ public class Problem {
 
         Solution solution = new Solution();
 
-//        System.out.println(solution.reverseWords("the sky is blue"));
+        int[] A = new int[]{1, 2, 3, 4, 5, 6};
 
-//        System.out.println(solution.twoSum(new int[]{1, 2, 3, 4, 5, 6}, 6)[1]);
+        int[] B = new int[]{7, 8, 9, 10, 11, 12};
 
-        System.out.println(solution.isValid("{]}}"));
+        ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(4);
+        ListNode node3 = new ListNode(5);
+        node1.next = node2;
+        node2.next = node3;
 
-//        System.out.println(Double.parseDouble("0.1"));
+        ListNode node4 = new ListNode(1);
+        ListNode node5 = new ListNode(3);
+        ListNode node6 = new ListNode(4);
+        node4.next = node5;
+        node5.next = node6;
+
+        ListNode node7 = new ListNode(2);
+        ListNode node8 = new ListNode(6);
+        node7.next = node8;
+
+        ListNode[] lists = new ListNode[]{node1, node4, node7};
+
+
+        System.out.println(solution.mergeKLists(lists));
+
         System.out.println();
 
 
@@ -38,21 +56,214 @@ public class Problem {
     static class Solution {
 
         /**
+         * 25. Reverse Nodes in k-Group
+         * @param head
+         * @param k
+         * @return
+         */
+        public ListNode reverseKGroup(ListNode head, int k) {
+            return null;
+
+        }
+
+        /**
+         * 37. Sudoku Solver
+         *
+         * @param board
+         */
+        public void solveSudoku(char[][] board) {
+            solveSudoku(board, 0);
+        }
+
+        public boolean solveSudoku(char[][] board, int index) {
+            if (index == 81) {
+                return true;
+            }
+            int row = 81 / 9;
+            int col = 81 % 9;
+            if (board[row][col] == '.') {
+                for (int i = 1; i <= 9; i++) {
+                    board[row][col] = (char) (i + '0');
+                    if (check(board, index))
+                        if (solveSudoku(board, index + 1))
+                            return true;
+                    board[row][col] = '.';
+                }
+            } else {
+                if (solveSudoku(board, index + 1))
+                    return true;
+            }
+            return false;
+        }
+
+        boolean check(char[][] board, int position) {
+            int row = position / 9;
+            int col = position % 9;
+            int gid;
+            if (row >= 0 && row <= 2) {
+                if (col >= 0 && col <= 2)
+                    gid = 0;
+                else if (col >= 3 && col <= 5)
+                    gid = 1;
+                else
+                    gid = 2;
+            } else if (row >= 3 && row <= 5) {
+                if (col >= 0 && col <= 2)
+                    gid = 3;
+                else if (col >= 3 && col <= 5)
+                    gid = 4;
+                else
+                    gid = 5;
+            } else {
+                if (col >= 0 && col <= 2)
+                    gid = 6;
+                else if (col >= 3 && col <= 5)
+                    gid = 7;
+                else
+                    gid = 8;
+            }
+
+            //check row, col, subgrid
+            for (int i = 0; i < 9; i++) {
+                //check row
+                if (i != col && board[row][i] == board[row][col])
+                    return false;
+
+                //check col
+                if (i != row && board[i][col] == board[row][col])
+                    return false;
+
+                //check subgrid
+                int r = gid / 3 * 3 + i / 3;
+                int c = gid % 3 * 3 + i % 3;
+                if ((r != row || c != col) && board[r][c] == board[row][col])
+                    return false;
+            }
+            return true;
+        }
+
+        /**
+         * 23. Merge k Sorted Lists
+         *
+         * @param lists
+         * @return
+         */
+        public ListNode mergeKLists(ListNode[] lists) {
+            ListNode result = new ListNode(-1);
+            ListNode cur = result;
+            int k = 0;
+            int minnum = Integer.MAX_VALUE;
+            while (!isEmpty(lists)) {
+                for (int i = 0; i < lists.length; i++) {
+                    if (lists[i] != null) {
+                        if (lists[i].val < minnum) {
+                            minnum = lists[i].val;
+                            k = i;
+                        }
+                    }
+                }
+                cur.next = lists[k];
+                cur = cur.next;
+                lists[k] = lists[k].next;
+                minnum = Integer.MAX_VALUE;
+            }
+            return result.next;
+        }
+
+        private boolean isEmpty(ListNode[] lists) {
+            for (int i = 0; i < lists.length; i++) {
+                if (lists[i] != null) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /**
+         * 23. Merge k Sorted Lists
+         *
+         * @param lists
+         * @return
+         */
+        public ListNode mergeKList2s(ListNode[] lists) {
+            return null;
+
+        }
+
+
+        /**
+         * @param head
+         * @return
+         */
+        public ListNode swapPairs(ListNode head) {
+            if (head == null || head.next == null) {
+                return head;
+            }
+            ListNode cur = head;
+            ListNode pre;
+            ListNode last = new ListNode(-1);
+            head = head.next;
+            while (cur != null && cur.next != null) {
+                pre = cur.next;
+                last.next = pre;
+                last = cur;
+                cur.next = pre.next;
+                pre.next = cur;
+                cur = cur.next;
+            }
+            return head;
+        }
+
+        /**
+         * 17. Letter Combinations of a Phone Number
+         *
+         * @param digits
+         * @return
+         */
+
+        public List<String> letterCombinations(String digits) {
+            if (digits.equals("")) {
+                return new ArrayList<String>();
+            }
+            String[] table = new String[]{"abc",
+                    "def", "ghi",
+                    "jkl", "mno",
+                    "pqrs", "tuv",
+                    "wxyz"};
+            char[] chars = digits.toCharArray();
+            List<String> list = new ArrayList<>();
+            letterHelper(list, chars, "", table, 0);
+            return list;
+        }
+
+        public void letterHelper(List<String> list, char[] chars, String cur, String[] table, int n) {
+            if (n == chars.length) {
+                list.add(cur.trim());
+                return;
+            }
+            String str = table[chars[n] - '2'];
+            for (int i = 0; i < str.length(); i++) {
+                letterHelper(list, chars, cur + str.charAt(i), table, n + 1);
+            }
+        }
+
+        /**
          * 10. Regular Expression Matching
+         *
          * @param s
          * @param p
          * @return
          */
         public boolean isMatch(String s, String p) {
-            if(p.isEmpty()){
+            if (p.isEmpty()) {
                 return s.isEmpty();
             }
 
             boolean first_match = (!s.isEmpty() && (p.charAt(0) == s.charAt(0) || p.charAt(0) == '.'));
-            if(p.length() >=2 && p.charAt(1) == '*'){
+            if (p.length() >= 2 && p.charAt(1) == '*') {
                 return (isMatch(s, p.substring(2)) ||
                         (first_match && isMatch(s.substring(1), p)));
-            }else {
+            } else {
                 return first_match && isMatch(s.substring(1), p.substring(1));
             }
         }
@@ -248,8 +459,7 @@ public class Problem {
                 int left = half - mid;
 
             }
-
-
+            return 0;
         }
 
 
@@ -385,7 +595,7 @@ public class Problem {
          * @param nums2
          * @return
          */
-        public double findMedianSortedArrays2(int[] nums1, int[] nums2) {
+        public double findMedianSortedArrays4(int[] nums1, int[] nums2) {
             if (nums1.length > nums2.length) {
                 int[] temp = nums1;
                 nums1 = nums2;
@@ -609,7 +819,7 @@ public class Problem {
 
         }
 
-        public double findMedianSortedArrays(int[] A, int[] B) {
+        public double findMedianSortedArrays3(int[] A, int[] B) {
             int m = A.length;
             int n = B.length;
             if (m > n) { // to ensure m<=n
@@ -620,7 +830,7 @@ public class Problem {
                 m = n;
                 n = tmp;
             }
-            int iMin = 0, iMax = m, halfLen = (m + n - 1) / 2;
+            int iMin = 0, iMax = m, halfLen = (m + n + 1) / 2;
             while (iMin <= iMax) {
                 int i = (iMin + iMax) / 2;
                 int j = halfLen - i;
