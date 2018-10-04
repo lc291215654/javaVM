@@ -1,9 +1,6 @@
 package another4rProblem;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by licheng on 9/10/18.
@@ -44,8 +41,32 @@ public class Problem {
 
         ListNode[] lists = new ListNode[]{node1, node4, node7};
 
+        char[][] board = new char[][]{
+                {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+                {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+                {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        };
 
-        System.out.println(solution.mergeKLists(lists));
+        char[][] board2 = new char[][]{
+                {'.', '.', '.', '.', '5', '.', '.', '1', '.'},
+                {'.', '4', '.', '3', '.', '.', '.', '.', '.'},
+                {'.', '.', '.', '.', '.', '3', '.', '.', '1'},
+                {'8', '.', '.', '.', '.', '.', '.', '2', '.'},
+                {'.', '.', '2', '.', '7', '.', '.', '.', '.'},
+                {'.', '1', '5', '.', '.', '.', '.', '.', '.'},
+                {'.', '.', '.', '.', '.', '2', '.', '.', '.'},
+                {'.', '2', '.', '9', '.', '.', '.', '.', '.'},
+                {'.', '.', '4', '.', '.', '.', '.', '.', '.'}
+        };
+
+
+        System.out.println(solution.searchRange(new int[]{1,2,2,2,2,4},2));
 
         System.out.println();
 
@@ -56,7 +77,177 @@ public class Problem {
     static class Solution {
 
         /**
+         * 34. Find First and Last Position of Element in Sorted Array
+         * @param nums
+         * @param target
+         * @return
+         */
+        public int[] searchRange(int[] nums, int target) {
+            int low = 0;
+            int high = nums.length - 1 ;
+            while (low <= high){
+                int mid = low + (high - low)/2 ;
+                if(nums[mid] == target){
+                    low = mid;
+                    high = mid;
+                    break;
+                }else if(nums[mid] < target){
+                    low = mid + 1;
+                }else {
+                    high = mid - 1;
+                }
+
+            }
+            if(low > high){
+                return new int[]{-1,-1};
+            }
+            while(low > 0 && nums[low - 1] == target){
+                low--;
+            }
+            while(high < nums.length -1 && nums[high + 1] == target){
+                high++;
+            }
+            return new int[]{low,high};
+        }
+
+        /**
+         * 29. Divide Two Integers
+         * @param dividend
+         * @param divisor
+         * @return
+         */
+        public int divide(int dividend, int divisor) {
+            return 0;
+
+        }
+
+        /**
+         * 47. Permutations II
+         * @param nums
+         * @return
+         */
+        public List<List<Integer>> permuteUnique(int[] nums) {
+
+            return null;
+
+        }
+
+
+        /**
+         * 46. Permutations
+         *
+         * @param nums
+         * @return
+         */
+        public List<List<Integer>> permute(int[] nums) {
+            List<List<Integer>> list = new ArrayList<List<Integer>>();
+            permute(nums, 0, list);
+            return list;
+        }
+
+        private void permute(int[] nums, int k, List<List<Integer>> list) {
+            if (k == nums.length) {
+                List<Integer> cur = new ArrayList<>(nums.length);
+                for (int i = 0; i < nums.length; i++) {
+                    cur.add(nums[i]);
+                }
+                list.add(cur);
+            }
+            Set<Integer> set = new HashSet<>();
+            for (int i = k; i < nums.length; i++) {
+                if(!set.contains(nums[i])) {
+                    set.add(nums[i]);
+                    swap(nums, k, i);
+                    permute(nums, k + 1, list);
+                    swap(nums, k, i);
+                }
+            }
+        }
+
+        /**
+         * 36. Valid Sudoku
+         *
+         * @param board
+         * @return
+         */
+        public boolean isValidSudoku(char[][] board) {
+            for (int i = 0; i < 9; i++) {
+                Set<Character> set = new HashSet<>();
+                for (int j = 0; j < 9; j++) {
+                    if (board[i][j] != '.') {
+                        if (set.contains(board[i][j])) {
+                            return false;
+                        }
+                        set.add(board[i][j]);
+                    }
+                }
+            }
+
+            for (int i = 0; i < 9; i++) {
+                Set<Character> set = new HashSet<>();
+                for (int j = 0; j < 9; j++) {
+                    if (board[j][i] != '.') {
+                        if (set.contains(board[j][i])) {
+                            return false;
+                        }
+                        set.add(board[j][i]);
+                    }
+                }
+            }
+
+            for (int i = 0; i < 9; i += 3) {
+                for (int j = 0; j < 9; j += 3) {
+                    Set<Character> set = new HashSet<>();
+                    for (int m = i; m < i + 3; m++) {
+                        for (int n = j; n < j + 3; n++) {
+                            if (board[m][n] != '.') {
+                                if (set.contains(board[m][n])) {
+                                    return false;
+                                }
+                                System.out.println(m + "  ++  " + n);
+                                set.add(board[m][n]);
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        /**
+         * 35. Search Insert Position
+         *
+         * @param nums
+         * @param target
+         * @return
+         */
+
+        public int searchInsert(int[] nums, int target) {
+            if (target > nums[nums.length - 1]) {
+                return nums.length;
+            }
+            int low = 0;
+            int high = nums.length - 1;
+            while (low <= high) {
+                int mid = ((high - low) / 2 + low);
+                if (nums[mid] == target) {
+                    return mid;
+                } else if (nums[mid] > target) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            }
+            if (target > nums[low]) {
+                return low + 1;
+            } else {
+                return low;
+            }
+        }
+
+        /**
          * 25. Reverse Nodes in k-Group
+         *
          * @param head
          * @param k
          * @return
@@ -123,17 +314,11 @@ public class Problem {
                     gid = 8;
             }
 
-            //check row, col, subgrid
             for (int i = 0; i < 9; i++) {
-                //check row
                 if (i != col && board[row][i] == board[row][col])
                     return false;
-
-                //check col
                 if (i != row && board[i][col] == board[row][col])
                     return false;
-
-                //check subgrid
                 int r = gid / 3 * 3 + i / 3;
                 int c = gid % 3 * 3 + i % 3;
                 if ((r != row || c != col) && board[r][c] == board[row][col])
@@ -225,6 +410,7 @@ public class Problem {
             if (digits.equals("")) {
                 return new ArrayList<String>();
             }
+
             String[] table = new String[]{"abc",
                     "def", "ghi",
                     "jkl", "mno",
@@ -232,6 +418,7 @@ public class Problem {
                     "wxyz"};
             char[] chars = digits.toCharArray();
             List<String> list = new ArrayList<>();
+
             letterHelper(list, chars, "", table, 0);
             return list;
         }
@@ -385,6 +572,13 @@ public class Problem {
             }
             return res;
 
+        }
+
+        public List<List<Integer>> threeSum2(int[] nums) {
+
+
+
+            return null;
         }
 
         /**
@@ -584,8 +778,28 @@ public class Problem {
          * @return
          */
         public String convert(String s, int numRows) {
-            return "";
-
+            if (numRows == 1) {
+                return s;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < numRows; i++) {
+                boolean direction = true;
+                for (int j = i; j < s.length(); ) {
+                    if (i == 0 || i == numRows - 1) {
+                        sb.append(s.charAt(j));
+                        j = j + 2 * (numRows - 1);
+                    } else {
+                        sb.append(s.charAt(j));
+                        if (direction) {
+                            j = j + 2 * (numRows - i - 1);
+                        } else {
+                            j = j + 2 * i;
+                        }
+                        direction = !direction;
+                    }
+                }
+            }
+            return sb.toString();
         }
 
         /**
@@ -982,6 +1196,12 @@ public class Problem {
 
         private void swap(char[] arrs, int i, int j) {
             char temp = arrs[i];
+            arrs[i] = arrs[j];
+            arrs[j] = temp;
+        }
+
+        private void swap(int[] arrs, int i, int j) {
+            int temp = arrs[i];
             arrs[i] = arrs[j];
             arrs[j] = temp;
         }
