@@ -66,7 +66,7 @@ public class Problem {
         };
 
 
-        System.out.println(solution.searchRange(new int[]{1,2,2,2,2,4},2));
+        System.out.println(solution.longestPalindrome(""));
 
         System.out.println();
 
@@ -78,40 +78,42 @@ public class Problem {
 
         /**
          * 34. Find First and Last Position of Element in Sorted Array
+         *
          * @param nums
          * @param target
          * @return
          */
         public int[] searchRange(int[] nums, int target) {
             int low = 0;
-            int high = nums.length - 1 ;
-            while (low <= high){
-                int mid = low + (high - low)/2 ;
-                if(nums[mid] == target){
+            int high = nums.length - 1;
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+                if (nums[mid] == target) {
                     low = mid;
                     high = mid;
                     break;
-                }else if(nums[mid] < target){
+                } else if (nums[mid] < target) {
                     low = mid + 1;
-                }else {
+                } else {
                     high = mid - 1;
                 }
 
             }
-            if(low > high){
-                return new int[]{-1,-1};
+            if (low > high) {
+                return new int[]{-1, -1};
             }
-            while(low > 0 && nums[low - 1] == target){
+            while (low > 0 && nums[low - 1] == target) {
                 low--;
             }
-            while(high < nums.length -1 && nums[high + 1] == target){
+            while (high < nums.length - 1 && nums[high + 1] == target) {
                 high++;
             }
-            return new int[]{low,high};
+            return new int[]{low, high};
         }
 
         /**
          * 29. Divide Two Integers
+         *
          * @param dividend
          * @param divisor
          * @return
@@ -123,6 +125,7 @@ public class Problem {
 
         /**
          * 47. Permutations II
+         *
          * @param nums
          * @return
          */
@@ -155,7 +158,7 @@ public class Problem {
             }
             Set<Integer> set = new HashSet<>();
             for (int i = k; i < nums.length; i++) {
-                if(!set.contains(nums[i])) {
+                if (!set.contains(nums[i])) {
                     set.add(nums[i]);
                     swap(nums, k, i);
                     permute(nums, k + 1, list);
@@ -575,7 +578,6 @@ public class Problem {
         }
 
         public List<List<Integer>> threeSum2(int[] nums) {
-
 
 
             return null;
@@ -1027,10 +1029,45 @@ public class Problem {
             return result * minus;
         }
 
+        /**
+         * 5. Longest Palindromic Substring
+         * @param s
+         * @return
+         */
         public String longestPalindrome(String s) {
-
-            return "";
-
+            char[] ss = s.toCharArray();
+            int maxlen = 0;
+            int left = 0;
+            int right = 0;
+            int curlen = 0;
+            for (int i = 0; i < ss.length; i++) {
+                for (curlen = 0;
+                     i - curlen >= 0
+                             && i + curlen < ss.length
+                             && ss[i - curlen] == ss[i + curlen]
+                        ;curlen++
+                     ) {
+                }
+                if (curlen > maxlen) {
+                    maxlen = curlen;
+                    left = i - (curlen-1);
+                    right = i + curlen;
+                }
+            }
+            for (int i = 1; i < ss.length; i++) {
+                for (curlen = 0;
+                     i - (curlen+1) >= 0
+                             && i + curlen < ss.length
+                             && ss[i - (curlen+1)] == ss[i + curlen];
+                     curlen++) {
+                }
+                if (curlen >= maxlen) {
+                    maxlen = curlen;
+                    left = i - curlen;
+                    right = i + curlen;
+                }
+            }
+            return s.substring(left, right);
         }
 
         public double findMedianSortedArrays3(int[] A, int[] B) {
