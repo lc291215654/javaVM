@@ -19,54 +19,7 @@ public class Problem {
 
         Solution solution = new Solution();
 
-        int[] A = new int[]{1, 2, 3, 4, 5, 6};
-
-        int[] B = new int[]{7, 8, 9, 10, 11, 12};
-
-        ListNode node1 = new ListNode(1);
-        ListNode node2 = new ListNode(4);
-        ListNode node3 = new ListNode(5);
-        node1.next = node2;
-        node2.next = node3;
-
-        ListNode node4 = new ListNode(1);
-        ListNode node5 = new ListNode(3);
-        ListNode node6 = new ListNode(4);
-        node4.next = node5;
-        node5.next = node6;
-
-        ListNode node7 = new ListNode(2);
-        ListNode node8 = new ListNode(6);
-        node7.next = node8;
-
-        ListNode[] lists = new ListNode[]{node1, node4, node7};
-
-        char[][] board = new char[][]{
-                {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-                {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
-                {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
-                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
-                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
-                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
-                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
-                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
-                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
-        };
-
-        char[][] board2 = new char[][]{
-                {'.', '.', '.', '.', '5', '.', '.', '1', '.'},
-                {'.', '4', '.', '3', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '3', '.', '.', '1'},
-                {'8', '.', '.', '.', '.', '.', '.', '2', '.'},
-                {'.', '.', '2', '.', '7', '.', '.', '.', '.'},
-                {'.', '1', '5', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '2', '.', '.', '.'},
-                {'.', '2', '.', '9', '.', '.', '.', '.', '.'},
-                {'.', '.', '4', '.', '.', '.', '.', '.', '.'}
-        };
-
-
-        System.out.println(solution.longestPalindrome(""));
+        System.out.println(solution.multiply("123","123"));
 
         System.out.println();
 
@@ -970,8 +923,24 @@ public class Problem {
          * @return
          */
         public String multiply(String num1, String num2) {
-            return "";
-
+            int m = num1.length();
+            int n = num2.length();
+            int[] pos = new int[m + n];
+            for (int i = m - 1; i >= 0; i--) {
+                for (int j = n -1; j >= 0; j--) {
+                    int sum = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                    sum = sum + pos[i+j+1];
+                    pos[i+j+1] = sum % 10;
+                    pos[i+j] = sum / 10;
+                }
+            }
+            StringBuffer re = new StringBuffer();
+            for(int k:pos) {
+                if (re.length() != 0 || k != 0) {
+                    re.append(k);
+                }
+            }
+            return re.length() == 0? "0" : re.toString();
         }
 
         public int reverse(int x) {
@@ -1031,6 +1000,7 @@ public class Problem {
 
         /**
          * 5. Longest Palindromic Substring
+         *
          * @param s
          * @return
          */
@@ -1045,20 +1015,20 @@ public class Problem {
                      i - curlen >= 0
                              && i + curlen < ss.length
                              && ss[i - curlen] == ss[i + curlen]
-                        ;curlen++
-                     ) {
+                        ; curlen++
+                        ) {
                 }
                 if (curlen > maxlen) {
                     maxlen = curlen;
-                    left = i - (curlen-1);
+                    left = i - (curlen - 1);
                     right = i + curlen;
                 }
             }
             for (int i = 1; i < ss.length; i++) {
                 for (curlen = 0;
-                     i - (curlen+1) >= 0
+                     i - (curlen + 1) >= 0
                              && i + curlen < ss.length
-                             && ss[i - (curlen+1)] == ss[i + curlen];
+                             && ss[i - (curlen + 1)] == ss[i + curlen];
                      curlen++) {
                 }
                 if (curlen >= maxlen) {

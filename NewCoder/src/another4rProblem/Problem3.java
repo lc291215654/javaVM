@@ -5,6 +5,10 @@ package another4rProblem;
  */
 public class Problem3 {
 
+    public void main(String[] args){
+
+    }
+
 
 
     static class Solution {
