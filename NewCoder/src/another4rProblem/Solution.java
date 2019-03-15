@@ -5,25 +5,34 @@ import java.util.Scanner;
 public class Solution {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int X = sc.nextInt();
-        int[] prices = new int[n];
-        for(int i =0;i<n;i++){
-            prices[i] = sc.nextInt();
-        }
-        int result = calHepler(prices,0,X,0);
-        System.out.println(result);
+        int N = sc.nextInt();
+        int M = sc.nextInt();
+        int[] curnum = new int[N];
+        curnum[0] = M;
+        int[] result = new int[1];
+        calHepler(result,0,curnum);
+        System.out.println(result[0] % 1000000007);
     }
 
-    private static int calHepler(int[] prices, int i, int X,int cur) {
-        if(cur >= X){
-            return cur;
+    private static void calHepler(int[] result, int index, int[] curnums) {
+        if(index >= curnums.length - 1){
+            if((curnums[index - 1] % curnums[index]) == 0){
+                result[0]++;
+            }
+            return ;
         }
-        if(i >= prices.length){
-            return Integer.MAX_VALUE;
+        if(index > 0 && (curnums[index - 1] % curnums[index]) != 0){
+            return ;
         }
-        return Math.min(calHepler(prices,i+1,X,cur + prices[i]),
-        calHepler(prices,i+1,X,cur));
+        if(curnums[index] == 1){
+            result[0]++;
+            return ;
+        }
+        index++;
+        for(int i=curnums[0];i>=1;i--) {
+            curnums[index] = i;
+            calHepler(result,index,curnums);
+        }
     }
 
 }

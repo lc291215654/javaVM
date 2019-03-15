@@ -21,6 +21,12 @@ public class Code_06_Word_Ladder {
 		return res;
 	}
 
+	/**
+	 * 得到所有单词距离为1的邻居
+	 * @param words
+	 * @return
+	 */
+
 	public static HashMap<String, ArrayList<String>> getNexts(List<String> words) {
 		Set<String> dict = new HashSet<String>(words);
 		HashMap<String, ArrayList<String>> nexts = new HashMap<String, ArrayList<String>>();
@@ -32,6 +38,13 @@ public class Code_06_Word_Ladder {
 		}
 		return nexts;
 	}
+
+	/**
+	 * 得到
+	 * @param word
+	 * @param dict
+	 * @return
+	 */
 
 	private static ArrayList<String> getNext(String word, Set<String> dict) {
 		ArrayList<String> res = new ArrayList<String>();
@@ -57,15 +70,15 @@ public class Code_06_Word_Ladder {
 		distances.put(begin, 0);
 		Queue<String> queue = new LinkedList<String>();
 		queue.add(begin);
-		HashSet<String> set = new HashSet<String>();
-		set.add(begin);
+		HashSet<String> isVisited = new HashSet<String>();
+		isVisited.add(begin);
 		while (!queue.isEmpty()) {
 			String cur = queue.poll();
 			for (String str : nexts.get(cur)) {
-				if (!set.contains(str)) {
+				if (!isVisited.contains(str)) {
 					distances.put(str, distances.get(cur) + 1);
 					queue.add(str);
-					set.add(str);
+					isVisited.add(str);
 				}
 			}
 		}

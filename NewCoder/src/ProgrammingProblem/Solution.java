@@ -42,6 +42,9 @@ class TreeLinkNode {
 
 public class Solution {
     LinkedList<Integer> list = new LinkedList<Integer>();
+    private int index = 0;
+    private HashSet<Character> charset = new HashSet<>();
+    private LinkedList<Character> charlist = new LinkedList<Character>();
 
     public static void main(String args[]) {
         ListNode node1 = new ListNode(1);
@@ -68,15 +71,61 @@ public class Solution {
 
         Solution solution = new Solution();
         System.out.println();
-        TreeNode root = solution.levMidRestore(new int[]{3,5,4,2,6,7,1},new int[]{2,5,3,6,4,7,1});
-//        solution.preOrderTraversal(root);
-        solution.postorderTraversal(root);
+        TreeNode root = solution.levMidRestore(new int[]{3, 5, 4, 2, 6, 7, 1}, new int[]{2, 5, 3, 6, 4, 7, 1});
+        solution.preorderTraversal(root);
+//        solution.postorderTraversal(root);
+//        boolean rr = solution.searchMatrix(new int[][]{{1,3,5,7},
+//                {10, 11, 16, 20},
+//                {23, 30, 34, 50}},34);
+
+
+        int rr = solution.evalRPN(new String[]{"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"});
+        System.out.println(rr);
 
     }
 
-    int find(int[] num,int k){
-        for(int i=0;i<num.length;i++){
-            if(num[i] == k){
+    private static int treeheight(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = treeheight(root.left);
+        int right = treeheight(root.right);
+        return left > right ? left + 1 : right + 1;
+    }
+
+    public static void Combination() {
+        /*基本思路：求全组合，则假设原有元素n个，则最终组合结果是2^n个。原因是：
+         * 用位操作方法：假设元素原本有：a,b,c三个，则1表示取该元素，0表示不取。故去a则是001，取ab则是011.
+         * 所以一共三位，每个位上有两个选择0,1.所以是2^n个结果。
+         * 这些结果的位图值都是0,1,2....2^n。所以可以类似全真表一样，从值0到值2^n依次输出结果：即：
+         * 000,001,010,011,100,101,110,111 。对应输出组合结果为：
+        空,a, b ,ab,c,ac,bc,abc.
+        这个输出顺序刚好跟数字0~2^n结果递增顺序一样
+        取法的二进制数其实就是从0到2^n-1的十进制数
+         * ******************************************************************
+         * *
+         * */
+        String[] str = {"a", "b", "c"};
+        int n = str.length;                                  //元素个数。
+        //求出位图全组合的结果个数：2^n
+        int nbit = 1 << n;                                     // “<<” 表示 左移:各二进位全部左移若干位，高位丢弃，低位补0。:即求出2^n=2Bit。
+        System.out.println("全组合结果个数为：" + nbit);
+
+        for (int i = 0; i < nbit; i++) {                        //结果有nbit个。输出结果从数字小到大输出：即输出0,1,2,3,....2^n。
+            System.out.print("组合数值  " + i + " 对应编码为： ");
+            for (int j = 0; j < n; j++) {                        //每个数二进制最多可以左移n次，即遍历完所有可能的变化新二进制数值了
+                int tmp = 1 << j;
+                if ((tmp & i) != 0) {                            //& 表示与。两个位都为1时，结果才为1
+                    System.out.print(str[j]);
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    int find(int[] num, int k) {
+        for (int i = 0; i < num.length; i++) {
+            if (num[i] == k) {
                 return i;
             }
         }
@@ -88,46 +137,45 @@ public class Solution {
         TreeNode[] helper = new TreeNode[size];
         boolean success = false;
         TreeNode root = new TreeNode(lev[0]);
-        int mi = find(mid,lev[0]);
+        int mi = find(mid, lev[0]);
         helper[mi] = root;
-        for(int i = 1; i < lev.length; i++) {
+        for (int i = 1; i < lev.length; i++) {
             success = false;
-            mi = find(mid,lev[i]);
+            mi = find(mid, lev[i]);
             helper[mi] = new TreeNode(lev[i]);
-            for(int p = mi - 1; p >= 0; p--) {
-                if(helper[p] != null) {
-                    if(helper[p].right == null) {
+            for (int p = mi - 1; p >= 0; p--) {
+                if (helper[p] != null) {
+                    if (helper[p].right == null) {
                         helper[p].right = helper[mi];
                         success = true;
                     }
                     break;
                 }
             }
-            if(success) {
+            if (success) {
                 continue;
             }
-            for(int p = mi + 1; p < size; p++) {
-                if(helper[p] != null) {
-                    if(helper[p].left == null) {
+            for (int p = mi + 1; p < size; p++) {
+                if (helper[p] != null) {
+                    if (helper[p].left == null) {
                         helper[p].left = helper[mi];
                         success = true;
                     }
                     break;
                 }
             }
-            if(!success) {
+            if (!success) {
                 break;
             }
         }
         return root;
     }
 
-
     public boolean match(char[] str, char[] pattern) {
-        if(str == null && pattern == null){
+        if (str == null && pattern == null) {
             return true;
         }
-        if(str != null && pattern == null){
+        if (str != null && pattern == null) {
             return false;
         }
 
@@ -135,7 +183,6 @@ public class Solution {
 
 
     }
-
 
     String Serialize(TreeNode root) {
         StringBuffer sb = new StringBuffer();
@@ -150,7 +197,128 @@ public class Solution {
 
     }
 
-    private int index = 0;
+    /**
+     * 93. Restore IP Addresses
+     *
+     * @param s
+     * @return
+     */
+    public List<String> restoreIpAddresses(String s) {
+        List<String> res = new ArrayList<String>();
+        int len = s.length();
+        for (int i = 1; i < 4 && i < len - 2; i++) {
+            for (int j = i + 1; j < i + 4 && j < len - 1; j++) {
+                for (int k = j + 1; k < j + 4 && k < len; k++) {
+                    String s1 = s.substring(0, i), s2 = s.substring(i, j), s3 = s.substring(j, k), s4 = s.substring(k, len);
+                    if (isValid(s1) && isValid(s2) && isValid(s3) && isValid(s4)) {
+                        res.add(s1 + "." + s2 + "." + s3 + "." + s4);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    public boolean isValid(String s) {
+        if (s.length() > 3 || s.length() == 0 || (s.charAt(0) == '0' && s.length() > 1) || Integer.parseInt(s) > 255)
+            return false;
+        return true;
+    }
+
+    /**
+     * 240. Search a 2D Matrix II
+     *
+     * @param matrix
+     * @param target
+     * @return
+     */
+    public boolean searchMatrix2(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return false;
+        }
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int i = m - 1;
+        int j = 0;
+        while (i >= 0 && j < n) {
+            if (matrix[i][j] == target) {
+                return true;
+            } else if (matrix[i][j] > target) {
+                i--;
+            } else {
+                j++;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 74. Search a 2D Matrix
+     *
+     * @param matrix
+     * @param target
+     * @return
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return false;
+        }
+        int m = matrix.length;
+        int n = matrix[0].length;
+        if (target < matrix[0][0] || target > matrix[m - 1][n - 1]) {
+            return false;
+        }
+        int low = 0;
+        int high = m - 1;
+        while (low <= high) {
+            int mid = (high - low) / 2 + low;
+            if (matrix[mid][0] == target) {
+                return true;
+            } else if (matrix[mid][0] > target) {
+                high = mid - 1;
+            } else if (matrix[mid][0] < target && target <= matrix[mid][n - 1]) {
+                low = mid;
+                break;
+            } else {
+                low = mid + 1;
+            }
+        }
+        int left = 0;
+        int right = n - 1;
+        while (left <= right) {
+            int mid = (right - left) / 2 + left;
+            if (matrix[low][mid] == target) {
+                return true;
+            } else if (matrix[low][mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 73. Set Matrix Zeroes
+     *
+     * @param matrix
+     */
+    public void setZeroes(int[][] matrix) {
+        int col0 = 1, rows = matrix.length, cols = matrix[0].length;
+        for (int i = 0; i < rows; i++) {
+            if (matrix[i][0] == 0) col0 = 0;
+            for (int j = 1; j < cols; j++)
+                if (matrix[i][j] == 0)
+                    matrix[i][0] = matrix[0][j] = 0;
+        }
+        for (int i = rows - 1; i >= 0; i--) {
+            for (int j = cols - 1; j >= 1; j--)
+                if (matrix[i][0] == 0 || matrix[0][j] == 0)
+                    matrix[i][j] = 0;
+            if (col0 == 0) matrix[i][0] = 0;
+        }
+
+    }
 
     TreeNode Deserialize(String str) {
         index++;
@@ -208,8 +376,6 @@ public class Solution {
 
     }
 
-
-
     public ArrayList<ArrayList<Integer>> FindContinuousSequence(int sum) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         for (int i = 1; i <= sum / 2; i++) {
@@ -218,7 +384,7 @@ public class Solution {
             for (int j = i; total < sum; j++) {
                 total += j;
                 cur.add(j);
-                if(total == sum){
+                if (total == sum) {
                     result.add(cur);
                     break;
                 }
@@ -258,6 +424,157 @@ public class Solution {
         cs[j] = temp;
     }
 
+    /**
+     * 30. Substring with Concatenation of All Words
+     *
+     * @param s
+     * @param words
+     * @return
+     */
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> ans = new ArrayList<>();
+        int n = s.length();
+        int wc = words.length;
+        if (n == 0 || wc == 0) {
+            return ans;
+        }
+        HashMap<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < wc; i++) {
+            map.put(words[i], 0);
+        }
+        int wordlen = words[0].length();
+        for (int i = 0; i < wordlen; i++) {
+            int left = i;
+            int count = 0;
+            HashMap<String, Integer> tmap = new HashMap<>();
+            for (int j = i; j <= n - wordlen; j += wordlen) {
+                String str = s.substring(j,j+wordlen);
+                if(map.containsKey(str)){
+                    tmap.put(str,0);
+                    if(tmap.get(str) < map.get(str)){
+
+                    }
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    /**
+     * 32. Longest Valid Parentheses
+     *
+     * @param s
+     * @return
+     */
+    public int longestValidParentheses(String s) {
+        if (s.equals("")) {
+            return 0;
+        }
+        char[] pars = s.toCharArray();
+        Stack<Character> stack = new Stack<>();
+        stack.push(pars[0]);
+        int i = 1;
+        int maxvalid = 0;
+        int curvalid = 0;
+        while (i < pars.length) {
+            if (pars[i] == '(') {
+                stack.push('(');
+                i++;
+            } else if (!stack.isEmpty() && stack.pop() == '(') {
+                curvalid += 2;
+                maxvalid = Math.max(maxvalid, curvalid);
+                i++;
+            } else {
+                curvalid = 0;
+                i++;
+            }
+        }
+        return maxvalid;
+    }
+
+    /**
+     * 150. Evaluate Reverse Polish Notation
+     *
+     * @param tokens
+     * @return
+     */
+    public int evalRPN(String[] tokens) {
+        Stack<String> stack = new Stack<>();
+        for (String s : tokens) {
+            stack.push(s);
+        }
+        return evalRPNHelper(stack);
+    }
+
+    public int evalRPNHelper(Stack<String> stack) {
+        String s = stack.pop();
+        if (s.equals("*")) {
+            return evalRPNHelper(stack) * evalRPNHelper(stack);
+        } else if (s == "+") {
+            return evalRPNHelper(stack) + evalRPNHelper(stack);
+        } else if (s == "-") {
+            int minus = evalRPNHelper(stack);
+            return evalRPNHelper(stack) - minus;
+        } else if (s == "/") {
+            int div = evalRPNHelper(stack);
+            return evalRPNHelper(stack) / div;
+        } else {
+            return Integer.parseInt(s);
+        }
+    }
+
+
+    /**
+     * 94. Binary Tree Inorder Traversal
+     *
+     * @param root
+     * @return
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> re = new ArrayList<Integer>();
+        if (root == null) {
+            return re;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+        while (cur != null && !stack.empty()) {
+            while (cur != null) {
+                stack.push(cur);
+                cur = cur.left;
+            }
+            cur = stack.pop();
+            re.add(cur.data);
+            cur = cur.right;
+        }
+        return re;
+    }
+
+    /**
+     * 144. Binary Tree Preorder Traversal
+     *
+     * @param root
+     * @return
+     */
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> re = new ArrayList<Integer>();
+        if (root == null) {
+            return re;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.empty()) {
+            TreeNode tmp = stack.pop();
+            re.add(tmp.data);
+            if (tmp.right != null) {
+                stack.push(tmp.right);
+            }
+            if (tmp.left != null) {
+                stack.push(tmp.left);
+            }
+        }
+        return re;
+    }
 
     public List<Integer> postorderTraversal(TreeNode root) {
         if (root == null) {
@@ -286,50 +603,74 @@ public class Solution {
                 }
             }
         }
-        return  result;
+        return result;
     }
 
     public void postorderTraversal2(TreeNode root) {
-        if(root == null) {
-            return ;
+        if (root == null) {
+            return;
         }
         Stack<TreeNode> stack = new Stack<>();
         stack.push(root);
         stack.push(root);
         TreeNode p;
-        while (!stack.isEmpty()){
+        while (!stack.isEmpty()) {
             p = stack.pop();
-            if(!stack.isEmpty() && stack.peek() == p){
-                if(p.right != null){
+            if (!stack.isEmpty() && stack.peek() == p) {
+                if (p.right != null) {
                     stack.push(p.right);
                     stack.push(p.right);
                 }
-                if(p.left != null){
+                if (p.left != null) {
                     stack.push(p.left);
                     stack.push(p.left);
                 }
-            }else {
+            } else {
                 System.out.println(p.data);
             }
         }
     }
 
-    boolean isSymmetrical(TreeNode pRoot) {
-        if (pRoot == null) {
-            return true;
+    /**
+     * 101. Symmetric Tree
+     *
+     * @param root
+     * @return
+     */
+    boolean isSymmetrical2(TreeNode root) {
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        q.add(root);
+        while (!q.isEmpty()) {
+            TreeNode t1 = q.poll();
+            TreeNode t2 = q.poll();
+            if (t1 == null && t2 == null) continue;
+            if (t1 == null || t2 == null) return false;
+            if (t1.data != t2.data) return false;
+            q.add(t1.left);
+            q.add(t2.right);
+            q.add(t1.right);
+            q.add(t2.left);
         }
-        return comChildren(pRoot.left, pRoot.right);
+        return true;
     }
 
-    boolean comChildren(TreeNode leftChildren, TreeNode rightChildren) {
-        if (leftChildren == null && rightChildren == null) {
+    boolean isSymmetrical(TreeNode root) {
+        if (root == null) {
             return true;
-        } else if (leftChildren == null || rightChildren == null) {
+        }
+        return comChildren(root.left, root.right);
+    }
+
+    boolean comChildren(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        } else if (left == null || right == null) {
             return false;
         }
-        return (leftChildren.data == rightChildren.data)
-                && comChildren(leftChildren.left, rightChildren.right)
-                && comChildren(leftChildren.right, rightChildren.left);
+        return (left.data == right.data)
+                && comChildren(left.left, right.right)
+                && comChildren(left.right, right.left);
     }
 
     public TreeLinkNode GetNext(TreeLinkNode pNode) {
@@ -374,7 +715,6 @@ public class Solution {
         return result;
     }
 
-
     public int GetNumberOfK(int[] array, int k) {
         int left = GetNumberLeft(array, k, 0, array.length - 1);
         int right = GetNumberRight(array, k, 0, array.length - 1);
@@ -393,22 +733,10 @@ public class Solution {
         return children && height;
     }
 
-    private static int treeheight(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int left = treeheight(root.left);
-        int right = treeheight(root.right);
-        return left > right ? left + 1 : right + 1;
-    }
-
     public boolean isNumeric(char[] str) {
         return false;
 
     }
-
-    private HashSet<Character> charset = new HashSet<>();
-    private LinkedList<Character> charlist = new LinkedList<Character>();
 
     public int GetUglyNumber_Solution(int index) {
 
@@ -449,69 +777,39 @@ public class Solution {
         return '#';
     }
 
-    public static void Combination() {
-        /*基本思路：求全组合，则假设原有元素n个，则最终组合结果是2^n个。原因是：
-         * 用位操作方法：假设元素原本有：a,b,c三个，则1表示取该元素，0表示不取。故去a则是001，取ab则是011.
-         * 所以一共三位，每个位上有两个选择0,1.所以是2^n个结果。
-         * 这些结果的位图值都是0,1,2....2^n。所以可以类似全真表一样，从值0到值2^n依次输出结果：即：
-         * 000,001,010,011,100,101,110,111 。对应输出组合结果为：
-        空,a, b ,ab,c,ac,bc,abc.
-        这个输出顺序刚好跟数字0~2^n结果递增顺序一样
-        取法的二进制数其实就是从0到2^n-1的十进制数
-         * ******************************************************************
-         * *
-         * */
-        String[] str = {"a", "b", "c"};
-        int n = str.length;                                  //元素个数。
-        //求出位图全组合的结果个数：2^n
-        int nbit = 1 << n;                                     // “<<” 表示 左移:各二进位全部左移若干位，高位丢弃，低位补0。:即求出2^n=2Bit。
-        System.out.println("全组合结果个数为：" + nbit);
-
-        for (int i = 0; i < nbit; i++) {                        //结果有nbit个。输出结果从数字小到大输出：即输出0,1,2,3,....2^n。
-            System.out.print("组合数值  " + i + " 对应编码为： ");
-            for (int j = 0; j < n; j++) {                        //每个数二进制最多可以左移n次，即遍历完所有可能的变化新二进制数值了
-                int tmp = 1 << j;
-                if ((tmp & i) != 0) {                            //& 表示与。两个位都为1时，结果才为1
-                    System.out.print(str[j]);
-                }
-            }
-            System.out.println();
-        }
-    }
-
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        if(l1 ==  null && l2 == null){
+        if (l1 == null && l2 == null) {
             return null;
         }
         ListNode head = new ListNode(-1);
         ListNode p = head;
         int carry = 0;
-        while (l1 != null && l2 !=null){
+        while (l1 != null && l2 != null) {
             int val = l1.val + l2.val + carry;
             carry = val / 10;
-            val = val % 10 ;
+            val = val % 10;
             p.next = new ListNode(val);
             p = p.next;
             l1 = l1.next;
             l2 = l2.next;
         }
-        while (l1 != null){
+        while (l1 != null) {
             int val = l1.val + carry;
             carry = val / 10;
-            val = val % 10 ;
+            val = val % 10;
             p.next = new ListNode(val);
             p = p.next;
             l1 = l1.next;
         }
-        while (l2 != null){
+        while (l2 != null) {
             int val = l2.val + carry;
             carry = val / 10;
-            val = val % 10 ;
+            val = val % 10;
             p.next = new ListNode(val);
             p = p.next;
             l2 = l2.next;
         }
-        if(carry > 0){
+        if (carry > 0) {
             p.next = new ListNode(carry);
         }
         return head.next;
@@ -737,30 +1035,11 @@ public class Solution {
                 count = count + a / 10 * i;
             } else if (a % 10 == 1) {
                 count = count + (a / 10 * i) + (b + 1);
-            }else {
-                count = count + (a/10 +1)*i;
+            } else {
+                count = count + (a / 10 + 1) * i;
             }
         }
         return count;
-    }
-
-
-    /**
-     * Definition for singly-linked list with a random pointer.
-     * class RandomListNode {
-     * int label;
-     * RandomListNode next, random;
-     * RandomListNode(int x) { this.label = x; }
-     * };
-     */
-
-    class RandomListNode {
-        int label;
-        RandomListNode next, random;
-
-        RandomListNode(int x) {
-            this.label = x;
-        }
     }
 
     public RandomListNode copyRandomList2(RandomListNode head) {
@@ -828,5 +1107,23 @@ public class Solution {
             }
         }
         return flag;
+    }
+
+    /**
+     * Definition for singly-linked list with a random pointer.
+     * class RandomListNode {
+     * int label;
+     * RandomListNode next, random;
+     * RandomListNode(int x) { this.label = x; }
+     * };
+     */
+
+    class RandomListNode {
+        int label;
+        RandomListNode next, random;
+
+        RandomListNode(int x) {
+            this.label = x;
+        }
     }
 }
