@@ -17,52 +17,76 @@ public class Solution {
     public static void main(String args[]) {
         Solution solution = new Solution();
 
-        System.out.println(solution.myPow(-2,-2));
+        System.out.println(solution.myPow(-2, -2));
 
         System.out.println();
     }
 
     /**
+     * 179. Largest Number
+     * @param nums
+     * @return
+     */
+    public String largestNumber(int[] nums) {
+        String[] numstrs = parseStr(nums);
+
+        return "";
+
+    }
+
+    public String[] parseStr(int[] nums){
+        String[] restr = new String[nums.length];
+        for(int i=0;i<nums.length;i++){
+            restr[i] = Integer.toString(nums[i]);
+        }
+        Arrays.sort(restr, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return 0;
+            }
+        });
+        return restr;
+    }
+
+    /**
      * 41. First Missing Positive
+     *
      * @param nums
      * @return
      */
     public int firstMissingPositive(int[] nums) {
-        if(nums==null || nums.length==0)
-        {
+        if (nums == null || nums.length == 0) {
             return 1;
         }
-        for(int i=0;i<nums.length;i++)
-        {
-            if(nums[i]<=nums.length && nums[i]>0 && nums[nums[i]-1]!=nums[i])
-            {
-                int temp = nums[nums[i]-1];
-                nums[nums[i]-1] = nums[i];
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] <= nums.length && nums[i] > 0 && nums[nums[i] - 1] != nums[i]) {
+                int temp = nums[nums[i] - 1];
+                nums[nums[i] - 1] = nums[i];
                 nums[i] = temp;
                 i--;
             }
         }
-        for(int i=0;i<nums.length;i++)
-        {
-            if(nums[i]!=i+1)
-                return i+1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != i + 1)
+                return i + 1;
         }
-        return nums.length+1;
+        return nums.length + 1;
     }
 
     /**
      * 48. Rotate Image
+     *
      * @param matrix
      */
     public void rotate(int[][] matrix) {
         int[][] m = new int[matrix.length][matrix[0].length];
-        for(int i = 0;i<matrix.length;i++){
-            for(int j = 0;j<matrix[0].length;j++){
-                m[j][matrix.length - 1 -i] = matrix[i][j];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                m[j][matrix.length - 1 - i] = matrix[i][j];
             }
         }
-        for(int i = 0;i<matrix.length;i++){
-            for(int j = 0;j<matrix[0].length;j++){
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
                 matrix[i][j] = m[i][j];
             }
         }
@@ -83,10 +107,10 @@ public class Solution {
         if (n == 0) {
             return 1;
         }
-        if(n == Integer.MIN_VALUE){
-            return myPow(1/x, -(n+1)) * (1/x);
-        }else if(n < 0){
-            return myPow(1/x, -n);
+        if (n == Integer.MIN_VALUE) {
+            return myPow(1 / x, -(n + 1)) * (1 / x);
+        } else if (n < 0) {
+            return myPow(1 / x, -n);
         }
         if (n % 2 == 0) {
             return myPow(x * x, n / 2);

@@ -17,27 +17,13 @@ class Light extends Powder {
 public class Lianshou {
 
     public static void main(String args[]) {
+        
+        Properties props = System.getProperties();
 
-        HashMap<String,String> hashMap = new HashMap<String, String>();
-
-        hashMap.put("xiaoli","apple");
-        hashMap.put("xiaogao","orange");
-        hashMap.put("xiaozou","apple");
-
-        Set<String> keyset = hashMap.keySet();
-
-        Collection<String> values = hashMap.values();
-
-
-
-
-
-        System.out.println(hashMap);
-        System.out.println(keyset);
-        System.out.println(values);
-
-
-
+        Set<Object> keyset = props.keySet();
+        for(Object key:keyset){
+            System.out.println("key:" + key + "value:" + props.getProperty(key.toString()));
+        }
     }
 
 }
