@@ -1,9 +1,13 @@
 package ProgrammingProblem.leetcode;
 
+import my.li.org.binary.ListNode;
 import my.li.org.binary.TreeNode;
 
 import java.math.BigInteger;
 import java.util.*;
+
+import static b3.basic_class_01.Code_04_QuickSort.swap;
+import static c3.advanced_class_08.Code_01_ShuffleProblem.reverse;
 
 /**
  * Created by licheng on 8/25/18.
@@ -12,10 +16,70 @@ public class Solution {
 
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
-//        int n = sc.nextInt();
         Solution solution = new Solution();
+        List<Integer> re = solution.rightSideView(new TreeNode(2));
+        System.out.println();
+    }
 
-        System.out.println(solution.simplifyPath("/a//b////c/d//././/.."));
+    public int search(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        int left = 0;
+        int right = nums.length - 1;
+        if (nums[right] > nums[0]) {
+            right  = 0;
+        }
+        while (left < right) {
+            int mid = (right - left) / 2 + left ;
+            if (nums[mid] > nums[mid + 1]) {
+                right = mid + 1;
+                break;
+            }
+            if (nums[mid - 1] > nums[mid]) {
+                right = mid;
+                break;
+            }
+            if(nums[mid] > nums[0]){
+                left = mid + 1;
+            }else {
+                right = mid - 1;
+            }
+        }
+        int low = 0;
+        int high = nums.length - 1;
+        while (low <= high) {
+            int mid = (high - low) / 2 + low;
+            if (nums[(mid + right) % nums.length] == target) {
+                return (mid + right) % nums.length;
+            } else if (nums[(mid + right) % nums.length] > target ) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        int i = n - 1;
+        for (; i > 0; i--) {
+            if (nums[i] > nums[i - 1]) {
+                for (int j = n - 1; j >= i - 1; j--) {
+                    if (nums[j] > nums[i - 1]) {
+                        swap(nums, j, i - 1);
+                        reverse(nums, i, n - 1);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        if (i == 0) {
+            reverse(nums, 0, n - 1);
+        }
     }
 
     public String simplifyPath(String path) {
@@ -138,7 +202,101 @@ public class Solution {
         return ans;
     }
 
-    public int maxProfit(int prices[]) {
+    /**
+     * 199. Binary Tree Right Side View
+     * @param root
+     * @return
+     */
+    public List<Integer> rightSideView(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        List<Integer> re = new LinkedList<>();
+        if(root == null){
+            return re;
+        }
+        int preLevel = 1;
+        int cur = 0;
+        queue.add(root);
+        while (!queue.isEmpty()){
+            TreeNode treeNode = null;
+            while (preLevel > 0){
+                treeNode = queue.poll();
+                if(treeNode.left != null){
+                    queue.add(treeNode.left);
+                    cur++;
+                }
+                if(treeNode.right != null){
+                    queue.add(treeNode.right);
+                    cur++;
+                }
+                preLevel--;
+            }
+            preLevel = cur;
+            cur = 0;
+            if(treeNode != null) {
+                re.add(treeNode.data);
+            }
+        }
+        return re;
+    }
+
+    /**
+     * 189. Rotate Array
+     * @param nums
+     * @param k
+     */
+    public void rotate(int[] nums, int k) {
+        k = k % nums.length;
+        reverse(nums,0,nums.length -1 - k);
+        reverse(nums,nums.length - k,nums.length -1);
+        reverse(nums,0,nums.length-1);
+    }
+
+    public void rotate2(int[] nums, int k) {
+        k = k % nums.length;
+        int count = 0;
+        for (int start = 0; count < nums.length; start++) {
+            int current = start;
+            int prev = nums[start];
+            do {
+                int next = (current + k) % nums.length;
+                int temp = nums[next];
+                nums[next] = prev;
+                prev = temp;
+                current = next;
+                count++;
+            } while (start != current);
+        }
+    }
+
+    /**
+     * 237. Delete Node in a Linked List
+     * @param node
+     */
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+
+    /**
+     * 122. Best Time to Buy and Sell Stock II
+     * @param prices
+     * @return
+     */
+    public int maxProfit2(int[] prices) {
+        int maxprofit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > prices[i - 1])
+                maxprofit += prices[i] - prices[i - 1];
+        }
+        return maxprofit;
+    }
+
+    /**
+     * 121. Best Time to Buy and Sell Stock
+     * @param prices
+     * @return
+     */
+    public int maxProfit(int[] prices) {
         int minprice = Integer.MAX_VALUE;
         int maxprofit = 0;
         for (int i = 0; i < prices.length; i++) {

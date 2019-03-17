@@ -678,9 +678,6 @@ public class Problem {
                 }
             }
             return res;
-
-
-            return null;
         }
 
         /**
