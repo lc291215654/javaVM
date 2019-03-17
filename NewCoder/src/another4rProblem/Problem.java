@@ -34,7 +34,7 @@ public class Problem {
                 {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
         };
 
-        String re = solution.minWindow("ADOBECODEBANC","ABC");
+        int re = solution.largestRectangleArea2(new int[]{2, 1, 5, 6, 2, 3});
         System.out.println(re);
 
 
@@ -43,50 +43,354 @@ public class Problem {
 
     static class Solution {
 
+
+        /**
+         * 109. Convert Sorted List to Binary Search Tree
+         *
+         * @param head
+         * @return
+         */
+        public TreeNode sortedListToBST(ListNode head) {
+            return sortedListToBSTHelper(head, head);
+        }
+
+        public TreeNode sortedListToBSTHelper(ListNode head, ListNode tail) {
+            if (head == null) {
+                return null;
+            }
+            if (head == tail) {
+                return new TreeNode(head.val);
+            }
+            TreeNode fast;
+            return null;
+        }
+
+        private TreeNode convertListToBST2(ListNode head,int l, int r) {
+            // Invalid case
+            if (l > r) {
+                return null;
+            }
+
+            int mid = (l + r) / 2;
+
+            // First step of simulated inorder traversal. Recursively form
+            // the left half
+            TreeNode left = convertListToBST2(head,l, mid - 1);
+
+            // Once left half is traversed, process the current node
+            TreeNode node = new TreeNode(head.val);
+            node.left = left;
+
+            // Maintain the invariance mentioned in the algorithm
+            head = head.next;
+
+            // Recurse on the right hand side and form BST out of them
+            node.right = this.convertListToBST2(head,mid + 1, r);
+            return node;
+        }
+
+        public TreeNode sortedListToBST2(ListNode head) {
+            // Get the size of the linked list first
+            int size = this.findSize(head);
+
+            // Form the BST now that we know the size
+            return convertListToBST2(head,0, size - 1);
+        }
+
+        private int findSize(ListNode head) {
+            ListNode ptr = head;
+            int c = 0;
+            while (ptr != null) {
+                ptr = ptr.next;
+                c += 1;
+            }
+            return c;
+        }
+
+        /**
+         * 106. Construct Binary Tree from Inorder and Postorder Traversal
+         *
+         * @param inorder
+         * @param postorder
+         * @return
+         */
+        public TreeNode buildTree2(int[] inorder, int[] postorder) {
+            return buildTree2Helper(inorder, 0, inorder.length - 1,
+                    postorder, 0, postorder.length - 1);
+        }
+
+        public TreeNode buildTree2Helper(int[] inorder, int inleft, int inright,
+                                         int[] postorder, int postleft, int postright) {
+            if (inleft > inright) {
+                return null;
+            }
+            if (inleft == inright) {
+                return new TreeNode(inorder[inleft]);
+            }
+            TreeNode root = new TreeNode(postorder[postright]);
+            int pivot = inleft;
+            for (; pivot <= inright; pivot++) {
+                if (inorder[pivot] == postorder[postright]) {
+                    break;
+                }
+            }
+            root.left = buildTree2Helper(inorder, inleft, pivot - 1,
+                    postorder, postleft, postleft + pivot - inleft - 1);
+            root.right = buildTree2Helper(inorder, pivot + 1, inright,
+                    postorder, postleft + pivot - inleft, postright - 1);
+            return root;
+        }
+
+        /**
+         * 105. Construct Binary Tree from Preorder and Inorder Traversal
+         *
+         * @param preorder
+         * @param inorder
+         * @return
+         */
+        public TreeNode buildTree(int[] preorder, int[] inorder) {
+            return buildTreeHelper(preorder, 0, preorder.length - 1,
+                    inorder, 0, inorder.length - 1);
+        }
+
+        public TreeNode buildTreeHelper(int[] preorder, int preleft, int preright,
+                                        int[] inorder, int inleft, int inright) {
+            if (preleft > preright) {
+                return null;
+            }
+            if (preleft == preright) {
+                return new TreeNode(preorder[preleft]);
+            }
+            TreeNode root = new TreeNode(preorder[preleft]);
+            int pivot = inleft;
+            for (; pivot <= inright; pivot++) {
+                if (inorder[pivot] == preorder[preleft]) {
+                    break;
+                }
+            }
+            root.left = buildTreeHelper(preorder, preleft + 1, preleft + pivot - inleft,
+                    inorder, inleft, pivot - 1);
+            root.right = buildTreeHelper(preorder, preleft + pivot - inleft + 1, preright,
+                    inorder, pivot + 1, inright);
+            return root;
+        }
+
+
+        /**
+         * 110. Balanced Binary Tree
+         *
+         * @param root
+         * @return
+         */
+        public boolean isBalanced(TreeNode root) {
+            if (root == null) {
+                return true;
+            }
+            return isBalanced(root.left) &&
+                    isBalanced(root.right) &&
+                    Math.abs(height(root.left) - height(root.right)) <= 1;
+        }
+
+        private int height(TreeNode node) {
+            if (node == null) {
+                return 0;
+            }
+            return Math.max(height(node.left), height(node.right)) + 1;
+        }
+
+        public boolean isBalanced2(TreeNode root) {
+            return dfsHeight(root) != -1;
+        }
+
+        int dfsHeight(TreeNode root) {
+            if (root == null) return 0;
+
+            int leftHeight = dfsHeight(root.left);
+            if (leftHeight == -1) return -1;
+            int rightHeight = dfsHeight(root.right);
+            if (rightHeight == -1) return -1;
+
+            if (Math.abs(leftHeight - rightHeight) > 1) return -1;
+            return Math.max(leftHeight, rightHeight) + 1;
+        }
+
+        /**
+         * 141. Linked List Cycle
+         *
+         * @param head
+         * @return
+         */
+        public boolean hasCycle(ListNode head) {
+            if (head == null || head.next == null) {
+                return false;
+            }
+            ListNode fast = head.next.next;
+            ListNode slow = head;
+            while (fast != null && fast.next != null) {
+                if (slow == fast) {
+                    return true;
+                }
+                fast = fast.next.next;
+                slow = slow.next;
+            }
+            return false;
+        }
+
+        /**
+         * 84. Largest Rectangle in Histogram
+         *
+         * @param heights
+         * @return
+         */
+        public int largestRectangleArea(int[] heights) {
+            int len = heights.length;
+            Deque<Integer> stack = new ArrayDeque<>();
+            int maxArea = 0;
+            for (int i = 0; i <= len; i++) {
+                int h = (i == len ? 0 : heights[i]);
+                if (stack.isEmpty() || h >= heights[stack.peekLast()]) {
+                    stack.addLast(i);
+                } else {
+                    int tmp = stack.removeLast();
+                    int width = stack.isEmpty() ? i : i - 1 - stack.peekLast();
+                    maxArea = Math.max(maxArea, heights[tmp] * width);
+                    i--;
+                }
+            }
+            return maxArea;
+        }
+
+        public int largestRectangleArea2(int[] heights) {
+            if (heights == null || heights.length == 0) {
+                return 0;
+            }
+            int[] lessFromLeft = new int[heights.length]; // idx of the first bar the left that is lower than current
+            int[] lessFromRight = new int[heights.length]; // idx of the first bar the right that is lower than current
+            lessFromRight[heights.length - 1] = heights.length;
+            lessFromLeft[0] = -1;
+            for (int i = 1; i < heights.length; i++) {
+                int p = i - 1;
+                while (p >= 0 && heights[p] >= heights[i]) {
+                    p = lessFromLeft[p];
+                }
+                lessFromLeft[i] = p;
+            }
+            for (int i = heights.length - 2; i >= 0; i--) {
+                int p = i + 1;
+                while (p < heights.length && heights[p] >= heights[i]) {
+                    p = lessFromRight[p];
+                }
+                lessFromRight[i] = p;
+            }
+            int maxArea = 0;
+            for (int i = 0; i < heights.length; i++) {
+                maxArea = Math.max(maxArea, heights[i] * (lessFromRight[i] - lessFromLeft[i] - 1));
+            }
+            return maxArea;
+        }
+
+        /**
+         * 95. Unique Binary Search Trees II
+         *
+         * @param n
+         * @return
+         */
+        public List<TreeNode> generateTrees(int n) {
+            return genTrees(1, n);
+        }
+
+        public List<TreeNode> genTrees(int start, int end) {
+            List<TreeNode> list = new ArrayList<TreeNode>();
+            if (start > end) {
+                list.add(null);
+                return list;
+            }
+            if (start == end) {
+                list.add(new TreeNode(start));
+                return list;
+            }
+            List<TreeNode> left, right;
+            for (int i = start; i <= end; i++) {
+                left = genTrees(start, i - 1);
+                right = genTrees(i + 1, end);
+                for (TreeNode lnode : left) {
+                    for (TreeNode rnode : right) {
+                        TreeNode root = new TreeNode(i);
+                        root.left = lnode;
+                        root.right = rnode;
+                        list.add(root);
+                    }
+                }
+            }
+            return list;
+        }
+
         /**
          * 239. Sliding Window Maximum
+         *
          * @param nums
          * @param k
          * @return
          */
         public int[] maxSlidingWindow(int[] nums, int k) {
-            return null;
+            if (nums == null || k <= 0) {
+                return new int[0];
+            }
+            int n = nums.length;
+            int[] re = new int[n - k + 1];
+            int ri = 0;
+            Deque<Integer> deque = new ArrayDeque<>();
+            for (int i = 0; i < nums.length; i++) {
+                while (!deque.isEmpty() && deque.peek() < i - k + 1) {
+                    deque.poll();
+                }
+                while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+                    deque.pollLast();
+                }
+                deque.offer(i);
+                if (i >= k - 1) {
+                    re[ri] = nums[deque.peek()];
+                    ri++;
+                }
+            }
+            return re;
 
         }
 
         /**
          * 108. Convert Sorted Array to Binary Search Tree
+         *
          * @param nums
          * @return
          */
         public TreeNode sortedArrayToBST(int[] nums) {
-            return sortedArrayToBST(nums,0,nums.length-1);
+            return sortedArrayToBST(nums, 0, nums.length - 1);
         }
 
-        public TreeNode sortedArrayToBST(int[] nums,int left,int right) {
-            if(left < right){
+        public TreeNode sortedArrayToBST(int[] nums, int left, int right) {
+            if (left < right) {
                 return null;
-            }else if(left == right){
+            } else if (left == right) {
                 return new TreeNode(nums[left]);
             }
             int mid = (right - left) / 2 + left;
             TreeNode root = new TreeNode(nums[mid]);
-            root.left = sortedArrayToBST(nums,left,mid-1);
-            root.right = sortedArrayToBST(nums,mid + 1,right);
+            root.left = sortedArrayToBST(nums, left, mid - 1);
+            root.right = sortedArrayToBST(nums, mid + 1, right);
             return root;
         }
 
 
-
         /**
          * 76. Minimum Window Substring
+         *
          * @param s
          * @param t
          * @return
          */
         public String minWindow(String s, String t) {
             int[] map = new int[128];
-            for(char c:t.toCharArray()){
+            for (char c : t.toCharArray()) {
                 map[c]++;
             }
             int counter = t.length();
@@ -94,38 +398,39 @@ public class Problem {
             int end = 0;
             int d = Integer.MAX_VALUE;
             int head = 0;
-            while (end < s.length()){
-                if(map[s.charAt(end)]>0){
+            while (end < s.length()) {
+                if (map[s.charAt(end)] > 0) {
                     counter--;
                 }
                 map[s.charAt(end)]--;
                 end++;
-                while (counter == 0){
-                    if(end-begin < d){
+                while (counter == 0) {
+                    if (end - begin < d) {
                         d = end - begin;
                         head = begin;
                     }
-                    if(map[s.charAt(begin)] == 0){
+                    if (map[s.charAt(begin)] == 0) {
                         counter++;
                     }
                     map[s.charAt(begin)]++;
                     begin++;
                 }
             }
-            return d==Integer.MAX_VALUE ? "" : s.substring(head,head + d);
+            return d == Integer.MAX_VALUE ? "" : s.substring(head, head + d);
         }
 
         /**
          * 75. Sort Colors
+         *
          * @param nums
          */
         public void sortColors(int[] nums) {
-                int n = nums.length;
-                int second=n-1, zero=0;
-                for (int i=0; i<=second; i++) {
-                    while (nums[i]==2 && i<second) swap(nums,i, second--);
-                    while (nums[i]==0 && i>zero) swap(nums,i, zero++);
-                }
+            int n = nums.length;
+            int second = n - 1, zero = 0;
+            for (int i = 0; i <= second; i++) {
+                while (nums[i] == 2 && i < second) swap(nums, i, second--);
+                while (nums[i] == 0 && i > zero) swap(nums, i, zero++);
+            }
         }
 
         /**
@@ -589,6 +894,7 @@ public class Problem {
 
         /**
          * 49. Group Anagrams
+         *
          * @param strs
          * @return
          */
@@ -614,24 +920,25 @@ public class Problem {
 
         /**
          * 204. Count Primes
+         *
          * @param n
          * @return
          */
         public int countPrimes(int n) {
             boolean[] isPrime = new boolean[n + 1];
-            for(int i=2;i<n;i++){
+            for (int i = 2; i < n; i++) {
                 isPrime[i] = true;
             }
-            for(int i = 2;i*i < n;i++){
-                if(isPrime[i]){
-                    for(int j = i + i;j<n;j+=i){
+            for (int i = 2; i * i < n; i++) {
+                if (isPrime[i]) {
+                    for (int j = i + i; j < n; j += i) {
                         isPrime[j] = false;
                     }
                 }
             }
             int count = 0;
-            for(int i=2;i< n;i++){
-                if(isPrime[i]){
+            for (int i = 2; i < n; i++) {
+                if (isPrime[i]) {
                     count++;
                 }
             }
@@ -649,15 +956,15 @@ public class Problem {
                 return 0;
             }
             int left = 1;
-            int right = x / 2 ;
+            int right = x / 2;
             int mid = (right + left) / 2;
-            while (left < right){
-                if(mid <= x / mid && (mid+1) > (x / (mid+1))){
+            while (left < right) {
+                if (mid <= x / mid && (mid + 1) > (x / (mid + 1))) {
                     return mid;
                 }
-                if(mid  > x / mid){
+                if (mid > x / mid) {
                     right = mid - 1;
-                }else {
+                } else {
                     left = mid + 1;
                 }
                 mid = (right + left) / 2;

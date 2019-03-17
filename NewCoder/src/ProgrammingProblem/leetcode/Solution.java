@@ -17,8 +17,17 @@ public class Solution {
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
         Solution solution = new Solution();
-        List<Integer> re = solution.rightSideView(new TreeNode(2));
-        System.out.println();
+        TreeNode root = new TreeNode(1);
+        TreeNode node2 = new TreeNode(2);
+        TreeNode node3 = new TreeNode(3);
+        TreeNode node4 = new TreeNode(4);
+        TreeNode node5 = new TreeNode(5);
+        root.left = node2;
+        root.right = node3;
+        node2.left = node4;
+        node3.right =node5;
+        List<List<Integer>> re = solution.zigzagLevelOrder(root);
+        System.out.println(re);
     }
 
     public int search(int[] nums, int target) {
@@ -521,6 +530,41 @@ public class Solution {
         return Math.min(minDepth(root.left) + 1, minDepth(root.right) + 1);
     }
 
+
+    /**
+     * 113. Path Sum II
+     * @param root
+     * @param sum
+     * @return
+     */
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> re = new ArrayList<>();
+        pathSumHelper(root,sum,re,new ArrayList<Integer>());
+        return re;
+    }
+
+    private void pathSumHelper(TreeNode root, int sum, List<List<Integer>> re,
+                               ArrayList<Integer> curlist) {
+        if(sum < root.data){
+            return ;
+        }
+        curlist.add(root.data);
+        if(sum == root.data && root.left ==null && root.right == null){
+            re.add(new ArrayList<>(curlist));
+            return;
+        }
+        if(root.left != null){
+            pathSumHelper(root.left, sum - root.data, re,
+                    curlist);
+            curlist.remove(curlist.size() -1);
+        }
+        if(root.right != null){
+            pathSumHelper(root.right, sum - root.data, re,
+                    curlist);
+            curlist.remove(curlist.size() -1);
+        }
+    }
+
     /**
      * 112. Path Sum
      *
@@ -585,6 +629,37 @@ public class Solution {
      * @param root
      * @return
      */
+    public List<List<Integer>> zigzagLevelOrder2(TreeNode root)
+    {
+        List<List<Integer>> sol = new ArrayList<>();
+        travel(root, sol, 0);
+        return sol;
+    }
+
+    private void travel(TreeNode curr, List<List<Integer>> sol, int level)
+    {
+        if(curr == null) return;
+
+        if(sol.size() <= level)
+        {
+            List<Integer> newLevel = new LinkedList<>();
+            sol.add(newLevel);
+        }
+
+        List<Integer> collection  = sol.get(level);
+        if(level % 2 == 0) collection.add(curr.data);
+        else collection.add(0, curr.data);
+
+        travel(curr.left, sol, level + 1);
+        travel(curr.right, sol, level + 1);
+    }
+
+    /**
+     * 103. Binary Tree Zigzag Level Order Traversal
+     *
+     * @param root
+     * @return
+     */
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
         if (root == null) {
@@ -599,23 +674,19 @@ public class Solution {
             for (int i = 0; i < leversize; i++) {
                 TreeNode node = queue.poll();
                 leverlist.add(node.data);
-                if (zigzag) {
-                    if (node.left != null) {
-                        queue.add(node.left);
-                    }
-                    if (node.right != null) {
-                        queue.add(node.right);
-                    }
-                } else {
-                    if (node.right != null) {
-                        queue.add(node.right);
-                    }
-                    if (node.left != null) {
-                        queue.add(node.left);
-                    }
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
                 }
             }
-            result.add(leverlist);
+            if (zigzag) {
+                Collections.reverse(leverlist);
+                result.add(leverlist);
+            } else {
+                result.add(leverlist);
+            }
             zigzag = !zigzag;
         }
         return result;
