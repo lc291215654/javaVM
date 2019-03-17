@@ -50,6 +50,7 @@ public class Problem {
          * @return
          */
         public int[] maxSlidingWindow(int[] nums, int k) {
+            return null;
 
         }
 
@@ -587,6 +588,140 @@ public class Problem {
         }
 
         /**
+         * 49. Group Anagrams
+         * @param strs
+         * @return
+         */
+        public List<List<String>> groupAnagrams(String[] strs) {
+            if (strs.length == 0) return new ArrayList();
+            Map<String, List> ans = new HashMap<String, List>();
+            int[] count = new int[26];
+            for (String s : strs) {
+                Arrays.fill(count, 0);
+                for (char c : s.toCharArray()) count[c - 'a']++;
+
+                StringBuilder sb = new StringBuilder("");
+                for (int i = 0; i < 26; i++) {
+//                    sb.append('#');
+                    sb.append(count[i]);
+                }
+                String key = sb.toString();
+                if (!ans.containsKey(key)) ans.put(key, new ArrayList());
+                ans.get(key).add(s);
+            }
+            return new ArrayList(ans.values());
+        }
+
+        /**
+         * 204. Count Primes
+         * @param n
+         * @return
+         */
+        public int countPrimes(int n) {
+            boolean[] isPrime = new boolean[n + 1];
+            for(int i=2;i<n;i++){
+                isPrime[i] = true;
+            }
+            for(int i = 2;i*i < n;i++){
+                if(isPrime[i]){
+                    for(int j = i + i;j<n;j+=i){
+                        isPrime[j] = false;
+                    }
+                }
+            }
+            int count = 0;
+            for(int i=2;i< n;i++){
+                if(isPrime[i]){
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        /**
+         * 69. Sqrt(x)
+         *
+         * @param x
+         * @return
+         */
+        public int mySqrt(int x) {
+            if (x == 0) {
+                return 0;
+            }
+            int left = 1;
+            int right = x / 2 ;
+            int mid = (right + left) / 2;
+            while (left < right){
+                if(mid <= x / mid && (mid+1) > (x / (mid+1))){
+                    return mid;
+                }
+                if(mid  > x / mid){
+                    right = mid - 1;
+                }else {
+                    left = mid + 1;
+                }
+                mid = (right + left) / 2;
+            }
+            return left;
+        }
+
+        /**
+         * 115. Distinct Subsequences
+         *
+         * @param s
+         * @param t
+         * @return
+         */
+        public int numDistinct(String s, String t) {
+            int[][] dp = new int[t.length()][s.length()];
+            char[] ss = s.toCharArray();
+            char[] ts = t.toCharArray();
+            for (int i = 0; i < ss.length; i++) {
+                if (ss[i] == ts[0]) {
+                    dp[0][i] = 1;
+                }
+            }
+            for (int i = 1; i < ts.length; i++) {
+                for (int j = i; j < ss.length; j++) {
+                    if (ss[j] == ts[i]) {
+                        dp[i][j] = sum(dp, i - 1, j - 1);
+                    }
+                }
+            }
+            return sum(dp, ts.length - 1, ss.length - 1);
+
+        }
+
+        private int sum(int[][] dp, int i, int j) {
+            int sum = 0;
+            while (j >= 0) {
+                sum += dp[i][j];
+                j--;
+            }
+            return sum;
+        }
+
+        /**
+         * 470. Implement Rand10() Using Rand7()
+         *
+         * @return
+         */
+        public int rand10() {
+            int raw, col, idx;
+            do {
+                raw = rand7();
+                col = rand7();
+                idx = col + (raw - 1) * 7;
+            } while (idx > 40);
+            return idx % 10 + 1;
+        }
+
+        private int rand7() {
+            Random random = new Random();
+            return random.nextInt(7);
+        }
+
+        /**
          * 29. Divide Two Integers
          *
          * @param dividend
@@ -594,8 +729,32 @@ public class Problem {
          * @return
          */
         public int divide(int dividend, int divisor) {
-            return 0;
-
+            if (divisor == 0) {
+                return 0;
+            }
+            int flag = 1;
+            if ((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)) {
+                flag = -1;
+            }
+            long ldividend = Math.abs((long) dividend);
+            long ldivisor = Math.abs((long) divisor);
+            long tot = 0;
+            long p = 1;
+            long q = ldivisor;
+            while (ldividend >= ldivisor) {
+                if (ldividend >= q) {
+                    tot = tot + p;
+                    ldividend = ldividend - q;
+                }
+                if (ldividend >= q) {
+                    p <<= 1;
+                    q <<= 1;
+                } else {
+                    p >>= 1;
+                    q >>= 1;
+                }
+            }
+            return (int) Math.min(Math.max(-2147483648l, tot * flag), 2147483647l);
         }
 
         /**
@@ -1047,7 +1206,7 @@ public class Problem {
          * @param n
          * @return
          */
-        public String countAndSay(int n) {
+        public String countAndSay3(int n) {
             if (n <= 0) return "";
             StringBuilder sb = new StringBuilder();
             String s = "1";
@@ -1941,6 +2100,131 @@ public class Problem {
                 }
             }
             return false;
+        }
+
+        /**
+         * 78. Subsets
+         *
+         * @param nums
+         * @return
+         */
+        public List<List<Integer>> subsets(int[] nums) {
+            List<List<Integer>> list = new ArrayList<>();
+            Arrays.sort(nums);
+            backtrack(list, new ArrayList<>(), nums, 0);
+            return list;
+        }
+
+        private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] nums, int start) {
+            list.add(new ArrayList<>(tempList));
+            for (int i = start; i < nums.length; i++) {
+                tempList.add(nums[i]);
+                backtrack(list, tempList, nums, i + 1);
+                tempList.remove(tempList.size() - 1);
+            }
+        }
+
+        /**
+         * 90. Subsets II
+         *
+         * @param nums
+         * @return
+         */
+        public List<List<Integer>> subsetsWithDup2(int[] nums) {
+            List<List<Integer>> list = new ArrayList<>();
+            Arrays.sort(nums);
+            backtrack(list, new ArrayList<>(), nums, 0);
+            return list;
+        }
+
+        private void backtrackWithDup(List<List<Integer>> list, List<Integer> tempList, int[] nums, int start) {
+            list.add(new ArrayList<>(tempList));
+            for (int i = start; i < nums.length; i++) {
+                if (i > start && nums[i] == nums[i - 1]) {
+                    continue;
+                }
+                tempList.add(nums[i]);
+                backtrack(list, tempList, nums, i + 1);
+                tempList.remove(tempList.size() - 1);
+            }
+        }
+
+        /**
+         * 39. Combination Sum
+         *
+         * @param candidates
+         * @param target
+         * @return
+         */
+        public List<List<Integer>> combinationSum(int[] candidates, int target) {
+            List<List<Integer>> result = new ArrayList<List<Integer>>();
+            Arrays.sort(candidates);
+            for (int i = 0; i < candidates.length; i++) {
+
+//                int remain = target -
+            }
+            return null;
+        }
+
+
+        /**
+         * 38. Count and Say
+         *
+         * @param n
+         * @return
+         */
+        public String countAndSay(int n) {
+            if (n <= 0) return "";
+            StringBuilder sb = new StringBuilder();
+            String s = "1";
+            while (n > 1) {
+                int count = 1;
+                char lastChar = s.charAt(0);
+                for (int i = 1; i < s.length(); i++) {
+                    if (s.charAt(i) == lastChar) {
+                        count++;
+                    } else {
+                        sb.append(count).append(lastChar);
+                        count = 1;
+                        lastChar = s.charAt(i);
+                    }
+                }
+                sb.append(count).append(lastChar);
+                s = sb.toString();
+                sb.setLength(0);
+                n--;
+            }
+            return s;
+        }
+
+        /**
+         * 38. Count and Say
+         *
+         * @param n
+         * @return
+         */
+        public String countAndSay2(int n) {
+            StringBuilder curr = new StringBuilder("1");
+            StringBuilder prev;
+            int count;
+            char say;
+            for (int i = 1; i < n; i++) {
+                prev = curr;
+                curr = new StringBuilder();
+                count = 1;
+                say = prev.charAt(0);
+
+                for (int j = 1; j < prev.length(); j++) {
+                    if (prev.charAt(j) != say) {
+                        curr.append(count).append(say);
+                        count = 1;
+                        say = prev.charAt(j);
+                    } else count++;
+                }
+                curr.append(count).append(say);
+            }
+            return curr.toString();
+
         }
 
         /**
