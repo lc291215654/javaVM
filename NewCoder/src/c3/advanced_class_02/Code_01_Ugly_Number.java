@@ -44,8 +44,10 @@ public class Code_01_Ugly_Number {
 	}
 
 	public static void main(String[] args) {
-		int test = 8;
-		System.out.println(uglyNumber1(test));
+		int test = 8323;
+		System.out.println(" f");
 		System.out.println(uglyNumber2(test));
+		System.out.println(uglyNumber1(test));
+
 	}
 }

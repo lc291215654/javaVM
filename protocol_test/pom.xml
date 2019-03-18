@@ -15,6 +15,27 @@
             <artifactId>protobuf-java</artifactId>
             <version>2.5.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.python</groupId>
+            <artifactId>jython</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.onap.appc/appc-ansible-adapter-bundle -->
+        <dependency>
+            <groupId>org.onap.appc</groupId>
+            <artifactId>appc-ansible-adapter-bundle</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.onap.ccsdk.sli.adaptors/ccsdk-ansible-adapter -->
+        <dependency>
+            <groupId>org.onap.ccsdk.sli.adaptors</groupId>
+            <artifactId>ccsdk-ansible-adapter</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+
+
 
     </dependencies>
 
