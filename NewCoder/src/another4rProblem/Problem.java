@@ -664,7 +664,7 @@ public class Problem {
          * @param root
          * @return
          */
-        public boolean isValidBST(TreeNode root) {
+        public boolean isValidBST2(TreeNode root) {
             return false;
 
         }
@@ -918,17 +918,17 @@ public class Problem {
          * 99. Recover Binary Search Tree
          * @param root
          */
-        public void recoverTree(TreeNode root) {
+        public void recoverTree2(TreeNode root) {
             TreeNode firstElement = null;
             TreeNode secondElement = null;
             TreeNode prevElement = new TreeNode(Integer.MIN_VALUE);
-            traverse(root,firstElement,secondElement,prevElement);
+            traverse2(root,firstElement,secondElement,prevElement);
             int temp = firstElement.data;
             firstElement.data = secondElement.data;
             secondElement.data = temp;
         }
 
-        private void traverse(TreeNode root,TreeNode firstElement,TreeNode secondElement,TreeNode prevElement) {
+        private void traverse2(TreeNode root,TreeNode firstElement,TreeNode secondElement,TreeNode prevElement) {
 
             if (root == null)
                 return;
