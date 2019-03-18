@@ -1,5 +1,8 @@
 package another4rProblem;
 
+import my.li.org.binary.ListNode;
+import my.li.org.binary.TreeNode;
+
 import java.util.*;
 
 /**
@@ -19,16 +22,397 @@ public class Problem {
 
         Solution solution = new Solution();
 
+        ListNode head = new ListNode(1);
+        ListNode node1 = new ListNode(2);
+        ListNode node2 = new ListNode(3);
+        ListNode node3 = new ListNode(4);
+        ListNode node4 = new ListNode(5);
+        head.next = node1;
+        node1.next = node2;
+        node2.next = node3;
+        node3.next = node4;
 
-        System.out.println(solution.countPrimes(10));
-
+        ListNode re = solution.reverseBetween(head, 1,5);
         System.out.println();
 
+        System.out.println();
 
     }
 
 
     static class Solution {
+
+
+        /**
+         * 92. Reverse Linked List II
+         * @param head
+         * @param m
+         * @param n
+         * @return
+         */
+        public ListNode reverseBetween(ListNode head, int m, int n) {
+            if(head == null || head.next == null || m == n){
+                return head;
+            }
+            int temp = m;
+            ListNode cur = head;
+            ListNode pre = new ListNode(-1);
+            pre.next = head;
+            head = pre;
+            while (temp >1){
+                pre = cur;
+                cur = cur.next;
+                temp--;
+            }
+            int temp2 = n - m;
+            ListNode right = cur.next;
+            ListNode preright = cur;
+            while (temp2 >0){
+                preright = right;
+                right = right.next;
+                temp2--;
+            }
+
+            ListNode tail = cur;
+            ListNode after = cur;
+            ListNode prepre = cur.next;
+            tail.next = null;
+            while (prepre != right){
+                cur = prepre;
+                prepre = prepre.next;
+                cur.next = after;
+                after = cur;
+            }
+            tail.next = right;
+            pre.next = cur;
+            return head.next;
+        }
+
+        /**
+         * 99. Recover Binary Search Tree
+         * @param root
+         */
+        public void recoverTree(TreeNode root) {
+            TreeNode firstElement = null;
+            TreeNode secondElement = null;
+            TreeNode prevElement = new TreeNode(Integer.MIN_VALUE);
+            traverse(root,firstElement,secondElement,prevElement);
+            int temp = firstElement.data;
+            firstElement.data = secondElement.data;
+            secondElement.data = temp;
+        }
+
+        private void traverse(TreeNode root,TreeNode firstElement,TreeNode secondElement,TreeNode prevElement) {
+
+            if (root == null)
+                return;
+            traverse(root.left, firstElement, secondElement, prevElement);
+            if (firstElement == null && prevElement.data >= root.data) {
+                firstElement = prevElement;
+            }
+            if (firstElement != null && prevElement.data >= root.data) {
+                secondElement = root;
+            }
+            prevElement = root;
+
+            // End of "do some business"
+
+            traverse(root.right, firstElement, secondElement, prevElement);
+        }
+
+        /**
+         * 98. Validate Binary Search Tree
+         * @param root
+         * @return
+         */
+        public boolean isValidBST(TreeNode root) {
+            return isValidBST(root,Long.MAX_VALUE,Long.MIN_VALUE);
+        }
+
+
+        private boolean isValidBST(TreeNode root,long maxValue,long minValue){
+            if(root == null){
+                return true;
+            }
+            return root.data > minValue && root.data < maxValue && isValidBST(root.left,root.data,minValue)
+                    && isValidBST(root.right,maxValue,root.data);
+        }
+
+        /**
+         * 86. Partition List
+         * @param head
+         * @param x
+         * @return
+         */
+        public ListNode partition(ListNode head, int x) {
+            if(head == null || head.next == null){
+                return head;
+            }
+            ListNode cur = head;
+            ListNode small = new ListNode(-1);
+            ListNode big = new ListNode(-1);
+            ListNode bighead = big;
+            head = small;
+            while (cur != null){
+                if(cur.val < x){
+                    small.next = cur;
+                    small = small.next;
+                }else {
+                    big.next = cur;
+                    big = big.next;
+                }
+                cur = cur.next;
+            }
+            small.next = bighead.next;
+            big.next = null;
+            return head.next;
+        }
+
+        /**
+         * 89. Gray Code
+         *
+         * @param n
+         * @return
+         */
+        public List<Integer> grayCode(int n) {
+
+            return null;
+
+        }
+
+        public int minDistance(String word1, String word2) {
+            int m = word1.length();
+            int n = word2.length();
+
+            int[][] cost = new int[m + 1][n + 1];
+            for (int i = 0; i <= m; i++)
+                cost[i][0] = i;
+            for (int i = 1; i <= n; i++)
+                cost[0][i] = i;
+
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (word1.charAt(i) == word2.charAt(j))
+                        cost[i + 1][j + 1] = cost[i][j];
+                    else {
+                        int a = cost[i][j];
+                        int b = cost[i][j + 1];
+                        int c = cost[i + 1][j];
+                        cost[i + 1][j + 1] = Math.min(Math.min(a, b), c) + 1;
+                    }
+                }
+            }
+            return cost[m][n];
+        }
+
+
+        public String getPermutation(int n, int k) {
+            int[] N = new int[n + 1];
+            N[0] = 1;
+            N[1] = 1;
+            for (int i = 2; i <= n; i++) {
+                N[i] = i * N[i - 1];
+            }
+            String r = "";
+            int[] result = new int[n];
+            for (int i = 0; i < n; i++) {
+                result[i] = i + 1;
+            }
+            int in = 0;
+            while (k >= 1 && in < n) {
+                int dis = (k - 1) / N[n - in - 1];
+                k = k - N[n - in - 1] * dis;
+                r += result[dis];
+                remove(result, dis);
+                in++;
+            }
+            return r;
+        }
+
+        private void remove(int[] arr, int k) {
+            for (int i = k; i < arr.length - 1; i++) {
+                arr[i] = arr[i + 1];
+            }
+        }
+
+        /**
+         * 63. Unique Paths II
+         *
+         * @param obstacleGrid
+         * @return
+         */
+        public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+            if (obstacleGrid == null || obstacleGrid.length == 0) {
+                return 0;
+            }
+            int m = obstacleGrid.length;
+            int n = obstacleGrid[0].length;
+            int[][] dp = new int[m][n];
+            for (int i = 1; i < m; i++) {
+                if (obstacleGrid[i][0] == 1) {
+                    break;
+                }
+                dp[i][0] = 1;
+            }
+            for (int j = 1; j < n; j++) {
+                if (obstacleGrid[0][j] == 1) {
+                    break;
+                }
+                dp[0][j] = 1;
+            }
+            if (n < 2 || m < 2) {
+                return dp[n - 1][n - 1];
+            }
+            for (int i = 1; i < m; i++) {
+                for (int j = 1; j < n; j++) {
+                    if (obstacleGrid[i][j] == 1) {
+                        dp[i][j] = 0;
+                    } else {
+                        dp[i][j] = dp[i][j - 1] + dp[i - 1][j];
+                    }
+                }
+            }
+            return dp[n - 1][n - 1];
+        }
+
+        /**
+         * 88. Merge Sorted Array
+         *
+         * @param nums1
+         * @param m
+         * @param nums2
+         * @param n     nums2.length must larger or equal m
+         */
+        public void merge(int[] nums1, int m, int[] nums2, int n) {
+            int i1 = 0;
+            int left2 = 0;
+            int right2 = 0;
+            int i2 = 0;
+            while (i1 < m && i2 < n) {
+                if (nums1[i1] > nums2[i2]) {
+                    if (left2 < right2 && nums2[left2] < nums2[i2]) {
+                        int temp = nums2[left2];
+                        nums2[right2] = nums1[i1];
+                        nums1[i1] = temp;
+                        i1++;
+                        left2++;
+                        right2++;
+                    } else {
+                        int temp = nums1[i1];
+                        nums1[i1] = nums2[i2];
+                        i1++;
+                        i2++;
+                        nums2[right2] = temp;
+                        right2++;
+                    }
+                } else {
+                    if (left2 < right2) {
+                        int temp = nums1[i1];
+                        nums1[i1] = nums2[left2];
+                        nums2[right2] = temp;
+                        i1++;
+                        right2++;
+                        left2++;
+                    } else {
+                        i1++;
+                    }
+                }
+            }
+            if (i2 == n) {
+                while (left2 < right2 && i1 < m) {
+                    nums2[right2++] = nums1[i1];
+                    nums1[i1] = nums2[left2++];
+                    i1++;
+                }
+                while (left2 < right2) {
+                    nums1[i1] = nums2[left2++];
+                    i1++;
+                }
+
+            } else if (i1 == m) {
+                while (left2 < right2 && i2 < n) {
+                    if (nums2[left2] < nums2[i2]) {
+                        nums1[i1++] = nums2[left2++];
+                    } else {
+                        nums1[i1++] = nums2[i2++];
+                    }
+                }
+                while (left2 < right2) {
+                    nums1[i1++] = nums2[left2++];
+                }
+                while (i2 < n) {
+                    nums1[i1++] = nums2[i2++];
+                }
+            }
+        }
+
+        public void merge2(int[] nums1, int m, int[] nums2, int n) {
+            int len = m + n - 1;
+            int i = m - 1;
+            int j = n - 1;
+            while (i >= 0 && j >= 0) {
+                if(nums1[i] >= nums2[j]){
+                    nums1[len--] = nums1[i--];
+                }else {
+                    nums1[len--] = nums2[j--];
+                }
+            }
+            while (j>=0){
+                nums1[len--] = nums2[j--];
+            }
+        }
+
+        /**
+         * 68. Text Justification
+         *
+         * @param words
+         * @param maxWidth
+         * @return
+         */
+        public List<String> fullJustify(String[] words, int maxWidth) {
+            List<String> result = new ArrayList<>();
+            for (int i = 0; i < words.length; ) {
+                int k = 1;
+                int temp = maxWidth - words[i].length();
+                while (i + k < words.length && words[i + k].length() + 1 <= temp) {
+                    temp = temp - words[i + k].length() - 1;
+                    k++;
+                }
+                String s = new String();
+                if (k == 1) {
+                    s += words[i];
+                    for (int j = 0; j < temp; j++) {
+                        s = s + " ";
+                    }
+                } else if (i + k == words.length) {
+                    s += words[i];
+                    for (int j = 1; j < k; j++) {
+                        s = s + " " + words[i + j];
+                    }
+                    int white = maxWidth - s.length();
+                    for (int c = 0; c < white; c++) {
+                        s = s + " ";
+                    }
+                } else {
+                    s += words[i];
+                    for (int j = 1; j < k; j++) {
+                        s += " ";
+                        if (temp > 0 && k > 1) {
+                            for (int c = 0; c < temp / (k - 1); c++) {
+                                s += " ";
+                            }
+                            if (j - 1 < (temp % (k - 1))) {
+                                s += " ";
+                            }
+                        }
+                        s += words[i + j];
+                    }
+                }
+                result.add(s);
+                i += k;
+            }
+            return result;
+        }
 
         /**
          * 34. Find First and Last Position of Element in Sorted Array
@@ -67,6 +451,7 @@ public class Problem {
 
         /**
          * 49. Group Anagrams
+         *
          * @param strs
          * @return
          */
@@ -92,24 +477,25 @@ public class Problem {
 
         /**
          * 204. Count Primes
+         *
          * @param n
          * @return
          */
         public int countPrimes(int n) {
             boolean[] isPrime = new boolean[n + 1];
-            for(int i=2;i<n;i++){
+            for (int i = 2; i < n; i++) {
                 isPrime[i] = true;
             }
-            for(int i = 2;i*i < n;i++){
-                if(isPrime[i]){
-                    for(int j = i + i;j<n;j+=i){
+            for (int i = 2; i * i < n; i++) {
+                if (isPrime[i]) {
+                    for (int j = i + i; j < n; j += i) {
                         isPrime[j] = false;
                     }
                 }
             }
             int count = 0;
-            for(int i=2;i< n;i++){
-                if(isPrime[i]){
+            for (int i = 2; i < n; i++) {
+                if (isPrime[i]) {
                     count++;
                 }
             }
@@ -127,15 +513,15 @@ public class Problem {
                 return 0;
             }
             int left = 1;
-            int right = x / 2 ;
+            int right = x / 2;
             int mid = (right + left) / 2;
-            while (left < right){
-                if(mid <= x / mid && (mid+1) > (x / (mid+1))){
+            while (left < right) {
+                if (mid <= x / mid && (mid + 1) > (x / (mid + 1))) {
                     return mid;
                 }
-                if(mid  > x / mid){
+                if (mid > x / mid) {
                     right = mid - 1;
-                }else {
+                } else {
                     left = mid + 1;
                 }
                 mid = (right + left) / 2;

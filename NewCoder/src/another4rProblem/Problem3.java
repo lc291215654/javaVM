@@ -5,7 +5,14 @@ package another4rProblem;
  */
 public class Problem3 {
 
-    public void main(String[] args){
+    public static void main(String[] args){
+        String result = "     osdmap e468: 4 osds: 4 up, 4 in\\n            flags sortbitwise,require_jewel_osds\\n";
+
+        System.out.println(result);
+        System.out.println(result.indexOf("osdmap"));
+        System.out.println(result.indexOf("\\n"));
+        result = result.substring(result.indexOf("osdmap"),result.indexOf("n"));
+        System.out.println(result);
 
     }
 
