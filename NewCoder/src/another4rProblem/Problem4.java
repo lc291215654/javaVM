@@ -57,6 +57,23 @@ public class Problem4 {
         /**
          * Wow,genius!Amazing!Brilliant!Jesus!Excellent!Wonderful!Nice!Beautiful!Marvelous!Great!Elegant!Niubility!Unbelievable!
          */
+
+
+        /**
+         * 326. Power of Three
+         * @param n
+         * @return
+         */
+        public boolean isPowerOfThree(int n) {
+            if(n <= 0){
+                return false;
+            }
+            while (n % 3 == 0){
+                n = n / 3;
+            }
+            return n == 1;
+        }
+
         /**
          * 190. Reverse Bits
          * @param n
@@ -71,6 +88,20 @@ public class Problem4 {
                     result <<= 1;
             }
             return result;
+        }
+
+        /**
+         * 191. Number of 1 Bits
+         * @param n
+         * @return
+         */
+        public int hammingWeight(int n) {
+            int sum =0;
+            while(n != 0){
+                sum++;
+                n = n & (n-1);
+            }
+            return sum;
         }
 
         /**

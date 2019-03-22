@@ -1,6 +1,5 @@
 package another4rProblem;
 
-import my.li.org.binary.ListNode;
 import my.li.org.binary.TreeNode;
 
 import java.util.*;
@@ -8,7 +7,7 @@ import java.util.*;
 /**
  * Created by licheng on 9/10/18.
  */
-public class Problem {
+public class Problem1 {
     static class ListNode {
         int val;
         ListNode next;
@@ -43,9 +42,8 @@ public class Problem {
         node2.next = node3;
         node3.next = node4;
 
-        int re = solution.largestRectangleArea2(new int[]{2, 1, 5, 6, 2, 3});
+        Boolean re = solution.search(new int[]{2,5,6,0,0,1,2},6);
         System.out.println(re);
-        System.out.println();
 
         System.out.println();
 
@@ -56,13 +54,72 @@ public class Problem {
 
 
         /**
+         * 81. Search in Rotated Sorted Array II
+         *
+         * @param nums
+         * @param target
+         * @return
+         */
+        public boolean search(int[] nums, int target) {
+            int start = 0;
+            int end = nums.length - 1;
+            int mid = -1;
+            while (start <= end) {
+                mid = (end - start) / 2 + start;
+                if(nums[mid] == target){
+                    return true;
+                }
+                if(nums[start] < nums[end]){
+
+                }else {
+
+                }
+            }
+            return false;
+        }
+
+        /**
+         * 44. Wildcard Matching
+         *
+         * @param s
+         * @param p
+         * @return
+         */
+        public boolean isMatchWildCard(String s, String p) {
+            int sIndex = 0;
+            int pIndex = 0;
+            int starIndex = -1;
+            int matched = 0;
+            while (sIndex < s.length()) {
+                if (pIndex < p.length() && (s.charAt(sIndex) == p.charAt(pIndex) || p.charAt(pIndex) == '?')) {
+                    sIndex++;
+                    pIndex++;
+                } else if (pIndex < p.length() && p.charAt(pIndex) == '*') {
+                    starIndex = pIndex;
+                    matched = sIndex;
+                    pIndex++;
+                } else if (starIndex != -1) {
+                    pIndex = starIndex + 1;
+                    matched++;
+                    sIndex = matched;
+                } else {
+                    return false;
+                }
+            }
+            while (pIndex < p.length() && p.charAt(pIndex) == '*') {
+                pIndex++;
+            }
+            return pIndex == p.length();
+        }
+
+        /**
          * 109. Convert Sorted List to Binary Search Tree
          *
          * @param head
          * @return
          */
         public TreeNode sortedListToBST(ListNode head) {
-            return sortedListToBSTHelper(head, head);
+            return sortedListToBSTHelper(head, null);
         }
 
         public TreeNode sortedListToBSTHelper(ListNode head, ListNode tail) {
@@ -72,11 +129,19 @@ public class Problem {
             if (head == tail) {
                 return new TreeNode(head.val);
             }
-            TreeNode fast;
-            return null;
+            ListNode slow = head;
+            ListNode fast = head;
+            while (fast != tail && fast.next != tail){
+                fast = fast.next.next;
+                slow = slow.next;
+            }
+            TreeNode node = new TreeNode(slow.val);
+            node.left = sortedListToBSTHelper(head,slow);
+            node.right = sortedListToBSTHelper(slow.next,tail);
+            return node;
         }
 
-        private TreeNode convertListToBST2(ListNode head,int l, int r) {
+        private TreeNode convertListToBST2(ListNode head, int l, int r) {
             // Invalid case
             if (l > r) {
                 return null;
@@ -86,7 +151,7 @@ public class Problem {
 
             // First step of simulated inorder traversal. Recursively form
             // the left half
-            TreeNode left = convertListToBST2(head,l, mid - 1);
+            TreeNode left = convertListToBST2(head, l, mid - 1);
 
             // Once left half is traversed, process the current node
             TreeNode node = new TreeNode(head.val);
@@ -96,7 +161,7 @@ public class Problem {
             head = head.next;
 
             // Recurse on the right hand side and form BST out of them
-            node.right = this.convertListToBST2(head,mid + 1, r);
+            node.right = this.convertListToBST2(head, mid + 1, r);
             return node;
         }
 
@@ -105,7 +170,7 @@ public class Problem {
             int size = this.findSize(head);
 
             // Form the BST now that we know the size
-            return convertListToBST2(head,0, size - 1);
+            return convertListToBST2(head, 0, size - 1);
         }
 
         private int findSize(ListNode head) {
@@ -821,36 +886,6 @@ public class Problem {
         }
 
         /**
-         * 99. Recover Binary Search Tree
-         *
-         * @param root
-         */
-        public void recoverTree(TreeNode root) {
-            TreeNode first = null;
-            TreeNode second = null;
-            TreeNode pre = new TreeNode(Integer.MIN_VALUE);
-            traverse(root, first, pre, second);
-            int temp = first.data;
-            first.data = second.data;
-            second.data = temp;
-        }
-
-        private void traverse(TreeNode root, TreeNode first, TreeNode pre, TreeNode second) {
-            if (root == null) {
-                return;
-            }
-            traverse(root.left, first, pre, second);
-            if (first == null && pre.data >= root.data) {
-                first = pre;
-            }
-            if (first == null && pre.data >= root.data) {
-                second = root;
-            }
-            pre = root;
-            traverse(root.right, first, pre, second);
-        }
-
-        /**
          * 100. Same Tree
          *
          * @param p
@@ -871,13 +906,14 @@ public class Problem {
 
         /**
          * 92. Reverse Linked List II
+         *
          * @param head
          * @param m
          * @param n
          * @return
          */
         public ListNode reverseBetween(ListNode head, int m, int n) {
-            if(head == null || head.next == null || m == n){
+            if (head == null || head.next == null || m == n) {
                 return head;
             }
             int temp = m;
@@ -885,7 +921,7 @@ public class Problem {
             ListNode pre = new ListNode(-1);
             pre.next = head;
             head = pre;
-            while (temp >1){
+            while (temp > 1) {
                 pre = cur;
                 cur = cur.next;
                 temp--;
@@ -893,7 +929,7 @@ public class Problem {
             int temp2 = n - m;
             ListNode right = cur.next;
             ListNode preright = cur;
-            while (temp2 >0){
+            while (temp2 > 0) {
                 preright = right;
                 right = right.next;
                 temp2--;
@@ -903,7 +939,7 @@ public class Problem {
             ListNode after = cur;
             ListNode prepre = cur.next;
             tail.next = null;
-            while (prepre != right){
+            while (prepre != right) {
                 cur = prepre;
                 prepre = prepre.next;
                 cur.next = after;
@@ -913,124 +949,6 @@ public class Problem {
             pre.next = cur;
             return head.next;
         }
-
-        /**
-         * 99. Recover Binary Search Tree
-         * @param root
-         */
-        public void recoverTree2(TreeNode root) {
-            TreeNode firstElement = null;
-            TreeNode secondElement = null;
-            TreeNode prevElement = new TreeNode(Integer.MIN_VALUE);
-            traverse2(root,firstElement,secondElement,prevElement);
-            int temp = firstElement.data;
-            firstElement.data = secondElement.data;
-            secondElement.data = temp;
-        }
-
-        private void traverse2(TreeNode root,TreeNode firstElement,TreeNode secondElement,TreeNode prevElement) {
-
-            if (root == null)
-                return;
-            traverse(root.left, firstElement, secondElement, prevElement);
-            if (firstElement == null && prevElement.data >= root.data) {
-                firstElement = prevElement;
-            }
-            if (firstElement != null && prevElement.data >= root.data) {
-                secondElement = root;
-            }
-            prevElement = root;
-
-            // End of "do some business"
-
-            traverse(root.right, firstElement, secondElement, prevElement);
-        }
-
-        /**
-         * 98. Validate Binary Search Tree
-         * @param root
-         * @return
-         */
-        public boolean isValidBST(TreeNode root) {
-            return isValidBST(root,Long.MAX_VALUE,Long.MIN_VALUE);
-        }
-
-
-        private boolean isValidBST(TreeNode root,long maxValue,long minValue){
-            if(root == null){
-                return true;
-            }
-            return root.data > minValue && root.data < maxValue && isValidBST(root.left,root.data,minValue)
-                    && isValidBST(root.right,maxValue,root.data);
-        }
-
-        /**
-         * 86. Partition List
-         * @param head
-         * @param x
-         * @return
-         */
-        public ListNode partition(ListNode head, int x) {
-            if(head == null || head.next == null){
-                return head;
-            }
-            ListNode cur = head;
-            ListNode small = new ListNode(-1);
-            ListNode big = new ListNode(-1);
-            ListNode bighead = big;
-            head = small;
-            while (cur != null){
-                if(cur.val < x){
-                    small.next = cur;
-                    small = small.next;
-                }else {
-                    big.next = cur;
-                    big = big.next;
-                }
-                cur = cur.next;
-            }
-            small.next = bighead.next;
-            big.next = null;
-            return head.next;
-        }
-
-        /**
-         * 89. Gray Code
-         *
-         * @param n
-         * @return
-         */
-        public List<Integer> grayCode(int n) {
-
-            return null;
-
-        }
-
-        public int minDistance(String word1, String word2) {
-            int m = word1.length();
-            int n = word2.length();
-
-            int[][] cost = new int[m + 1][n + 1];
-            for (int i = 0; i <= m; i++)
-                cost[i][0] = i;
-            for (int i = 1; i <= n; i++)
-                cost[0][i] = i;
-
-            for (int i = 0; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (word1.charAt(i) == word2.charAt(j))
-                        cost[i + 1][j + 1] = cost[i][j];
-                    else {
-                        int a = cost[i][j];
-                        int b = cost[i][j + 1];
-                        int c = cost[i + 1][j];
-                        cost[i + 1][j + 1] = Math.min(Math.min(a, b), c) + 1;
-                    }
-                }
-            }
-            return cost[m][n];
-        }
-
 
         public String getPermutation(int n, int k) {
             int[] N = new int[n + 1];
@@ -1059,185 +977,6 @@ public class Problem {
             for (int i = k; i < arr.length - 1; i++) {
                 arr[i] = arr[i + 1];
             }
-        }
-
-        /**
-         * 63. Unique Paths II
-         *
-         * @param obstacleGrid
-         * @return
-         */
-        public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-            if (obstacleGrid == null || obstacleGrid.length == 0) {
-                return 0;
-            }
-            int m = obstacleGrid.length;
-            int n = obstacleGrid[0].length;
-            int[][] dp = new int[m][n];
-            for (int i = 1; i < m; i++) {
-                if (obstacleGrid[i][0] == 1) {
-                    break;
-                }
-                dp[i][0] = 1;
-            }
-            for (int j = 1; j < n; j++) {
-                if (obstacleGrid[0][j] == 1) {
-                    break;
-                }
-                dp[0][j] = 1;
-            }
-            if (n < 2 || m < 2) {
-                return dp[n - 1][n - 1];
-            }
-            for (int i = 1; i < m; i++) {
-                for (int j = 1; j < n; j++) {
-                    if (obstacleGrid[i][j] == 1) {
-                        dp[i][j] = 0;
-                    } else {
-                        dp[i][j] = dp[i][j - 1] + dp[i - 1][j];
-                    }
-                }
-            }
-            return dp[n - 1][n - 1];
-        }
-
-        /**
-         * 88. Merge Sorted Array
-         *
-         * @param nums1
-         * @param m
-         * @param nums2
-         * @param n     nums2.length must larger or equal m
-         */
-        public void merge(int[] nums1, int m, int[] nums2, int n) {
-            int i1 = 0;
-            int left2 = 0;
-            int right2 = 0;
-            int i2 = 0;
-            while (i1 < m && i2 < n) {
-                if (nums1[i1] > nums2[i2]) {
-                    if (left2 < right2 && nums2[left2] < nums2[i2]) {
-                        int temp = nums2[left2];
-                        nums2[right2] = nums1[i1];
-                        nums1[i1] = temp;
-                        i1++;
-                        left2++;
-                        right2++;
-                    } else {
-                        int temp = nums1[i1];
-                        nums1[i1] = nums2[i2];
-                        i1++;
-                        i2++;
-                        nums2[right2] = temp;
-                        right2++;
-                    }
-                } else {
-                    if (left2 < right2) {
-                        int temp = nums1[i1];
-                        nums1[i1] = nums2[left2];
-                        nums2[right2] = temp;
-                        i1++;
-                        right2++;
-                        left2++;
-                    } else {
-                        i1++;
-                    }
-                }
-            }
-            if (i2 == n) {
-                while (left2 < right2 && i1 < m) {
-                    nums2[right2++] = nums1[i1];
-                    nums1[i1] = nums2[left2++];
-                    i1++;
-                }
-                while (left2 < right2) {
-                    nums1[i1] = nums2[left2++];
-                    i1++;
-                }
-
-            } else if (i1 == m) {
-                while (left2 < right2 && i2 < n) {
-                    if (nums2[left2] < nums2[i2]) {
-                        nums1[i1++] = nums2[left2++];
-                    } else {
-                        nums1[i1++] = nums2[i2++];
-                    }
-                }
-                while (left2 < right2) {
-                    nums1[i1++] = nums2[left2++];
-                }
-                while (i2 < n) {
-                    nums1[i1++] = nums2[i2++];
-                }
-            }
-        }
-
-        public void merge2(int[] nums1, int m, int[] nums2, int n) {
-            int len = m + n - 1;
-            int i = m - 1;
-            int j = n - 1;
-            while (i >= 0 && j >= 0) {
-                if(nums1[i] >= nums2[j]){
-                    nums1[len--] = nums1[i--];
-                }else {
-                    nums1[len--] = nums2[j--];
-                }
-            }
-            while (j>=0){
-                nums1[len--] = nums2[j--];
-            }
-        }
-
-        /**
-         * 68. Text Justification
-         *
-         * @param words
-         * @param maxWidth
-         * @return
-         */
-        public List<String> fullJustify(String[] words, int maxWidth) {
-            List<String> result = new ArrayList<>();
-            for (int i = 0; i < words.length; ) {
-                int k = 1;
-                int temp = maxWidth - words[i].length();
-                while (i + k < words.length && words[i + k].length() + 1 <= temp) {
-                    temp = temp - words[i + k].length() - 1;
-                    k++;
-                }
-                String s = new String();
-                if (k == 1) {
-                    s += words[i];
-                    for (int j = 0; j < temp; j++) {
-                        s = s + " ";
-                    }
-                } else if (i + k == words.length) {
-                    s += words[i];
-                    for (int j = 1; j < k; j++) {
-                        s = s + " " + words[i + j];
-                    }
-                    int white = maxWidth - s.length();
-                    for (int c = 0; c < white; c++) {
-                        s = s + " ";
-                    }
-                } else {
-                    s += words[i];
-                    for (int j = 1; j < k; j++) {
-                        s += " ";
-                        if (temp > 0 && k > 1) {
-                            for (int c = 0; c < temp / (k - 1); c++) {
-                                s += " ";
-                            }
-                            if (j - 1 < (temp % (k - 1))) {
-                                s += " ";
-                            }
-                        }
-                        s += words[i + j];
-                    }
-                }
-                result.add(s);
-                i += k;
-            }
-            return result;
         }
 
         /**
@@ -1301,95 +1040,11 @@ public class Problem {
             return new ArrayList(ans.values());
         }
 
-        /**
-         * 204. Count Primes
-         *
-         * @param n
-         * @return
-         */
-        public int countPrimes(int n) {
-            boolean[] isPrime = new boolean[n + 1];
-            for (int i = 2; i < n; i++) {
-                isPrime[i] = true;
-            }
-            for (int i = 2; i * i < n; i++) {
-                if (isPrime[i]) {
-                    for (int j = i + i; j < n; j += i) {
-                        isPrime[j] = false;
-                    }
-                }
-            }
-            int count = 0;
-            for (int i = 2; i < n; i++) {
-                if (isPrime[i]) {
-                    count++;
-                }
-            }
-            return count;
-        }
 
-        /**
-         * 69. Sqrt(x)
-         *
-         * @param x
-         * @return
-         */
-        public int mySqrt(int x) {
-            if (x == 0) {
-                return 0;
-            }
-            int left = 1;
-            int right = x / 2;
-            int mid = (right + left) / 2;
-            while (left < right) {
-                if (mid <= x / mid && (mid + 1) > (x / (mid + 1))) {
-                    return mid;
-                }
-                if (mid > x / mid) {
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
-                }
-                mid = (right + left) / 2;
-            }
-            return left;
-        }
 
-        /**
-         * 115. Distinct Subsequences
-         *
-         * @param s
-         * @param t
-         * @return
-         */
-        public int numDistinct(String s, String t) {
-            int[][] dp = new int[t.length()][s.length()];
-            char[] ss = s.toCharArray();
-            char[] ts = t.toCharArray();
-            for (int i = 0; i < ss.length; i++) {
-                if (ss[i] == ts[0]) {
-                    dp[0][i] = 1;
-                }
-            }
-            for (int i = 1; i < ts.length; i++) {
-                for (int j = i; j < ss.length; j++) {
-                    if (ss[j] == ts[i]) {
-                        dp[i][j] = sum(dp, i - 1, j - 1);
-                    }
-                }
-            }
-            return sum(dp, ts.length - 1, ss.length - 1);
 
-        }
 
-        private int sum(int[][] dp, int i, int j) {
-            int sum = 0;
-            while (j >= 0) {
-                sum += dp[i][j];
-                j--;
-            }
-            return sum;
-        }
+
 
         /**
          * 470. Implement Rand10() Using Rand7()
@@ -1670,6 +1325,38 @@ public class Problem {
         }
 
         /**
+         * 40. Combination Sum II
+         *
+         * @param candidates
+         * @param target
+         * @return
+         */
+        public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+            List<List<Integer>> re = new ArrayList<>();
+            if (candidates.length == 0) {
+                return re;
+            }
+            Arrays.sort(candidates);
+            dfs_com(candidates, 0, target, new ArrayList<>(), re);
+            return re;
+
+        }
+
+        void dfs_com(int[] candidates, int cur, int target, List<Integer> path, List<List<Integer>> res) {
+            if (target == 0) {
+                res.add(new ArrayList(path));
+                return;
+            }
+            if (target < 0) return;
+            for (int i = cur; i < candidates.length; i++) {
+                if (i > cur && candidates[i] == candidates[i - 1]) continue;
+                path.add(path.size(), candidates[i]);
+                dfs_com(candidates, i + 1, target - candidates[i], path, res);
+                path.remove(path.size() - 1);
+            }
+        }
+
+        /**
          * 30. Substring with Concatenation of All Words
          *
          * @param s
@@ -1677,11 +1364,14 @@ public class Problem {
          * @return
          */
         public List<Integer> findSubstring(String s, String[] words) {
+            List<Integer> indexes = new ArrayList<>();
+            if (s.length() == 0 || words.length == 0) {
+                return indexes;
+            }
             Map<String, Integer> counts = new HashMap<>();
             for (String word : words) {
-                counts.put(word, 1);
+                counts.put(word, counts.getOrDefault(word, 0) + 1);
             }
-            List<Integer> indexes = new ArrayList<>();
             int n = s.length();
             int num = words.length;
             int len = words[0].length();
@@ -1691,10 +1381,10 @@ public class Problem {
                 while (j < num) {
                     String word = s.substring(i + j * len, i + (j + 1) * len);
                     if (counts.containsKey(word)) {
-                        if (seen.containsKey(word)) {
+                        seen.put(word, seen.getOrDefault(word, 0) + 1);
+                        if (seen.get(word) > counts.getOrDefault(word, 0)) {
                             break;
                         }
-                        seen.put(word, 1);
                     } else {
                         break;
                     }
@@ -3027,7 +2717,7 @@ public class Problem {
                              && i + curlen < ss.length
                              && ss[i - curlen] == ss[i + curlen]
                         ; curlen++
-                ) {
+                        ) {
                 }
                 if (curlen > maxlen) {
                     maxlen = curlen;
