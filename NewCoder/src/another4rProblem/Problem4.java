@@ -13,9 +13,28 @@ public class Problem4 {
     public static void main(String[] args) {
         Solution solution = new Solution();
 
-        System.out.println(solution.largestNumber(new int[]{3,30,34,5,9}));
+        List<List<Integer>> tri = new ArrayList<>();
+        List<Integer> list1 = new ArrayList<>();
+        list1.add(2);
+        List<Integer> list2 = new ArrayList<>();
+        list2.add(3);
+        list2.add(4);
+        List<Integer> list3 = new ArrayList<>();
+        list3.add(6);
+        list3.add(5);
+        list3.add(7);
+        List<Integer> list4 = new ArrayList<>();
+        list4.add(4);
+        list4.add(1);
+        list4.add(8);
+        list4.add(3);
+        tri.add(list1);
+        tri.add(list2);
+        tri.add(list3);
+        tri.add(list4);
+        int re =solution.singleNumber(new int[]{1,1,2,2,3,4,3});
+        System.out.println(re);
     }
-
 
 
     /**
@@ -54,11 +73,122 @@ public class Problem4 {
 
     static class Solution {
 
+
+        /**
+         * 136. Single Number
+         * @param nums
+         * @return
+         */
+        public int singleNumber(int[] nums) {
+            int re = 0;
+            for(int j:nums){
+                re ^= j;
+            }
+            return re;
+        }
+
+        /**
+         * 120. Triangle
+         *
+         * @param triangle
+         * @return
+         */
+        public int minimumTotal(List<List<Integer>> triangle) {
+            if (triangle.size() == 0 || triangle.get(0).size() == 0) {
+                return 0;
+            }
+            int size = triangle.size();
+            int lastlen = triangle.get(size - 1).size();
+            List<Integer> dp = new ArrayList<>();
+            dp.add(triangle.get(0).get(0));
+            for (int i = 1; i < size; i++) {
+                List<Integer> curlist = triangle.get(i);
+                dp.add(0,dp.get(0) + curlist.get(0));
+                for (int j = 1; j < curlist.size() - 1; j++) {
+                    dp.set(j,Math.min(dp.get(j) + curlist.get(j), dp.get(j+1) + curlist.get(j)));
+                }
+                dp.set(curlist.size() - 1,dp.get(curlist.size() - 1) + curlist.get(curlist.size() - 1));
+            }
+
+            int re = Integer.MAX_VALUE;
+            for (int i : dp) {
+                re = Math.min(i, re);
+            }
+            return re;
+        }
+
+        /**
+         * 119. Pascal's Triangle II
+         *
+         * @param rowIndex
+         * @return
+         */
+        public List<Integer> getRow(int rowIndex) {
+            List<Integer> list = new ArrayList<Integer>();
+            if (rowIndex < 0)
+                return list;
+            for (int i = 0; i < rowIndex + 1; i++) {
+                list.add(0, 1);
+                for (int j = 1; j < list.size() - 1; j++) {
+                    list.set(j, list.get(j) + list.get(j + 1));
+                }
+            }
+            return list;
+        }
+
+
+        /**
+         * 118. Pascal's Triangle
+         *
+         * @param numRows
+         * @return
+         */
+        public List<List<Integer>> generate(int numRows) {
+            List<List<Integer>> allrows = new ArrayList<List<Integer>>();
+            ArrayList<Integer> row = new ArrayList<Integer>();
+            for (int i = 0; i < numRows; i++) {
+                row.add(0, 1);
+                for (int j = 1; j < row.size() - 1; j++)
+                    row.set(j, row.get(j) + row.get(j + 1));
+                allrows.add(new ArrayList<Integer>(row));
+            }
+            return allrows;
+        }
+
+        /**
+         * 118. Pascal's Triangle
+         *
+         * @param numRows
+         * @return
+         */
+        public List<List<Integer>> generate2(int numRows) {
+            List<List<Integer>> allrows = new ArrayList<List<Integer>>();
+            ArrayList<Integer> row = new ArrayList<Integer>();
+            for (int i = 0; i < numRows; i++) {
+                row.add(0, 1);
+                for (int j = 1; j < row.size() - 1; j++)
+                    row.set(j, row.get(j) + row.get(j + 1));
+                allrows.add(new ArrayList<Integer>(row));
+            }
+            return allrows;
+        }
+
+
+        /**
+         * 114. Flatten Binary Tree to Linked List
+         *
+         * @param root
+         */
+        public void flatten(TreeNode root) {
+
+        }
+
         /**
          * Wow,genius!Amazing!Brilliant!Jesus!Excellent!Wonderful!Nice!Beautiful!Marvelous!Great!Elegant!Niubility!Unbelievable!
          */
         /**
          * 190. Reverse Bits
+         *
          * @param n
          * @return
          */
@@ -75,6 +205,7 @@ public class Problem4 {
 
         /**
          * 187. Repeated DNA Sequences
+         *
          * @param s
          * @return
          */
@@ -91,6 +222,7 @@ public class Problem4 {
 
         /**
          * 187. Repeated DNA Sequences
+         *
          * @param s
          * @return
          */
@@ -104,13 +236,13 @@ public class Problem4 {
             map['G' - 'A'] = 2;
             map['T' - 'A'] = 3;
 
-            for(int i = 0; i < s.length() - 9; i++) {
+            for (int i = 0; i < s.length() - 9; i++) {
                 int v = 0;
-                for(int j = i; j < i + 10; j++) {
+                for (int j = i; j < i + 10; j++) {
                     v <<= 2;
                     v |= map[s.charAt(j) - 'A'];
                 }
-                if(!words.add(v) && doubleWords.add(v)) {
+                if (!words.add(v) && doubleWords.add(v)) {
                     rv.add(s.substring(i, i + 10));
                 }
             }
@@ -119,12 +251,13 @@ public class Problem4 {
 
         /**
          * 179. Largest Number
+         *
          * @param nums
          * @return
          */
         public String largestNumber(int[] nums) {
             String[] arrs = new String[nums.length];
-            for(int i = 0;i<nums.length;i++){
+            for (int i = 0; i < nums.length; i++) {
                 arrs[i] = String.valueOf(nums[i]);
             }
             Arrays.sort(arrs, new Comparator<String>() {
@@ -136,7 +269,7 @@ public class Problem4 {
                 }
             });
             StringBuffer sb = new StringBuffer();
-            for(String s:arrs){
+            for (String s : arrs) {
                 sb.append(s);
             }
             return sb.toString();
