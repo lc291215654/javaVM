@@ -493,36 +493,7 @@ public class Solution {
         return maxvalid;
     }
 
-    /**
-     * 150. Evaluate Reverse Polish Notation
-     *
-     * @param tokens
-     * @return
-     */
-    public int evalRPN(String[] tokens) {
-        Stack<String> stack = new Stack<>();
-        for (String s : tokens) {
-            stack.push(s);
-        }
-        return evalRPNHelper(stack);
-    }
 
-    public int evalRPNHelper(Stack<String> stack) {
-        String s = stack.pop();
-        if (s.equals("*")) {
-            return evalRPNHelper(stack) * evalRPNHelper(stack);
-        } else if (s == "+") {
-            return evalRPNHelper(stack) + evalRPNHelper(stack);
-        } else if (s == "-") {
-            int minus = evalRPNHelper(stack);
-            return evalRPNHelper(stack) - minus;
-        } else if (s == "/") {
-            int div = evalRPNHelper(stack);
-            return evalRPNHelper(stack) / div;
-        } else {
-            return Integer.parseInt(s);
-        }
-    }
 
 
     /**

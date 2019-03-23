@@ -1,17 +1,8 @@
 package another4rProblem;
 
-import java.util.Scanner;
+public class Problem10 {
+    static class Solution {
 
-public class Solution {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int M = sc.nextInt();
-        int[] curnum = new int[N];
-        curnum[0] = M;
-        int[] result = new int[1];
-        calHepler(result,0,curnum);
-        System.out.println(result[0] % 1000000007);
     }
 
     private static void calHepler(int[] result, int index, int[] curnums) {
@@ -34,5 +25,4 @@ public class Solution {
             calHepler(result,index,curnums);
         }
     }
-
 }
