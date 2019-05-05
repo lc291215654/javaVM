@@ -45,6 +45,10 @@ public class Solution {
     }
 
 
+    /**
+     * 143. Reorder List
+     * @param head
+     */
     public static void reorderList(ListNode head) {
         if (head == null) {
             return;
@@ -66,7 +70,6 @@ public class Solution {
             }
         }
         merge(head, slow);
-
     }
 
     public static void merge(ListNode head, ListNode slow) {

@@ -15,12 +15,7 @@ public class regexTest {
 
         String regex = "[1-9][0-9]{4,9}";
         boolean b = qq1.matches(regex);
-
         System.out.println(b);
-        Stream.Builder builder = Stream.builder();
-        Stream stream = builder.build();
-
-
     }
 
 

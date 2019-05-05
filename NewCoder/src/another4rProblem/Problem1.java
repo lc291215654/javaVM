@@ -42,7 +42,7 @@ public class Problem1 {
         node2.next = node3;
         node3.next = node4;
 
-        Boolean re = solution.search(new int[]{2,5,6,0,0,1,2},6);
+        List<List<Integer>> re = solution.fourSum(new int[]{2, 5, 6, 0, 0, 1, 2, 3}, 6);
         System.out.println(re);
 
         System.out.println();
@@ -66,12 +66,12 @@ public class Problem1 {
             int mid = -1;
             while (start <= end) {
                 mid = (end - start) / 2 + start;
-                if(nums[mid] == target){
+                if (nums[mid] == target) {
                     return true;
                 }
-                if(nums[start] < nums[end]){
+                if (nums[start] < nums[end]) {
 
-                }else {
+                } else {
 
                 }
             }
@@ -131,13 +131,13 @@ public class Problem1 {
             }
             ListNode slow = head;
             ListNode fast = head;
-            while (fast != tail && fast.next != tail){
+            while (fast != tail && fast.next != tail) {
                 fast = fast.next.next;
                 slow = slow.next;
             }
             TreeNode node = new TreeNode(slow.val);
-            node.left = sortedListToBSTHelper(head,slow);
-            node.right = sortedListToBSTHelper(slow.next,tail);
+            node.left = sortedListToBSTHelper(head, slow);
+            node.right = sortedListToBSTHelper(slow.next, tail);
             return node;
         }
 
@@ -288,6 +288,28 @@ public class Problem1 {
 
             if (Math.abs(leftHeight - rightHeight) > 1) return -1;
             return Math.max(leftHeight, rightHeight) + 1;
+        }
+
+        /**
+         * 142. Linked List Cycle II
+         *
+         * @param head
+         * @return
+         */
+        public ListNode hasCycle2(ListNode head) {
+            if (head == null || head.next == null) {
+                return null;
+            }
+            ListNode fast = head.next.next;
+            ListNode slow = head;
+            while (fast != null && fast.next != null) {
+                if (slow == fast) {
+                    return slow;
+                }
+                fast = fast.next.next;
+                slow = slow.next;
+            }
+            return null;
         }
 
         /**
@@ -691,7 +713,94 @@ public class Problem1 {
          * @return
          */
         public List<List<Integer>> fourSum(int[] nums, int target) {
-            return null;
+            List<List<Integer>> res = new ArrayList<>();
+            if (nums == null || nums.length < 4) {
+                return res;
+            }
+            int len = nums.length;
+            Arrays.sort(nums);
+            int max = nums[len - 1];
+            if (4 * max < target || 4 * nums[0] > target) {
+                return res;
+            }
+            int z;
+            for (int i = 0; i < len; i++) {
+                z = nums[i];
+                if (i > 0 && z == nums[i - 1]) {
+                    continue;
+                }
+                if (z + 3 * max < target) {
+                    continue;
+                }
+                if (4 * z > max) {
+                    break;
+                }
+                if (4 * z == target) {
+                    if (i + 3 < len && nums[i + 3] == z) {
+                        res.add(Arrays.asList(z, z, z, z));
+                    }
+                    break;
+                }
+                threeSumForFourSum(nums, target - z, i + 1, len - 1, res, z);
+            }
+            return res;
+        }
+
+            private void threeSumForFourSum(int[] nums, int target, int low, int high, List<List<Integer>> res, int z1) {
+                if (low + 1 >= high) {
+                    return;
+                }
+                int max = nums[high];
+                if (3 * nums[low] > target || 3 * max < target) {
+                    return;
+                }
+                int z;
+                for (int i = low; i < high - 1; i++) {
+                    z = nums[i];
+                    if(i > low && z == nums[i - 1]){
+                        continue;
+                    }
+                    if( max * 2 + z < target ){
+                        continue;
+                    }
+                    if(z * 3 > target){
+                        break;
+                    }
+                    if( z * 3 == target){
+                        if(i+1 < high && nums[i+2] == z){
+                            res.add(Arrays.asList(z1,z,z,z));
+                        }
+                        break;
+                    }
+                    twoSumForFourSum(nums,target -z,i + 1,high,res,z1,z);
+                }
+
+            }
+
+        private void twoSumForFourSum(int[] nums, int target, int low, int high, List<List<Integer>> res, int z1, int z2) {
+            if (low >= high)
+                return;
+            if (2 * nums[low] > target || 2 * nums[high] < target)
+                return;
+            int i = low;
+            int j = high;
+            int sum , x;
+            while (i < j){
+                sum = nums[i] + nums[j];
+                if(sum == target){
+                    res.add(Arrays.asList(z1,z2,nums[i],nums[j]));
+                    x = nums[i];
+                    while (++i < j && x == nums[i]);
+                    x = nums[j];
+                    while (i < --j && x == nums[j]);
+                }
+                if(sum < target){
+                    i++;
+                }
+                if(sum > target){
+                    j--;
+                }
+            }
         }
 
         /**
@@ -1039,11 +1148,6 @@ public class Problem1 {
             }
             return new ArrayList(ans.values());
         }
-
-
-
-
-
 
 
         /**
@@ -2717,7 +2821,7 @@ public class Problem1 {
                              && i + curlen < ss.length
                              && ss[i - curlen] == ss[i + curlen]
                         ; curlen++
-                        ) {
+                ) {
                 }
                 if (curlen > maxlen) {
                     maxlen = curlen;

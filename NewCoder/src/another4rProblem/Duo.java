@@ -1,6 +1,7 @@
-package org.javaio;
+package another4rProblem;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,7 +16,13 @@ class Duo{
 
     }
 
-    public ArrayList<String> wordBreak(String s, Set<String> dict) {
+    /**
+     * 140. Word Break II
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    public ArrayList<String> wordBreak(String s, List<String> wordDict) {
         return null;
 
     }

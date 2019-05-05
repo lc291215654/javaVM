@@ -1,5 +1,6 @@
 package another4rProblem;
 
+import ProgrammingProblem.leetcode.Solution;
 import my.li.org.binary.TreeNode;
 
 import java.util.ArrayList;
@@ -11,6 +12,17 @@ import java.util.List;
 public class Problem2 {
 
     static class Solution {
+        /**
+         * 56. Merge Intervals
+         *
+         * @param intervals
+         * @return
+         */
+        public List<ProgrammingProblem.leetcode.Solution.Interval> merge(List<ProgrammingProblem.leetcode.Solution.Interval> intervals) {
+            List<ProgrammingProblem.leetcode.Solution.Interval> result = new ArrayList<>();
+            return result;
+        }
+
 
 
         /**

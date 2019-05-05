@@ -79,8 +79,8 @@ public class Solution {
 //                {23, 30, 34, 50}},34);
 
 
-        int rr = solution.evalRPN(new String[]{"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"});
-        System.out.println(rr);
+//        int rr = solution.evalRPN(new String[]{"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"});
+//        System.out.println(rr);
 
     }
 
@@ -945,20 +945,7 @@ public class Solution {
     }
 
 
-    public boolean wordBreak(String s, Set<String> dict) {
-//        return subwordBreak(s, dict, 0, s.length() - 1);
-        int len = s.length();
-        boolean dp[] = new boolean[len + 1];
-        dp[0] = true;
-        for (int i = 1; i <= len; i++) {
-            for (int j = 0; j < i; j++) {
-                if (dp[j] && dict.contains(s.substring(j, i))) {
-                    dp[i] = true;
-                }
-            }
-        }
-        return dp[len];
-    }
+
 
     public int StrToInt(String str) {
         int size = str.length();

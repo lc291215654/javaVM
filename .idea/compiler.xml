@@ -6,16 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="FlumeDemo" />
         <module name="Yarnclient" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
+      <module name="FlumeDemo" target="1.5" />
       <module name="MongoDBTest" target="1.5" />
       <module name="project" target="1.5" />
       <module name="protocol_test" target="1.5" />
       <module name="RabbitMQtest" target="1.7" />
       <module name="RedisTest" target="1.5" />
-      <module name="Yarn-client" target="1.5" />
+      <module name="Yarnclient" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

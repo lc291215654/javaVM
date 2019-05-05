@@ -26,7 +26,9 @@ public class Solution {
         root.right = node3;
         node2.left = node4;
         node3.right =node5;
-        List<List<Integer>> re = solution.zigzagLevelOrder(root);
+
+        int[] arr = new int[]{3,3,5,0,0,3,1,4};
+        int re = solution.maxProfit3(arr);
         System.out.println(re);
     }
 
@@ -287,6 +289,42 @@ public class Solution {
     }
 
     /**
+     * 123. Best Time to Buy and Sell Stock III
+     * @param prices
+     * @return
+     */
+    public int maxProfit3(int[] prices) {
+        if(prices.length == 0){
+            return 0;
+        }
+        PriorityQueue<Integer> queue = new PriorityQueue(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        });
+        int start = 0;
+        int end = 0;
+        for(int i = 1;i<prices.length;i++){
+            if(prices[i] >= prices[i-1]){
+                end++;
+            }else {
+                queue.add(prices[end] - prices[start]);
+                start = i;
+                end = start;
+            }
+        }
+        queue.add(prices[end] - prices[start]);
+        int result = 0;
+        for(int i=0;i<2;i++){
+            if(!queue.isEmpty()){
+                result += queue.poll();
+            }
+        }
+        return result;
+    }
+
+    /**
      * 122. Best Time to Buy and Sell Stock II
      * @param prices
      * @return
@@ -409,7 +447,7 @@ public class Solution {
         }
     }
 
-    class Interval {
+    public class Interval {
         int start;
         int end;
 
@@ -594,34 +632,22 @@ public class Solution {
      * @param root
      * @return
      */
+    private int maxValue = Integer.MIN_VALUE;
     public int maxPathSum(TreeNode root) {
+        maxPathSumHelper(root);
+        return maxValue;
+    }
+    public int maxPathSumHelper(TreeNode root) {
         if (root == null) {
             return 0;
         }
-        if (root.left == null && root.right == null) {
-            return root.data;
-        } else if (root.left == null) {
-            return maxPathSum(root.right) + root.data;
-        } else if (root.right == null) {
-            return maxPathSum(root.left) + root.data;
-        }
-        return Math.max(maxPathSum(root.left) + root.data, maxPathSum(root.right) + root.data);
-
+        int left = Math.max(0,maxPathSumHelper(root.left));
+        int right = Math.max(0,maxPathSumHelper(root.right));
+        maxValue = Math.max(maxValue,left + right + root.data);
+        return Math.max(left,right) + root.data;
     }
 
-    /**
-     * 56. Merge Intervals
-     *
-     * @param intervals
-     * @return
-     */
-    public List<Interval> merge(List<Interval> intervals) {
-        List<Interval> result = new ArrayList<>();
 
-        return result;
-
-
-    }
 
     /**
      * 103. Binary Tree Zigzag Level Order Traversal

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/FlumeDemo/FlumeDemo.iml" filepath="$PROJECT_DIR$/FlumeDemo/FlumeDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/MongoDBTest/MongoDBTest.iml" filepath="$PROJECT_DIR$/MongoDBTest/MongoDBTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/NewCoder/NewCoder.iml" filepath="$PROJECT_DIR$/NewCoder/NewCoder.iml" />
       <module fileurl="file://$PROJECT_DIR$/RabbitMQtest/RabbitMQtest.iml" filepath="$PROJECT_DIR$/RabbitMQtest/RabbitMQtest.iml" />
@@ -10,7 +11,6 @@
       <module fileurl="file://$PROJECT_DIR$/javaVM.iml" filepath="$PROJECT_DIR$/javaVM.iml" />
       <module fileurl="file://$PROJECT_DIR$/javalang/javalang.iml" filepath="$PROJECT_DIR$/javalang/javalang.iml" />
       <module fileurl="file://$PROJECT_DIR$/project/project.iml" filepath="$PROJECT_DIR$/project/project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/protocol_test/protocol_test.iml" filepath="$PROJECT_DIR$/protocol_test/protocol_test.iml" />
     </modules>
   </component>
 </project>

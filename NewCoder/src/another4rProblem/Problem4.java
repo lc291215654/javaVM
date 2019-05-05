@@ -32,7 +32,7 @@ public class Problem4 {
         tri.add(list2);
         tri.add(list3);
         tri.add(list4);
-        int re =solution.singleNumber(new int[]{1,1,2,2,3,4,3});
+        String re =solution.fractionToDecimal(-50,8);
         System.out.println(re);
     }
 
@@ -75,6 +75,78 @@ public class Problem4 {
 
 
         /**
+         * 164. Maximum Gap
+         * @param nums
+         * @return
+         */
+        public int maximumGap(int[] nums) {
+            if(nums == null || nums.length < 2){
+                return 0;
+            }
+            int len = nums.length;
+            int min = Integer.MAX_VALUE;
+            int max = Integer.MIN_VALUE;
+            for(int i=0;i<len;i++){
+                min = Math.min(min,nums[i]);
+                max = Math.max(max,nums[i]);
+            }
+            if(min == max){
+                return 0;
+            }
+            boolean[] hasNum = new boolean[len + 1];
+            int[] maxs = new int[len + 1];
+            int[] mins = new int[len + 1];
+            for(int i=0;i<len;i++){
+                int n = (nums[i] - min ) / len;
+            }
+
+            return 0;
+
+
+        }
+
+        /**
+         * 166. Fraction to Recurring Decimal
+         * @param numerator
+         * @param denominator
+         * @return
+         */
+        public String fractionToDecimal(int numerator, int denominator) {
+            if(numerator == 0){
+                return "0";
+            }
+            StringBuilder sb = new StringBuilder();
+            if(numerator>0 ^ denominator>0){
+                sb.append('-');
+            }
+            long numerator2 = Math.abs(numerator);
+            long denominator2 = Math.abs(denominator);
+            long f = numerator2 / denominator2;
+            sb.append(f);
+            f = numerator2 % denominator2;
+            if(f == 0){
+                return sb.toString();
+            }
+            sb.append('.');
+            HashMap<Long, Integer> map = new HashMap<>();
+            while (f != 0){
+                f = f * 10;
+                long k = f / denominator2;
+                if(map.containsKey(f)){
+                    sb.insert((int)map.get(f),'(');
+                    sb.append(')');
+                    break;
+                }
+                map.put(f,sb.length());
+                sb.append(k);
+                f = f % denominator2;
+
+            }
+            return sb.toString();
+        }
+
+
+        /**
          * 136. Single Number
          * @param nums
          * @return
@@ -85,6 +157,26 @@ public class Problem4 {
                 re ^= j;
             }
             return re;
+        }
+
+        /**
+         * 139. Word Break
+         * @param s
+         * @param dict
+         * @return
+         */
+        public boolean wordBreak(String s, List<String> dict) {
+            int len = s.length();
+            boolean dp[] = new boolean[len + 1];
+            dp[0] = true;
+            for (int i = 1; i <= len; i++) {
+                for (int j = 0; j < i; j++) {
+                    if (dp[j] && dict.contains(s.substring(j, i))) {
+                        dp[i] = true;
+                    }
+                }
+            }
+            return dp[len];
         }
 
         /**
