@@ -79,8 +79,8 @@ public class Solution {
 //                {23, 30, 34, 50}},34);
 
 
-        int rr = solution.evalRPN(new String[]{"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"});
-        System.out.println(rr);
+//        int rr = solution.evalRPN(new String[]{"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"});
+        System.out.println();
 
     }
 
